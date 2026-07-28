@@ -9,23 +9,35 @@ repository.workspace   = true
 description = "Handler holding an injected Repository<Entity, Id> via constructor injection, entity id carried through Self::Request — the generic-per-type port wiring pattern, issue #149"
 publish = false
 
+[package.metadata.arch]
+application_type = "binary"
+service_type = "orchestrator"
+
 [[bin]]
 name = "repository_handler"
-path = "src/main.rs"
+path = "main/src/main.rs"
 
 [dependencies]
 async-trait.workspace               = true
-futures.workspace                   = true
 edge-application-base.workspace     = true
 edge-application-handler.workspace  = true
 edge-application-command.workspace  = true
 edge-application-observer.workspace = true
 edge-application-repository.workspace = true
 edge-security-runtime.workspace     = true
+tracing.workspace                   = true
+tracing-subscriber.workspace        = true
 
 [dependencies.tokio]
 workspace = true
 features  = ["macros", "rt", "rt-multi-thread"]
 
+[dev-dependencies]
+futures.workspace = true
+
 [lints.rust]
 unsafe_code = "deny"
+
+[lints.clippy]
+unwrap_used = "warn"
+expect_used = "warn"

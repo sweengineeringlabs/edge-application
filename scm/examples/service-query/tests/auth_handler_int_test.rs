@@ -41,11 +41,11 @@ struct IsLoggedInResponse {
 impl edge_application_base::Response for IsLoggedInResponse {}
 
 /// The actual infra unit, reached only through `AuthHandler`'s own injected `QueryBus`.
-struct IsLoggedInQuery {
+struct LoginStatusQuery {
     session_token: String,
 }
 
-impl Query for IsLoggedInQuery {
+impl Query for LoginStatusQuery {
     type Result = bool;
 
     fn execute(
@@ -87,7 +87,7 @@ impl Handler for AuthHandler {
         let result = self
             .query_bus
             .dispatch(QueryDispatchRequest {
-                query: Box::new(IsLoggedInQuery {
+                query: Box::new(LoginStatusQuery {
                     session_token: req.req.session_token,
                 }),
             })

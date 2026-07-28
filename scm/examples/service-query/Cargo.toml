@@ -9,9 +9,13 @@ repository.workspace   = true
 description = "AuthHandler riding infra via Query through ordinary constructor injection — no trait changes, no deviation from the architecture"
 publish = false
 
+[package.metadata.arch]
+application_type = "binary"
+service_type = "orchestrator"
+
 [[bin]]
 name = "service_query"
-path = "src/main.rs"
+path = "main/src/main.rs"
 
 [dependencies]
 async-trait.workspace               = true
@@ -22,6 +26,8 @@ edge-application-command.workspace  = true
 edge-application-observer.workspace = true
 edge-application-query.workspace    = true
 edge-security-runtime.workspace     = true
+tracing.workspace                   = true
+tracing-subscriber.workspace        = true
 
 [dependencies.tokio]
 workspace = true
@@ -29,3 +35,7 @@ features  = ["macros", "rt", "rt-multi-thread"]
 
 [lints.rust]
 unsafe_code = "deny"
+
+[lints.clippy]
+unwrap_used = "warn"
+expect_used = "warn"
