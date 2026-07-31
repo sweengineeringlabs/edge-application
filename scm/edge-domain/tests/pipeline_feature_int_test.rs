@@ -7,8 +7,9 @@
 
 use async_trait::async_trait;
 use edge_application::{
-    ContextMutationRequest, Pipeline, PipelineBuilder, PipelineConfig, PipelineEmptinessRequest,
-    PipelineError, PipelineSvc, Step, StepCountRequest, StepNameRequest, StepNameResponse,
+    ContextMutationRequest, PipelineBuilder, PipelineConfig, PipelineEmptinessRequest,
+    PipelineError, PipelineRunRequest, PipelineSvc, Step, StepCountRequest, StepNameRequest,
+    StepNameResponse,
 };
 use edge_pipeline::PipelineConfig as RawPipelineConfig;
 use std::sync::Arc;
@@ -74,7 +75,7 @@ async fn test_pipeline_execution_through_edge_domain() {
     });
 
     let mut ctx = 0;
-    let result = pipeline.run(ContextMutationRequest { ctx: &mut ctx }).await;
+    let result = pipeline.run(PipelineRunRequest { ctx: &mut ctx }).await;
     assert!(result.is_ok());
     assert_eq!(ctx, 1);
 }
