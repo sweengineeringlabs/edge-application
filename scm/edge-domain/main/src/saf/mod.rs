@@ -170,6 +170,8 @@ pub use edge_pipeline::PipelineEmptinessRequest;
 #[cfg(feature = "pipeline")]
 pub use edge_pipeline::PipelineError;
 #[cfg(feature = "pipeline")]
+pub use edge_pipeline::PipelineRunRequest;
+#[cfg(feature = "pipeline")]
 pub use edge_pipeline::PipelineSvc;
 #[cfg(feature = "pipeline")]
 pub use edge_pipeline::Step;
