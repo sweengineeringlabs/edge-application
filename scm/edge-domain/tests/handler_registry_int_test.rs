@@ -11,29 +11,38 @@ use edge_application_handler::{
     IdResponse, LenRequest, ListIdsRequest, RegisterHandlerRequest,
 };
 
+#[derive(Debug, Clone, PartialEq, Eq)]
+struct TextPayload(String);
+
+impl edge_application_base::Request for TextPayload {}
+impl edge_application_base::Response for TextPayload {}
+
 struct EchoHandler {
     id: String,
 }
 
 #[async_trait]
 impl Handler for EchoHandler {
-    type Request = String;
-    type Response = String;
+    type Request = TextPayload;
+    type Response = TextPayload;
     fn id(&self, _req: IdRequest) -> Result<IdResponse, HandlerError> {
         Ok(IdResponse {
             id: self.id.clone(),
         })
     }
-    async fn execute(&self, req: ExecutionRequest<'_, String>) -> Result<String, HandlerError> {
+    async fn execute(
+        &self,
+        req: ExecutionRequest<'_, TextPayload>,
+    ) -> Result<TextPayload, HandlerError> {
         Ok(req.req)
     }
 }
 
-fn echo(id: &str) -> Arc<dyn Handler<Request = String, Response = String>> {
+fn echo(id: &str) -> Arc<dyn Handler<Request = TextPayload, Response = TextPayload>> {
     Arc::new(EchoHandler { id: id.to_string() })
 }
 
-fn registry() -> Arc<dyn HandlerRegistry<Request = String, Response = String>> {
+fn registry() -> Arc<dyn HandlerRegistry<Request = TextPayload, Response = TextPayload>> {
     Domain.new_handler_registry()
 }
 

@@ -4,11 +4,9 @@
 //! `edge-dispatch` (orphan rules prevent cross-crate From impls).
 //! The supported pattern is `.map_err(|e| HandlerError::ExecutionFailed(e.to_string()))`
 //! or `.map_err(|e| HandlerError::InvalidRequest(e.to_string()))`.
-#![cfg(all(feature = "service", feature = "repository", feature = "query", feature = "handler", feature = "event", feature = "command"))]
+#![cfg(all(feature = "repository", feature = "query", feature = "handler", feature = "event", feature = "command"))]
 
-use edge_application::{
-    CommandError, EventError, HandlerError, QueryError, RepositoryError, ServiceError,
-};
+use edge_application::{CommandError, EventError, HandlerError, QueryError, RepositoryError};
 
 // ── HandlerError::ExecutionFailed / InvalidRequest construction ─────────────
 
@@ -57,17 +55,6 @@ fn test_map_err_internal_converts_repository_error_to_execution_failed() {
     fn simulate() -> Result<(), HandlerError> {
         let result: Result<(), RepositoryError> =
             Err(RepositoryError::Unavailable("db down".into()));
-        result.map_err(|e| HandlerError::ExecutionFailed(e.to_string()))?;
-        Ok(())
-    }
-    assert!(matches!(simulate(), Err(HandlerError::ExecutionFailed(_))));
-}
-
-/// @covers: map_err pattern for ServiceError
-#[test]
-fn test_map_err_internal_converts_service_error_to_execution_failed() {
-    fn simulate() -> Result<(), HandlerError> {
-        let result: Result<(), ServiceError> = Err(ServiceError::Internal("boom".into()));
         result.map_err(|e| HandlerError::ExecutionFailed(e.to_string()))?;
         Ok(())
     }
