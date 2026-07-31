@@ -248,21 +248,21 @@ pub use edge_application_lifecycle::TransitionPolicy;
 
 // ── security ──────────────────────────────────────────────────────────────────
 #[cfg(feature = "security")]
+pub use edge_security_authn::AuthenticateRequest;
+#[cfg(feature = "security")]
 pub use edge_security_authn::Authenticator;
+#[cfg(feature = "security")]
+pub use edge_security_authn::AuthnContext;
 #[cfg(feature = "security")]
 pub use edge_security_authn::AuthnError;
 #[cfg(feature = "security")]
-pub use edge_security_authn::AuthnRequest;
-#[cfg(feature = "security")]
-pub use edge_security_authn::AuthnResponse;
+pub use edge_security_authz::AuthorizeRequest;
 #[cfg(feature = "security")]
 pub use edge_security_authz::Authorizer;
 #[cfg(feature = "security")]
+pub use edge_security_authz::AuthzContext;
+#[cfg(feature = "security")]
 pub use edge_security_authz::AuthzError;
-#[cfg(feature = "security")]
-pub use edge_security_authz::AuthzRequest;
-#[cfg(feature = "security")]
-pub use edge_security_authz::AuthzResponse;
 #[cfg(feature = "security")]
 pub use edge_security_runtime::AnonymousPrincipal;
 #[cfg(feature = "security")]

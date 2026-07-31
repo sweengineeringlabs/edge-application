@@ -3,8 +3,8 @@
 #![allow(clippy::unwrap_used, clippy::expect_used)]
 
 use edge_application::{
-    AnonymousPrincipal, Authenticator, AuthnError, AuthnRequest, AuthnResponse, Authorizer,
-    AuthzError, AuthzRequest, AuthzResponse, SecurityContext,
+    AnonymousPrincipal, AuthenticateRequest, Authenticator, AuthnContext, AuthnError,
+    AuthorizeRequest, Authorizer, AuthzContext, AuthzError, SecurityContext,
 };
 use edge_security_authn::Authenticator as RawAuthenticator;
 use edge_security_authz::Authorizer as RawAuthorizer;
@@ -13,11 +13,10 @@ struct AlwaysAuthenticates;
 
 #[async_trait::async_trait]
 impl Authenticator for AlwaysAuthenticates {
-    async fn authenticate(&self, req: AuthnRequest) -> Result<AuthnResponse, AuthnError> {
-        let mut ctx = req.ctx;
-        ctx.authenticated = true;
-        ctx.principal = Some(Box::new(AnonymousPrincipal));
-        Ok(AuthnResponse { ctx })
+    async fn authenticate(&self, req: AuthenticateRequest<'_>) -> Result<(), AuthnError> {
+        req.ctx.set_authenticated(true);
+        req.ctx.set_principal(Box::new(AnonymousPrincipal));
+        Ok(())
     }
 }
 
@@ -25,34 +24,36 @@ struct RejectsUnlessBearerPresent;
 
 #[async_trait::async_trait]
 impl Authenticator for RejectsUnlessBearerPresent {
-    async fn authenticate(&self, req: AuthnRequest) -> Result<AuthnResponse, AuthnError> {
-        if req.ctx.token.is_none() {
+    async fn authenticate(&self, req: AuthenticateRequest<'_>) -> Result<(), AuthnError> {
+        // AuthnContext doesn't expose SecurityContext::token directly (by design,
+        // it only surfaces the fields authenticators actually read/write) — a
+        // bearer credential's presence is checked via metadata instead.
+        if !req.ctx.metadata().contains_key("authorization") {
             return Err(AuthnError::MissingToken);
         }
-        let mut ctx = req.ctx;
-        ctx.authenticated = true;
-        Ok(AuthnResponse { ctx })
+        req.ctx.set_authenticated(true);
+        Ok(())
     }
 }
 
 /// @covers: Authenticator::authenticate
 #[tokio::test]
 async fn test_authenticate_always_authenticates_marks_context_happy() {
-    let ctx = SecurityContext::unauthenticated();
-    let response = AlwaysAuthenticates
-        .authenticate(AuthnRequest { ctx })
+    let mut ctx = AuthnContext::new(SecurityContext::unauthenticated());
+    AlwaysAuthenticates
+        .authenticate(AuthenticateRequest { ctx: &mut ctx })
         .await
         .unwrap();
-    assert!(response.ctx.authenticated);
-    assert!(response.ctx.principal.is_some());
+    assert!(ctx.authenticated());
+    assert!(ctx.principal().is_some());
 }
 
 /// @covers: Authenticator::authenticate
 #[tokio::test]
 async fn test_authenticate_missing_token_returns_error_error() {
-    let ctx = SecurityContext::unauthenticated();
+    let mut ctx = AuthnContext::new(SecurityContext::unauthenticated());
     let result = RejectsUnlessBearerPresent
-        .authenticate(AuthnRequest { ctx })
+        .authenticate(AuthenticateRequest { ctx: &mut ctx })
         .await;
     assert!(matches!(result, Err(AuthnError::MissingToken)));
 }
@@ -60,23 +61,23 @@ async fn test_authenticate_missing_token_returns_error_error() {
 /// @covers: Authenticator::authenticate
 #[tokio::test]
 async fn test_authenticate_with_token_present_succeeds_edge() {
-    let mut ctx = SecurityContext::unauthenticated();
-    ctx.token = Some("valid-token".to_string());
-    let response = RejectsUnlessBearerPresent
-        .authenticate(AuthnRequest { ctx })
+    let mut ctx = AuthnContext::new(SecurityContext::unauthenticated());
+    ctx.metadata_mut()
+        .insert("authorization".to_string(), "Bearer valid-token".to_string());
+    RejectsUnlessBearerPresent
+        .authenticate(AuthenticateRequest { ctx: &mut ctx })
         .await
         .unwrap();
-    assert!(response.ctx.authenticated);
+    assert!(ctx.authenticated());
 }
 
 struct AlwaysAuthorizes;
 
 #[async_trait::async_trait]
 impl Authorizer for AlwaysAuthorizes {
-    async fn authorize(&self, req: AuthzRequest) -> Result<AuthzResponse, AuthzError> {
-        let mut ctx = req.ctx;
-        ctx.is_authorized = true;
-        Ok(AuthzResponse { ctx })
+    async fn authorize(&self, req: AuthorizeRequest<'_>) -> Result<(), AuthzError> {
+        req.ctx.set_is_authorized(true);
+        Ok(())
     }
 }
 
@@ -84,33 +85,32 @@ struct RequiresAuthenticatedPrincipal;
 
 #[async_trait::async_trait]
 impl Authorizer for RequiresAuthenticatedPrincipal {
-    async fn authorize(&self, req: AuthzRequest) -> Result<AuthzResponse, AuthzError> {
-        if req.ctx.principal.is_none() {
+    async fn authorize(&self, req: AuthorizeRequest<'_>) -> Result<(), AuthzError> {
+        if req.ctx.principal().is_none() {
             return Err(AuthzError::MissingPrincipal);
         }
-        let mut ctx = req.ctx;
-        ctx.is_authorized = true;
-        Ok(AuthzResponse { ctx })
+        req.ctx.set_is_authorized(true);
+        Ok(())
     }
 }
 
 /// @covers: Authorizer::authorize
 #[tokio::test]
 async fn test_authorize_always_authorizes_marks_context_happy() {
-    let ctx = SecurityContext::unauthenticated();
-    let response = AlwaysAuthorizes
-        .authorize(AuthzRequest { ctx })
+    let mut ctx = AuthzContext::new(SecurityContext::unauthenticated());
+    AlwaysAuthorizes
+        .authorize(AuthorizeRequest { ctx: &mut ctx })
         .await
         .unwrap();
-    assert!(response.ctx.is_authorized);
+    assert!(ctx.is_authorized());
 }
 
 /// @covers: Authorizer::authorize
 #[tokio::test]
 async fn test_authorize_missing_principal_returns_error_error() {
-    let ctx = SecurityContext::unauthenticated();
+    let mut ctx = AuthzContext::new(SecurityContext::unauthenticated());
     let result = RequiresAuthenticatedPrincipal
-        .authorize(AuthzRequest { ctx })
+        .authorize(AuthorizeRequest { ctx: &mut ctx })
         .await;
     assert!(matches!(result, Err(AuthzError::MissingPrincipal)));
 }
@@ -118,12 +118,14 @@ async fn test_authorize_missing_principal_returns_error_error() {
 /// @covers: Authorizer::authorize
 #[tokio::test]
 async fn test_authorize_with_principal_present_succeeds_edge() {
-    let ctx = SecurityContext::authenticated_with(Box::new(AnonymousPrincipal));
-    let response = RequiresAuthenticatedPrincipal
-        .authorize(AuthzRequest { ctx })
+    let mut ctx = AuthzContext::new(SecurityContext::authenticated_with(Box::new(
+        AnonymousPrincipal,
+    )));
+    RequiresAuthenticatedPrincipal
+        .authorize(AuthorizeRequest { ctx: &mut ctx })
         .await
         .unwrap();
-    assert!(response.ctx.is_authorized);
+    assert!(ctx.is_authorized());
 }
 
 /// @covers: edge_application's re-exported Authenticator/Authorizer are the underlying
