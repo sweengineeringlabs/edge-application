@@ -68,7 +68,7 @@ edge-application-snapshot    = { path = "snapshot" }
 edge-application-repository  = { path = "repository" }
 edge-application-handler     = { path = "handler" }
 edge-application-event       = { path = "event" }
-edge-pipeline           = { git = "https://github.com/sweengineeringlabs/edge-pipeline.git", tag = "v0.2.0" }
+edge-pipeline           = { git = "https://github.com/sweengineeringlabs/edge-pipeline.git", tag = "v0.3.0" }
 edge-application-projection  = { path = "projection" }
 edge-application-saga        = { path = "saga" }
 edge-security-runtime   = { git = "https://github.com/sweengineeringlabs/edge-security.git", tag = "v0.3.22" }
