@@ -1,5 +1,0 @@
-//! [`TracerRequest`] — zero-sized marker for querying the active `HandlerTracer`.
-
-/// Request for the active [`HandlerTracer`](crate::api::HandlerTracer).
-#[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
-pub struct TracerRequest;

@@ -1,0 +1,33 @@
+[package]
+name         = "edge-application-base"
+version      = "0.2.0"
+edition      = "2021"
+license      = "MIT OR Apache-2.0"
+rust-version = "1.95"
+authors      = ["SWE Engineering Labs"]
+repository   = "https://github.com/sweengineeringlabs/edge-application"
+description  = "edge-domain — foundational, broadly-reusable contracts shared across otherwise-independent domain ports (Request/Response, and the HandlerContext trait shapes: SecurityPrincipal, CommandBus/Command, ObserverContext)"
+keywords     = ["domain", "base", "sea", "swe"]
+categories   = ["development-tools"]
+
+[package.metadata.arch]
+application_type = "lib"
+service_type     = "base"
+
+[lib]
+path = "main/src/lib.rs"
+
+[dependencies]
+serde.workspace = true
+thiserror.workspace = true
+edge-security-runtime.workspace = true
+
+[dev-dependencies]
+futures.workspace = true
+
+[lints.rust]
+unsafe_code = "deny"
+
+[lints.clippy]
+unwrap_used = "deny"
+expect_used = "deny"

@@ -79,11 +79,6 @@ use crate::api::Saga;
 #[cfg(feature = "saga")]
 use crate::api::SagaStore;
 
-#[cfg(feature = "service")]
-use crate::api::ServiceRegistry;
-#[cfg(feature = "service")]
-use edge_application_service::StdServiceRegistryFactory;
-
 #[cfg(feature = "snapshot")]
 use crate::api::Snapshot;
 #[cfg(feature = "snapshot")]
@@ -106,7 +101,13 @@ impl Domain {
     /// ```rust,no_run
     /// use edge_application::Domain;
     ///
-    /// let h = Domain.echo_handler::<String>("echo", "/ping");
+    /// #[derive(Clone)]
+    /// struct Ping;
+    ///
+    /// impl edge_application_base::Request for Ping {}
+    /// impl edge_application_base::Response for Ping {}
+    ///
+    /// let h = Domain.echo_handler::<Ping>("echo", "/ping");
     /// ```
     #[cfg(feature = "handler")]
     pub fn echo_handler<T>(
@@ -115,7 +116,7 @@ impl Domain {
         pattern: impl Into<String>,
     ) -> Arc<dyn Handler<Request = T, Response = T>>
     where
-        T: Clone + Send + 'static,
+        T: Clone + edge_application_base::Request + edge_application_base::Response,
     {
         let id = id.into();
         let pattern = pattern.into();
@@ -133,7 +134,12 @@ impl Domain {
     /// use edge_application::Domain;
     /// use edge_application_handler::EmptinessRequest;
     ///
-    /// let registry = Domain.new_handler_registry::<String, String>();
+    /// struct Ping;
+    ///
+    /// impl edge_application_base::Request for Ping {}
+    /// impl edge_application_base::Response for Ping {}
+    ///
+    /// let registry = Domain.new_handler_registry::<Ping, Ping>();
     /// assert!(registry.is_empty(EmptinessRequest).unwrap().empty);
     /// ```
     #[cfg(feature = "handler")]
@@ -141,8 +147,8 @@ impl Domain {
         &self,
     ) -> Arc<dyn HandlerRegistryTrait<Request = Req, Response = Resp>>
     where
-        Req: Send + 'static,
-        Resp: Send + 'static,
+        Req: edge_application_base::Request,
+        Resp: edge_application_base::Response,
     {
         Arc::new(InProcessHandlerRegistry::default())
     }
@@ -162,19 +168,6 @@ impl Domain {
         let first = make_first(Arc::clone(&backend));
         let second = make_second(backend);
         (first, second)
-    }
-
-    /// Construct a fresh empty [`ServiceRegistry`].
-    #[cfg(feature = "service")]
-    pub fn new_service_registry<Request, Response>(
-        &self,
-    ) -> Arc<dyn ServiceRegistry<Request = Request, Response = Response>>
-    where
-        Request: Send + 'static,
-        Response: Send + 'static,
-    {
-        let r = StdServiceRegistryFactory::new_registry::<Request, Response>();
-        Arc::new(r)
     }
 
     /// Construct a thread-safe in-memory [`Repository`].

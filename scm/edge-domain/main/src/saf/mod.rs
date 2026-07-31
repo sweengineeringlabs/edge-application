@@ -18,9 +18,9 @@ mod queryable_repository_svc;
 mod repository;
 mod repository_svc;
 mod saga;
-mod service;
 mod snapshot;
 mod spec_svc;
+mod spi;
 mod validator_svc;
 mod value;
 mod value_object_svc;
@@ -35,8 +35,8 @@ pub use self::policy::*;
 pub use self::query::*;
 pub use self::repository::*;
 pub use self::saga::*;
-pub use self::service::*;
 pub use self::snapshot::*;
+pub use self::spi::*;
 pub use self::value::*;
 
 // ── top-level _svc.rs re-exports ─────────────────────────────────────────────
@@ -119,12 +119,6 @@ pub use edge_application_snapshot::SnapshotSaveRequest;
 pub use edge_application_snapshot::SnapshotVersionRequest;
 #[cfg(feature = "snapshot")]
 pub use edge_application_snapshot::SnapshotVersionResponse;
-
-// ── service (sub-crate when feature enabled) ──────────────────────────────────
-#[cfg(feature = "service")]
-pub use edge_application_service::ServiceError;
-#[cfg(feature = "service")]
-pub use edge_application_service::StdServiceRegistryFactory;
 
 // ── repository (sub-crate when feature enabled) ───────────────────────────────
 #[cfg(feature = "repository")]
@@ -254,21 +248,21 @@ pub use edge_application_lifecycle::TransitionPolicy;
 
 // ── security ──────────────────────────────────────────────────────────────────
 #[cfg(feature = "security")]
+pub use edge_security_authn::AuthenticateRequest;
+#[cfg(feature = "security")]
 pub use edge_security_authn::Authenticator;
+#[cfg(feature = "security")]
+pub use edge_security_authn::AuthnContext;
 #[cfg(feature = "security")]
 pub use edge_security_authn::AuthnError;
 #[cfg(feature = "security")]
-pub use edge_security_authn::AuthnRequest;
-#[cfg(feature = "security")]
-pub use edge_security_authn::AuthnResponse;
+pub use edge_security_authz::AuthorizeRequest;
 #[cfg(feature = "security")]
 pub use edge_security_authz::Authorizer;
 #[cfg(feature = "security")]
+pub use edge_security_authz::AuthzContext;
+#[cfg(feature = "security")]
 pub use edge_security_authz::AuthzError;
-#[cfg(feature = "security")]
-pub use edge_security_authz::AuthzRequest;
-#[cfg(feature = "security")]
-pub use edge_security_authz::AuthzResponse;
 #[cfg(feature = "security")]
 pub use edge_security_runtime::AnonymousPrincipal;
 #[cfg(feature = "security")]

@@ -1,25 +1,33 @@
 [workspace]
 resolver = "2"
 members  = [
-    "domain-app",
+    "app",
     "edge-domain",
-    "domain-entity",
-    "domain-valueobject",
-    "domain-validator",
-    "domain-clock",
-    "domain-policy",
-    "domain-command",
-    "domain-query",
-    "domain-snapshot",
-    "domain-service",
-    "domain-repository",
-    "domain-handler",
-    "domain-event",
-    "domain-projection",
-    "domain-saga",
-    "domain-registry",
-    "domain-lifecycle",
-    "domain-observer",
+    "base",
+    "entity",
+    "valueobject",
+    "validator",
+    "clock",
+    "policy",
+    "command",
+    "query",
+    "snapshot",
+    "repository",
+    "handler",
+    "event",
+    "projection",
+    "saga",
+    "registry",
+    "lifecycle",
+    "observer",
+    "examples/service-query",
+    "examples/repository-handler",
+    "examples/event-store-handler",
+    "examples/saga-handler",
+    "examples/snapshot-handler",
+    "examples/projection-handler",
+    "examples/policy-handler",
+    "examples/registry-handler",
 ]
 
 [workspace.package]
@@ -44,28 +52,29 @@ futures     = "0.3"
 parking_lot = "0.12"
 tokio       = { version = "1", features = ["sync", "time"] }
 tracing     = "0.1"
+tracing-subscriber = { version = "0.3", features = ["fmt"] }
 serde       = { version = "1.0", features = ["derive"] }
 serde_json  = "1.0"
-edge-application-app         = { path = "domain-app" }
-edge-application-entity      = { path = "domain-entity" }
-edge-application-valueobject = { path = "domain-valueobject" }
-edge-application-clock       = { path = "domain-clock" }
-edge-application-validator   = { path = "domain-validator" }
-edge-application-policy      = { path = "domain-policy" }
-edge-application-command     = { path = "domain-command" }
-edge-application-query       = { path = "domain-query" }
-edge-application-snapshot    = { path = "domain-snapshot" }
-edge-application-service     = { path = "domain-service" }
-edge-application-repository  = { path = "domain-repository" }
-edge-application-handler     = { path = "domain-handler" }
-edge-application-event       = { path = "domain-event" }
+edge-application-app         = { path = "app" }
+edge-application-base        = { path = "base" }
+edge-application-entity      = { path = "entity" }
+edge-application-valueobject = { path = "valueobject" }
+edge-application-clock       = { path = "clock" }
+edge-application-validator   = { path = "validator" }
+edge-application-policy      = { path = "policy" }
+edge-application-command     = { path = "command" }
+edge-application-query       = { path = "query" }
+edge-application-snapshot    = { path = "snapshot" }
+edge-application-repository  = { path = "repository" }
+edge-application-handler     = { path = "handler" }
+edge-application-event       = { path = "event" }
 edge-pipeline           = { git = "https://github.com/sweengineeringlabs/edge-pipeline.git", tag = "v0.2.0" }
-edge-application-projection  = { path = "domain-projection" }
-edge-application-saga        = { path = "domain-saga" }
-edge-security-runtime   = { git = "https://github.com/sweengineeringlabs/edge-security.git", tag = "v0.3.7" }
-edge-security-authn     = { git = "https://github.com/sweengineeringlabs/edge-security.git", tag = "v0.3.7" }
-edge-security-authz     = { git = "https://github.com/sweengineeringlabs/edge-security.git", tag = "v0.3.7" }
-edge-application-registry    = { path = "domain-registry" }
-edge-application-lifecycle   = { path = "domain-lifecycle" }
-edge-application-observer    = { path = "domain-observer" }
+edge-application-projection  = { path = "projection" }
+edge-application-saga        = { path = "saga" }
+edge-security-runtime   = { git = "https://github.com/sweengineeringlabs/edge-security.git", tag = "v0.3.22" }
+edge-security-authn     = { git = "https://github.com/sweengineeringlabs/edge-security.git", tag = "v0.3.22" }
+edge-security-authz     = { git = "https://github.com/sweengineeringlabs/edge-security.git", tag = "v0.3.22" }
+edge-application-registry    = { path = "registry" }
+edge-application-lifecycle   = { path = "lifecycle" }
+edge-application-observer    = { path = "observer" }
 swe-edge-configbuilder  = { git = "https://github.com/sweengineeringlabs/edge-configbuilder.git", tag = "v0.4.2" }
