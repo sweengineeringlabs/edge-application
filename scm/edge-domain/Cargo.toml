@@ -85,7 +85,7 @@ edge-application-base        = { path = "../base", optional = true }
 edge-application-repository  = { path = "../repository", optional = true }
 edge-application-handler     = { path = "../handler", optional = true }
 edge-application-event       = { path = "../event", optional = true }
-edge-pipeline           = { git = "https://github.com/sweengineeringlabs/edge-pipeline.git", tag = "v0.2.0", optional = true }
+edge-pipeline                = { workspace = true, optional = true }
 edge-application-projection  = { path = "../projection", optional = true }
 edge-application-saga        = { path = "../saga", optional = true }
 edge-application-registry    = { path = "../registry", optional = true }
