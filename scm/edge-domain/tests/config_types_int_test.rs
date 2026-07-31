@@ -1,7 +1,7 @@
 //! Tests for configuration and error types across api/ modules.
-#![cfg(all(feature = "service", feature = "repository", feature = "query", feature = "handler", feature = "event"))]
+#![cfg(all(feature = "repository", feature = "query", feature = "handler", feature = "event"))]
 
-use edge_application::{EventError, HandlerError, QueryError, RepositoryError, ServiceError};
+use edge_application::{EventError, HandlerError, QueryError, RepositoryError};
 
 /// @covers: HandlerError::ExecutionFailed
 #[test]
@@ -22,13 +22,6 @@ fn test_handler_error_not_found() {
 fn test_repository_error_not_found() {
     let err = RepositoryError::NotFound("entity".to_string());
     assert!(err.to_string().contains("entity"));
-}
-
-/// @covers: ServiceError::RuleViolation
-#[test]
-fn test_service_error_rule_violation() {
-    let err = ServiceError::RuleViolation("invalid".to_string());
-    assert!(err.to_string().contains("invalid"));
 }
 
 /// @covers: QueryError::InvalidInput

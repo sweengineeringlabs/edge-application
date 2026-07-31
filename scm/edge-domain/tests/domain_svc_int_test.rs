@@ -6,61 +6,56 @@
 
 use edge_application::*;
 use edge_application_handler::{
-    CommandBusAdapter, EmptinessRequest as HandlerEmptinessRequest, ExecutionRequest,
-    HandlerContext, ObserverContextAdapter,
+    EmptinessRequest as HandlerEmptinessRequest, ExecutionRequest, HandlerContext,
 };
 use edge_application_observer::StdObserveFactory;
-use edge_application_service::EmptinessRequest as ServiceEmptinessRequest;
 use edge_security_runtime::SecurityContext;
 use std::sync::Arc;
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+struct TextPayload(String);
+
+impl edge_application_base::Request for TextPayload {}
+impl edge_application_base::Response for TextPayload {}
 
 /// @covers: echo_handler
 #[test]
 fn test_echo_handler() {
-    let _: Arc<dyn edge_application::Handler<Request = String, Response = String>> =
+    let _: Arc<dyn edge_application::Handler<Request = TextPayload, Response = TextPayload>> =
         Domain.echo_handler("id", "/path");
 }
 
 /// @covers: echo_handler
 #[tokio::test]
 async fn test_echo_handler_returns_input_as_output() {
-    let h = Domain.echo_handler::<String>("echo", "/echo");
+    let h = Domain.echo_handler::<TextPayload>("echo", "/echo");
     let security = SecurityContext::unauthenticated();
     let bus = Domain
         .direct_command_bus(DirectCommandBusRequest)
         .unwrap()
         .bus;
-    let bus_adapter = CommandBusAdapter(bus.as_ref());
     let observer = StdObserveFactory::noop_observer_context();
-    let observer_adapter = ObserverContextAdapter(observer.as_ref());
     let ctx = HandlerContext {
         security: &security,
-        commands: &bus_adapter,
-        observer: &observer_adapter,
+        commands: bus.as_ref(),
+        observer: observer.as_ref(),
     };
     assert_eq!(
         h.execute(ExecutionRequest {
-            req: "ping".to_string(),
+            req: TextPayload("ping".to_string()),
             ctx: &ctx
         })
         .await
         .unwrap(),
-        "ping"
+        TextPayload("ping".to_string())
     );
 }
 
 /// @covers: new_handler_registry
 #[test]
 fn test_new_handler_registry_returns_empty_registry() {
-    let reg = Domain.new_handler_registry::<String, String>();
+    let reg = Domain.new_handler_registry::<TextPayload, TextPayload>();
     assert!(reg.is_empty(HandlerEmptinessRequest).unwrap().empty);
-}
-
-/// @covers: new_service_registry
-#[test]
-fn test_new_service_registry_returns_empty_registry() {
-    let reg = Domain.new_service_registry::<String, String>();
-    assert!(reg.is_empty(ServiceEmptinessRequest).unwrap().empty);
 }
 
 /// @covers: new_in_memory_repository

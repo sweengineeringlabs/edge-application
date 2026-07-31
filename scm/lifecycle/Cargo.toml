@@ -1,0 +1,33 @@
+[package]
+name                   = "edge-application-lifecycle"
+version                = "0.1.0"
+edition.workspace      = true
+license.workspace      = true
+rust-version.workspace = true
+authors.workspace      = true
+repository.workspace   = true
+description = "edge-domain — Lifecycle port contract: state-machine abstraction with pluggable transition policy"
+keywords    = ["domain", "lifecycle", "state-machine", "sea", "swe"]
+categories  = ["development-tools"]
+
+[package.metadata.arch]
+application_type = "lib"
+service_type     = "lifecycle"
+
+[lib]
+path = "main/src/lib.rs"
+
+[dependencies]
+thiserror.workspace   = true
+async-trait.workspace = true
+serde.workspace       = true
+
+[dev-dependencies]
+tokio = { workspace = true, features = ["rt"] }
+
+[lints.rust]
+unsafe_code = "deny"
+
+[lints.clippy]
+unwrap_used = "deny"
+expect_used = "deny"

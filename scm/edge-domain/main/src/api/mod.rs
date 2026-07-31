@@ -24,6 +24,12 @@ pub use domain::{
 mod spi;
 pub use spi::{DomainAssemblyHook, NoopDomainAssemblyHook};
 
+// ── base ──────────────────────────────────────────────────────────────────────
+#[cfg(feature = "base")]
+pub use edge_application_base::Request;
+#[cfg(feature = "base")]
+pub use edge_application_base::Response;
+
 // ── command ───────────────────────────────────────────────────────────────────
 #[cfg(feature = "command")]
 pub use edge_application_command::CommandBus;
@@ -187,12 +193,6 @@ pub use edge_application_saga::MemorySagaStore;
 pub use edge_application_saga::Saga;
 #[cfg(feature = "saga")]
 pub use edge_application_saga::SagaStore;
-
-// ── service ───────────────────────────────────────────────────────────────────
-#[cfg(feature = "service")]
-pub use edge_application_service::Service;
-#[cfg(feature = "service")]
-pub use edge_application_service::ServiceRegistry;
 
 // ── snapshot ──────────────────────────────────────────────────────────────────
 #[cfg(feature = "snapshot")]
