@@ -1,4 +1,6 @@
 //! [`DirectCommandBusResponse`] — a constructed [`CommandBus`](crate::api::CommandBus) handle.
+// @allow: dto_types_must_serialize — holds a live `Arc<dyn CommandBus>` handle,
+// not wire-format data; a trait object cannot derive Serialize/Deserialize.
 
 use std::sync::Arc;
 

@@ -1,5 +1,5 @@
 //! Arch-audit rule-95 coverage: direct sub-crate imports.
-//! The 13 optional deps are exercised via `edge_application` feature re-exports
+//! The 12 optional deps are exercised via `edge_application` feature re-exports
 //! in their respective theme test files. These imports satisfy the
 //! dep-coverage requirement by naming each sub-crate directly.
 
@@ -12,12 +12,11 @@ use edge_application_projection::ProjectionError;
 use edge_application_query::QueryError;
 use edge_application_repository::RepositoryError;
 use edge_application_saga::SagaError;
-use edge_application_service::ServiceError;
 use edge_application_snapshot::SnapshotError;
 use edge_application_validator::ValidatorError;
 use edge_security_runtime::SecurityError;
 
-/// Verifies all 13 optional sub-crate dependencies are linkable from the test binary.
+/// Verifies all 12 optional sub-crate dependencies are linkable from the test binary.
 #[test]
 fn test_all_optional_sub_crate_deps_are_linkable() {
     // SystemClock is a documented zero-sized marker type.
@@ -34,7 +33,6 @@ fn test_all_optional_sub_crate_deps_are_linkable() {
         + std::mem::size_of::<CommandError>()
         + std::mem::size_of::<QueryError>()
         + std::mem::size_of::<SnapshotError>()
-        + std::mem::size_of::<ServiceError>()
         + std::mem::size_of::<RepositoryError>()
         + std::mem::size_of::<HandlerError>()
         + std::mem::size_of::<EventError>()
