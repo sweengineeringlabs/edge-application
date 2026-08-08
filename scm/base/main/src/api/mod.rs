@@ -43,7 +43,7 @@ pub use context::MetricsRequest;
 pub use context::MetricsResponse;
 pub use context::ObserveError;
 pub use context::ObserverContext;
-pub use context::SecurityPrincipal;
+pub use context::SecurityContext;
 pub use context::Span;
 pub use context::SpanAnnotationRequest;
 pub use context::SpanAnnotationResponse;

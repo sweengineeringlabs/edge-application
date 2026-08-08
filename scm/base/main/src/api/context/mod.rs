@@ -1,5 +1,5 @@
-//! `Context` — the trait shapes `HandlerContext` bundles on every request:
-//! `SecurityPrincipal`, `CommandBus`/`Command`, `ObserverContext` and its family.
+//! `Context` — the trait/type shapes `HandlerContext` bundles on every request:
+//! `SecurityContext`, `CommandBus`/`Command`, `ObserverContext` and its family.
 //!
 //! Declared here, not in `domain-handler`, `domain-command`, or `domain-observer`, because
 //! none of the three owns the others -- `HandlerContext` mandates all three together, every
@@ -23,4 +23,4 @@ pub use observe::{
     ObserverContext, Span, SpanAnnotationRequest, SpanAnnotationResponse, SpanFinishRequest,
     SpanFinishResponse, SpanStartRequest, SpanStartResponse, TracerRequest, TracerResponse,
 };
-pub use security::SecurityPrincipal;
+pub use security::SecurityContext;
