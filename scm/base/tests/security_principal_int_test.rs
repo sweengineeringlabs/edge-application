@@ -8,10 +8,10 @@ use edge_security_runtime::SecurityContext;
 fn test_security_context_unauthenticated_satisfies_security_principal_happy() {
     let ctx = SecurityContext::unauthenticated();
     let principal: &dyn SecurityPrincipal = &ctx;
-    // SecurityPrincipal has zero methods; the assertion is that this reference exists at all
-    // -- if the bridge impl in core/context/security_bridge.rs didn't compile or wasn't
-    // wired up, this line itself would fail to build.
-    let _ = principal;
+    // The coercion itself is the assertion -- if the bridge impl in
+    // core/context/security_bridge.rs didn't compile or wasn't wired up, this line itself
+    // would fail to build. Method-level behavior is covered by security_bridge's own tests.
+    assert!(!principal.is_authenticated());
     assert!(!ctx.authenticated);
 }
 
