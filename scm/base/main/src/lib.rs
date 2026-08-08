@@ -12,10 +12,12 @@
 //!   bound for "valid request" and "valid response" instead of an unconstrained associated
 //!   type, so a type crossing the `Service`→`Handler` bridge only ever needs to satisfy one
 //!   pair of traits, not two independently-declared mirrors.
-//! - `context` — the trait shapes `HandlerContext` bundles on every request:
-//!   `SecurityPrincipal`, `CommandBus`/`Command`, `ObserverContext` and its family. None of
+//! - `context` — the trait/type shapes `HandlerContext` bundles on every request:
+//!   `SecurityContext`, `CommandBus`/`Command`, `ObserverContext` and its family. None of
 //!   `domain-handler`/`domain-command`/`domain-observer` owns these relative to the others;
-//!   each depends on this crate for the trait shape and keeps its own concrete machinery.
+//!   each depends on this crate for the shape and keeps its own concrete machinery.
+//!   `SecurityContext` is re-exported directly from `edge-security-runtime` rather than
+//!   mirrored behind a local trait -- see `api::context::security` for why.
 
 #![deny(unsafe_code)]
 #![warn(missing_docs)]
@@ -67,7 +69,7 @@ pub use api::MetricsRequest;
 pub use api::MetricsResponse;
 pub use api::ObserveError;
 pub use api::ObserverContext;
-pub use api::SecurityPrincipal;
+pub use api::SecurityContext;
 pub use api::Span;
 pub use api::SpanAnnotationRequest;
 pub use api::SpanAnnotationResponse;
@@ -101,7 +103,7 @@ pub use saf::METRIC_REGISTRY_SVC;
 pub use saf::METRIC_REGISTRY_SVC_FACTORY;
 pub use saf::OBSERVER_CONTEXT_SVC;
 pub use saf::OBSERVER_CONTEXT_SVC_FACTORY;
-pub use saf::SECURITY_PRINCIPAL_SVC;
-pub use saf::SECURITY_PRINCIPAL_SVC_FACTORY;
+pub use saf::SECURITY_CONTEXT_SVC;
+pub use saf::SECURITY_CONTEXT_SVC_FACTORY;
 pub use saf::SPAN_SVC;
 pub use saf::SPAN_SVC_FACTORY;

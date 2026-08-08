@@ -59,7 +59,7 @@ pub use handler::RegisterHandlerRequest;
 pub use handler::RegisterHandlerResponse;
 pub use handler::Request;
 pub use handler::Response;
-pub use handler::SecurityPrincipal;
+pub use handler::SecurityContext;
 pub use handler::Span;
 pub use handler::SpanAnnotationRequest;
 pub use handler::SpanAnnotationResponse;

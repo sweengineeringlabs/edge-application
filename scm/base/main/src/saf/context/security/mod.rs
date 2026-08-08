@@ -1,5 +1,5 @@
-mod security_principal_svc;
-mod security_principal_svc_factory;
+mod security_context_svc;
+mod security_context_svc_factory;
 
-pub use security_principal_svc::SECURITY_PRINCIPAL_SVC;
-pub use security_principal_svc_factory::SECURITY_PRINCIPAL_SVC_FACTORY;
+pub use security_context_svc::SECURITY_CONTEXT_SVC;
+pub use security_context_svc_factory::SECURITY_CONTEXT_SVC_FACTORY;
