@@ -81,7 +81,7 @@ pub use api::Histogram;
 pub use api::LogDrain;
 pub use api::MetricRegistry;
 pub use api::ObserverContext;
-pub use api::SecurityPrincipal;
+pub use api::SecurityContext;
 pub use api::Span;
 
 // SAF service identity constants
@@ -107,7 +107,7 @@ pub use saf::METRIC_REGISTRY_SVC;
 pub use saf::METRIC_REGISTRY_SVC_FACTORY;
 pub use saf::OBSERVER_CONTEXT_SVC;
 pub use saf::OBSERVER_CONTEXT_SVC_FACTORY;
-pub use saf::SECURITY_PRINCIPAL_SVC;
-pub use saf::SECURITY_PRINCIPAL_SVC_FACTORY;
+pub use saf::SECURITY_CONTEXT_SVC;
+pub use saf::SECURITY_CONTEXT_SVC_FACTORY;
 pub use saf::SPAN_SVC;
 pub use saf::SPAN_SVC_FACTORY;
