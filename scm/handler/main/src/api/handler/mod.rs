@@ -28,6 +28,6 @@ pub use errors::HandlerError;
 pub use in_process_handler_registry::InProcessHandlerRegistry;
 pub use traits::{
     Command, CommandBus, Counter, Gauge, Handler, HandlerRegistry, HandlerTracer, Histogram,
-    LogDrain, MetricRegistry, ObserverContext, SecurityPrincipal, Span,
+    LogDrain, MetricRegistry, ObserverContext, SecurityContext, Span,
 };
 pub use vo::HandlerContext;
