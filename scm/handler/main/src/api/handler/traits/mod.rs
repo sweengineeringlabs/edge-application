@@ -9,7 +9,7 @@ pub mod histogram;
 pub mod log_drain;
 pub mod metric_registry;
 pub mod observer_context;
-pub mod security_principal;
+pub mod security_context;
 pub mod span;
 
 pub use command::Command;
@@ -23,5 +23,5 @@ pub use histogram::Histogram;
 pub use log_drain::LogDrain;
 pub use metric_registry::MetricRegistry;
 pub use observer_context::ObserverContext;
-pub use security_principal::SecurityPrincipal;
+pub use security_context::SecurityContext;
 pub use span::Span;

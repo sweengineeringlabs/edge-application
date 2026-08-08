@@ -1,5 +1,18 @@
 # Changelog — edge-domain-handler
 
+## [0.3.0] — 2026-08-08
+
+### Changed
+- **Breaking:** `HandlerContext::security` is now `&'a SecurityContext` (a direct re-export of
+  `edge_security_runtime::SecurityContext`), replacing `&'a dyn SecurityPrincipal`. Tracks
+  `edge-application-base` 0.3.0's removal of the local `SecurityPrincipal` marker trait/bridge
+  (issue #152) — `SecurityContext` was already the only type ever passed through this field in
+  practice; the trait indirection bought no real polymorphism.
+- Renamed SAF identity constants `SECURITY_PRINCIPAL_SVC`/`SECURITY_PRINCIPAL_SVC_FACTORY` to
+  `SECURITY_CONTEXT_SVC`/`SECURITY_CONTEXT_SVC_FACTORY`.
+- `api::handler::SecurityPrincipal` / `edge_application_handler::SecurityPrincipal` replaced by
+  `api::handler::SecurityContext` / `edge_application_handler::SecurityContext`.
+
 ## [0.2.0] — 2026-07-17
 
 ### Removed
