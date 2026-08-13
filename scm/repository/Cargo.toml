@@ -6,7 +6,7 @@ license.workspace      = true
 rust-version.workspace = true
 authors.workspace      = true
 repository.workspace   = true
-description = "edge-domain — Repository port contract: data access with InMemoryRepository, Page, and Spec"
+description = "edge-application — Repository port contract: data access with InMemoryRepository, Page, and Spec"
 keywords    = ["domain", "repository", "data-access", "sea", "swe"]
 categories  = ["development-tools"]
 
