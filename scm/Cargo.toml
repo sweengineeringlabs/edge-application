@@ -68,13 +68,12 @@ edge-application-snapshot    = { path = "snapshot" }
 edge-application-repository  = { path = "repository" }
 edge-application-handler     = { path = "handler" }
 edge-application-event       = { path = "event" }
-edge-pipeline           = { git = "https://github.com/sweengineeringlabs/edge-pipeline.git", tag = "v0.3.0" }
+edge-pipeline            = { git = "https://github.com/sweengineeringlabs/edge-pipeline.git", tag = "v0.4.1" }
 edge-application-projection  = { path = "projection" }
 edge-application-saga        = { path = "saga" }
-edge-security-runtime   = { git = "https://github.com/sweengineeringlabs/edge-security.git", tag = "v0.3.33" }
-edge-security-authn     = { git = "https://github.com/sweengineeringlabs/edge-security.git", tag = "v0.3.33" }
-edge-security-authz     = { git = "https://github.com/sweengineeringlabs/edge-security.git", tag = "v0.3.33" }
+edge-security-runtime   = { git = "https://github.com/sweengineeringlabs/edge-security.git", tag = "v0.3.41" }
+edge-security-authn     = { git = "https://github.com/sweengineeringlabs/edge-security.git", tag = "v0.3.41" }
+edge-security-authz     = { git = "https://github.com/sweengineeringlabs/edge-security.git", tag = "v0.3.41" }
 edge-application-registry    = { path = "registry" }
 edge-application-lifecycle   = { path = "lifecycle" }
 edge-application-observer    = { path = "observer" }
-swe-edge-configbuilder  = { git = "https://github.com/sweengineeringlabs/edge-configbuilder.git", tag = "v0.4.2" }

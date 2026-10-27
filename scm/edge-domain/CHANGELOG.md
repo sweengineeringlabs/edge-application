@@ -4,6 +4,12 @@ All notable changes to `edge-domain` are documented here.
 
 ## [Unreleased]
 
+### Changed
+- Update the optional pipeline integration to edge-pipeline v0.4.1, which uses
+  the canonical configbuilder v0.8.1 package behind its TOML feature.
+- Update edge-security runtime/authn/authz to v0.3.41; its local configbuilder
+  adapter now delegates to the same canonical v0.8.1 source as edge-pipeline.
+
 ### Added
 - New `base` feature (`dep:edge-application-base`), pulled in transitively by `handler` and
   `service`; re-exports `Request`/`Response` (issue #139).
