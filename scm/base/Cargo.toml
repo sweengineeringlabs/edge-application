@@ -23,6 +23,7 @@ path = "examples/basic.rs"
 
 [dependencies]
 serde.workspace = true
+serde_json.workspace = true
 thiserror.workspace = true
 edge-security-runtime.workspace = true
 

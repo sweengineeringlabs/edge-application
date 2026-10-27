@@ -37,3 +37,5 @@ pub trait Response: Send + 'static {
 impl<T: Send + 'static> Response for Vec<T> {}
 
 impl Response for () {}
+
+impl Response for serde_json::Value {}
