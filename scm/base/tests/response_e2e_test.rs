@@ -53,6 +53,13 @@ fn test_response_bound_accepts_populated_vec_happy() {
     assert_eq!(resp.validate(ValidationRequest), Ok(ValidationResponse));
 }
 
+/// @covers: Response — the unit payload represents a successful empty result
+#[test]
+fn test_response_bound_accepts_unit_happy() {
+    accept_response(());
+    assert_eq!(().validate(ValidationRequest), Ok(ValidationResponse));
+}
+
 /// @covers: Response::validate — default implementation always passes
 #[test]
 fn test_validate_default_impl_returns_ok_happy() {
