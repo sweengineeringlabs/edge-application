@@ -60,6 +60,22 @@ fn test_response_bound_accepts_unit_happy() {
     assert_eq!(().validate(ValidationRequest), Ok(ValidationResponse));
 }
 
+/// @covers: Response — JSON scalar, object, and array values cross the canonical response bound
+#[test]
+fn test_response_bound_accepts_json_values_happy() {
+    let values = [
+        serde_json::json!("span"),
+        serde_json::json!({"name": "span", "duration_ms": 12}),
+        serde_json::json!(["trace", "span"]),
+    ];
+    let response = accept_response(values.to_vec());
+    assert_eq!(response.len(), 3);
+    assert_eq!(
+        response[0].validate(ValidationRequest),
+        Ok(ValidationResponse)
+    );
+}
+
 /// @covers: Response::validate — default implementation always passes
 #[test]
 fn test_validate_default_impl_returns_ok_happy() {
