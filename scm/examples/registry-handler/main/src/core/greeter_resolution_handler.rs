@@ -4,7 +4,9 @@
 use std::sync::Arc;
 
 use async_trait::async_trait;
-use edge_application_handler::{ExecutionRequest as HandlerExecutionRequest, Handler, HandlerError};
+use edge_application_handler::{
+    ExecutionRequest as HandlerExecutionRequest, Handler, HandlerError,
+};
 use edge_application_registry::{Registry, RegistryLookupRequest};
 
 use crate::api::{Greeter, GreeterResolutionRequest, GreeterResolutionResponse};
@@ -22,7 +24,9 @@ impl Handler for GreeterResolutionHandler {
         &self,
         req: HandlerExecutionRequest<'_, GreeterResolutionRequest>,
     ) -> Result<GreeterResolutionResponse, HandlerError> {
-        tracing::info!("[1] GreeterResolutionHandler::execute — delegating to its own injected Registry");
+        tracing::info!(
+            "[1] GreeterResolutionHandler::execute — delegating to its own injected Registry"
+        );
         let resolved = self
             .registry
             .get(RegistryLookupRequest { id: req.req.id })

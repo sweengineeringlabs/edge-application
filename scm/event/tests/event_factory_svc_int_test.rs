@@ -5,7 +5,7 @@
 use edge_application_event::{
     AggregateApplyRequest, AggregateIdentityRequest, ClosedEventSource, DomainEvent,
     EventAggregateIdRequest, EventSource, EventSourceRecvNextRequest, EventTypeRequest,
-    MemoryEventStore, InProcessEventBus, NoopAggregate, NoopDomainEvent, NoopEventBus,
+    InProcessEventBus, MemoryEventStore, NoopAggregate, NoopDomainEvent, NoopEventBus,
     NoopEventPublisher,
 };
 
@@ -59,12 +59,12 @@ fn test_in_process_bus_constructed_with_config_edge() {
 /// @covers: NoopEventBus::publish — publish on noop bus never errors
 #[test]
 fn test_noop_bus_publish_never_errors_error() {
-    use std::sync::Arc;
     use edge_application_event::{EventBus, EventBusPublishRequest};
+    use std::sync::Arc;
     let bus = NoopEventBus;
-    let result = futures::executor::block_on(
-        bus.publish(EventBusPublishRequest { event: Arc::new(Evt) }),
-    );
+    let result = futures::executor::block_on(bus.publish(EventBusPublishRequest {
+        event: Arc::new(Evt),
+    }));
     assert_eq!(result, Ok(()));
 }
 
@@ -83,16 +83,17 @@ fn test_noop_bus_subscribe_returns_closed_receiver_edge() {
 fn test_noop_publisher_publish_never_errors_error() {
     use edge_application_event::{EventPublisher, EventPublisherPublishRequest};
     let pub_ = NoopEventPublisher;
-    let result = futures::executor::block_on(
-        pub_.publish(EventPublisherPublishRequest { event: &Evt }),
-    );
+    let result =
+        futures::executor::block_on(pub_.publish(EventPublisherPublishRequest { event: &Evt }));
     assert_eq!(result, Ok(()));
 }
 
 /// @covers: NoopEventPublisher::publish — dyn dispatch works
 #[test]
 fn test_noop_publisher_dyn_dispatch_never_errors_edge() {
-    use edge_application_event::{DomainEvent as DomainEventTrait, EventPublisher, EventPublisherPublishRequest};
+    use edge_application_event::{
+        DomainEvent as DomainEventTrait, EventPublisher, EventPublisherPublishRequest,
+    };
     let pub_ = NoopEventPublisher;
     let evt: &dyn DomainEventTrait = &Evt;
     assert_eq!(
@@ -104,7 +105,9 @@ fn test_noop_publisher_dyn_dispatch_never_errors_edge() {
 /// @covers: MemoryEventStore::append — append conflict on NoStream after stream exists
 #[test]
 fn test_in_memory_store_conflict_on_no_stream_error() {
-    use edge_application_event::{EventStore, EventStoreAppendRequest, EventStoreError, ExpectedVersion};
+    use edge_application_event::{
+        EventStore, EventStoreAppendRequest, EventStoreError, ExpectedVersion,
+    };
     let store = MemoryEventStore::<Evt>::new();
     futures::executor::block_on(store.append(EventStoreAppendRequest {
         aggregate_id: "x",
@@ -124,7 +127,9 @@ fn test_in_memory_store_conflict_on_no_stream_error() {
 /// @covers: MemoryEventStore::load_from — load_from returns subset
 #[test]
 fn test_in_memory_store_load_from_returns_filtered_events_edge() {
-    use edge_application_event::{EventStore, EventStoreAppendRequest, EventStoreLoadFromRequest, ExpectedVersion};
+    use edge_application_event::{
+        EventStore, EventStoreAppendRequest, EventStoreLoadFromRequest, ExpectedVersion,
+    };
     let store = MemoryEventStore::<Evt>::new();
     futures::executor::block_on(store.append(EventStoreAppendRequest {
         aggregate_id: "y",
@@ -132,9 +137,10 @@ fn test_in_memory_store_load_from_returns_filtered_events_edge() {
         expected: ExpectedVersion::Any,
     }))
     .expect("append");
-    let events = futures::executor::block_on(
-        store.load_from(EventStoreLoadFromRequest { aggregate_id: "y", from_sequence: 2 }),
-    )
+    let events = futures::executor::block_on(store.load_from(EventStoreLoadFromRequest {
+        aggregate_id: "y",
+        from_sequence: 2,
+    }))
     .expect("load_from")
     .events;
     assert_eq!(events.len(), 2);
@@ -165,8 +171,10 @@ fn test_closed_source_repeated_calls_all_unavailable_edge() {
 /// @covers: InProcessEventBus::new — publish and subscribe round-trip
 #[test]
 fn test_in_process_bus_publish_subscribe_round_trip_error() {
+    use edge_application_event::{
+        EventBus, EventBusConfig, EventBusPublishRequest, EventBusSubscribeRequest,
+    };
     use std::sync::Arc;
-    use edge_application_event::{EventBus, EventBusConfig, EventBusPublishRequest, EventBusSubscribeRequest};
     let rt = tokio::runtime::Builder::new_current_thread()
         .enable_all()
         .build()
@@ -174,9 +182,21 @@ fn test_in_process_bus_publish_subscribe_round_trip_error() {
     rt.block_on(async {
         let bus = InProcessEventBus::new(EventBusConfig::default().capacity);
         let mut rx = bus.subscribe(EventBusSubscribeRequest).unwrap().receiver;
-        bus.publish(EventBusPublishRequest { event: Arc::new(Evt) }).await.expect("publish");
-        let e = rx.recv_next(EventSourceRecvNextRequest).await.expect("recv").event;
-        assert!(!e.event_type(EventTypeRequest).unwrap().event_type.is_empty());
+        bus.publish(EventBusPublishRequest {
+            event: Arc::new(Evt),
+        })
+        .await
+        .expect("publish");
+        let e = rx
+            .recv_next(EventSourceRecvNextRequest)
+            .await
+            .expect("recv")
+            .event;
+        assert!(!e
+            .event_type(EventTypeRequest)
+            .unwrap()
+            .event_type
+            .is_empty());
     });
 }
 
@@ -193,7 +213,10 @@ fn test_noop_aggregate_returns_noop_aggregate_happy() {
 fn test_noop_aggregate_apply_is_noop_error() {
     use edge_application_event::Aggregate;
     let mut agg = NoopAggregate;
-    agg.apply(AggregateApplyRequest { event: &NoopDomainEvent }).unwrap();
+    agg.apply(AggregateApplyRequest {
+        event: &NoopDomainEvent,
+    })
+    .unwrap();
     assert_eq!(agg.id(AggregateIdentityRequest).unwrap().id, "");
 }
 
@@ -203,21 +226,32 @@ fn test_noop_aggregate_multiple_calls_are_independent_edge() {
     use edge_application_event::Aggregate;
     let a = NoopAggregate;
     let b = NoopAggregate;
-    assert_eq!(a.id(AggregateIdentityRequest).unwrap().id, b.id(AggregateIdentityRequest).unwrap().id);
+    assert_eq!(
+        a.id(AggregateIdentityRequest).unwrap().id,
+        b.id(AggregateIdentityRequest).unwrap().id
+    );
 }
 
 /// @covers: NoopDomainEvent — returns a NoopDomainEvent
 #[test]
 fn test_noop_event_returns_noop_domain_event_happy() {
     let evt = NoopDomainEvent;
-    assert_eq!(evt.event_type(EventTypeRequest).unwrap().event_type, "event");
+    assert_eq!(
+        evt.event_type(EventTypeRequest).unwrap().event_type,
+        "event"
+    );
 }
 
 /// @covers: NoopDomainEvent — aggregate_id is empty string
 #[test]
 fn test_noop_event_aggregate_id_is_empty_error() {
     let evt = NoopDomainEvent;
-    assert_eq!(evt.aggregate_id(EventAggregateIdRequest).unwrap().aggregate_id, "");
+    assert_eq!(
+        evt.aggregate_id(EventAggregateIdRequest)
+            .unwrap()
+            .aggregate_id,
+        ""
+    );
 }
 
 /// @covers: NoopDomainEvent — multiple constructions produce independent values

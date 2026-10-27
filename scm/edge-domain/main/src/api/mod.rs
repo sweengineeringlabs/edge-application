@@ -98,9 +98,9 @@ pub use edge_application_event::EventTypeRequest;
 #[cfg(feature = "event")]
 pub use edge_application_event::EventTypeResponse;
 #[cfg(feature = "event")]
-pub use edge_application_event::MemoryEventStore;
-#[cfg(feature = "event")]
 pub use edge_application_event::InProcessEventBus;
+#[cfg(feature = "event")]
+pub use edge_application_event::MemoryEventStore;
 #[cfg(feature = "event")]
 pub use edge_application_event::NoopEventBus;
 #[cfg(feature = "event")]
@@ -150,11 +150,11 @@ pub use edge_application_repository::AlwaysMatchSpec;
 #[cfg(feature = "repository")]
 pub use edge_application_repository::CountByResponse;
 #[cfg(feature = "repository")]
-pub use edge_application_repository::MemoryRepository;
-#[cfg(feature = "repository")]
 pub use edge_application_repository::MatchingEntitiesResponse;
 #[cfg(feature = "repository")]
 pub use edge_application_repository::MatchingEntityResponse;
+#[cfg(feature = "repository")]
+pub use edge_application_repository::MemoryRepository;
 #[cfg(feature = "repository")]
 pub use edge_application_repository::QueryableRepository;
 #[cfg(feature = "repository")]

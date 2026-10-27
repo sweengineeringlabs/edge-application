@@ -17,6 +17,10 @@ service_type     = "valueobject"
 [lib]
 path = "main/src/lib.rs"
 
+[[example]]
+name = "valueobject_basic"
+path = "examples/basic.rs"
+
 [dependencies]
 serde.workspace = true
 

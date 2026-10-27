@@ -1,5 +1,12 @@
 //! Rule-221 coverage: _happy, _error, and _edge tests for every pub fn in domain_svc.rs.
-#![cfg(all(feature = "command", feature = "handler", feature = "event", feature = "query", feature = "validator", feature = "repository"))]
+#![cfg(all(
+    feature = "command",
+    feature = "handler",
+    feature = "event",
+    feature = "query",
+    feature = "validator",
+    feature = "repository"
+))]
 #![allow(clippy::unwrap_used, clippy::expect_used)]
 
 use edge_application::*;
@@ -799,10 +806,7 @@ fn test_in_process_event_bus_default_config_creates_valid_bus_edge() {
         })
         .unwrap()
         .bus;
-    assert!(
-        !Arc::as_ptr(&bus).is_null(),
-        "bus should be successfully constructed"
-    );
+    assert_eq!(Arc::strong_count(&bus), 1, "factory returns one owned bus");
 }
 
 // ─── noop_event_bus ──────────────────────────────────────────────────────────

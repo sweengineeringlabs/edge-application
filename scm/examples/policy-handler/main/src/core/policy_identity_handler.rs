@@ -4,7 +4,9 @@
 use std::sync::Arc;
 
 use async_trait::async_trait;
-use edge_application_handler::{ExecutionRequest as HandlerExecutionRequest, Handler, HandlerError};
+use edge_application_handler::{
+    ExecutionRequest as HandlerExecutionRequest, Handler, HandlerError,
+};
 use edge_application_policy::{Policy, PolicyNameRequest};
 
 use crate::api::{PolicyIdentityRequest, PolicyIdentityResponse};
@@ -22,7 +24,9 @@ impl Handler for PolicyIdentityHandler {
         &self,
         _req: HandlerExecutionRequest<'_, PolicyIdentityRequest>,
     ) -> Result<PolicyIdentityResponse, HandlerError> {
-        tracing::info!("[1] PolicyIdentityHandler::execute — delegating to its own injected Policy");
+        tracing::info!(
+            "[1] PolicyIdentityHandler::execute — delegating to its own injected Policy"
+        );
         let name = self
             .policy
             .name(PolicyNameRequest)

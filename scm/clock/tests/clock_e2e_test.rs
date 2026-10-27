@@ -3,7 +3,9 @@
 
 use std::time::{Duration, SystemTime};
 
-use edge_application_clock::{Clock, ElapsedSinceEpochRequest, FixedClock, NowRequest, SystemClock};
+use edge_application_clock::{
+    Clock, ElapsedSinceEpochRequest, FixedClock, NowRequest, SystemClock,
+};
 
 /// @covers: Clock::now (SystemClock)
 #[test]
@@ -29,7 +31,10 @@ fn test_now_fixed_clock_repeated_calls_return_same_instant_edge() {
     let clock = FixedClock::new(instant);
     let t1 = clock.now(NowRequest).unwrap().instant;
     let t2 = clock.now(NowRequest).unwrap().instant;
-    assert_eq!(t1, t2, "FixedClock must return same instant on repeated calls");
+    assert_eq!(
+        t1, t2,
+        "FixedClock must return same instant on repeated calls"
+    );
     assert_eq!(t1, instant, "FixedClock must return expected instant");
 }
 
@@ -38,7 +43,10 @@ fn test_now_fixed_clock_repeated_calls_return_same_instant_edge() {
 fn test_elapsed_since_epoch_post_epoch_returns_duration_happy() {
     let clock = FixedClock::new(SystemTime::UNIX_EPOCH + Duration::from_secs(100));
     assert_eq!(
-        clock.elapsed_since_epoch(ElapsedSinceEpochRequest).unwrap().duration,
+        clock
+            .elapsed_since_epoch(ElapsedSinceEpochRequest)
+            .unwrap()
+            .duration,
         Duration::from_secs(100)
     );
 }
@@ -55,7 +63,10 @@ fn test_elapsed_since_epoch_pre_epoch_returns_err_error() {
 fn test_elapsed_since_epoch_at_epoch_is_zero_edge() {
     let clock = FixedClock::new(SystemTime::UNIX_EPOCH);
     assert_eq!(
-        clock.elapsed_since_epoch(ElapsedSinceEpochRequest).unwrap().duration,
+        clock
+            .elapsed_since_epoch(ElapsedSinceEpochRequest)
+            .unwrap()
+            .duration,
         Duration::ZERO
     );
 }

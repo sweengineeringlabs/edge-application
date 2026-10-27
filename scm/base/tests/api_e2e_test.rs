@@ -9,10 +9,10 @@ use edge_application_base::{
     CommandError, Counter, CounterLookupRequest, CounterLookupResponse, DrainRequest,
     DrainResponse, Gauge, GaugeLookupRequest, GaugeLookupResponse, GaugeSetRequest,
     GaugeSetResponse, HandlerTracer, Histogram, HistogramLookupRequest, HistogramLookupResponse,
-    HistogramRecordRequest, HistogramRecordResponse, IncrementRequest, IncrementResponse,
-    LogDrain, LogEmitRequest, LogEmitResponse, MetricRegistry, MetricsRequest, MetricsResponse,
-    ObserveError, Span, SpanAnnotationRequest, SpanAnnotationResponse, SpanFinishRequest,
-    SpanFinishResponse, SpanStartRequest, SpanStartResponse, TracerRequest, TracerResponse,
+    HistogramRecordRequest, HistogramRecordResponse, IncrementRequest, IncrementResponse, LogDrain,
+    LogEmitRequest, LogEmitResponse, MetricRegistry, MetricsRequest, MetricsResponse, ObserveError,
+    Span, SpanAnnotationRequest, SpanAnnotationResponse, SpanFinishRequest, SpanFinishResponse,
+    SpanStartRequest, SpanStartResponse, TracerRequest, TracerResponse,
 };
 
 // --- command domain DTOs ---
@@ -20,13 +20,19 @@ use edge_application_base::{
 /// @covers: ExecutionRequest (as CommandExecutionRequest)
 #[test]
 fn test_command_execution_request_is_zero_sized_happy() {
-    assert_eq!(std::mem::size_of::<edge_application_base::CommandExecutionRequest>(), 0);
+    assert_eq!(
+        std::mem::size_of::<edge_application_base::CommandExecutionRequest>(),
+        0
+    );
 }
 
 /// @covers: NameRequest (as CommandNameRequest)
 #[test]
 fn test_command_name_request_is_zero_sized_happy() {
-    assert_eq!(std::mem::size_of::<edge_application_base::CommandNameRequest>(), 0);
+    assert_eq!(
+        std::mem::size_of::<edge_application_base::CommandNameRequest>(),
+        0
+    );
 }
 
 /// @covers: NameResponse (as CommandNameResponse)
@@ -73,7 +79,10 @@ impl Gauge for RelayGauge {
 
 struct RelayHistogram;
 impl Histogram for RelayHistogram {
-    fn record(&self, _req: HistogramRecordRequest) -> Result<HistogramRecordResponse, ObserveError> {
+    fn record(
+        &self,
+        _req: HistogramRecordRequest,
+    ) -> Result<HistogramRecordResponse, ObserveError> {
         Ok(HistogramRecordResponse)
     }
 }
@@ -141,7 +150,10 @@ fn test_counter_lookup_response_holds_counter_happy() {
     let r = CounterLookupResponse {
         counter: Box::new(RelayCounter),
     };
-    assert_eq!(r.counter.increment(IncrementRequest { delta: 1 }), Ok(IncrementResponse));
+    assert_eq!(
+        r.counter.increment(IncrementRequest { delta: 1 }),
+        Ok(IncrementResponse)
+    );
 }
 
 /// @covers: GaugeLookupRequest
@@ -159,7 +171,10 @@ fn test_gauge_lookup_response_holds_gauge_happy() {
     let r = GaugeLookupResponse {
         gauge: Box::new(RelayGauge),
     };
-    assert_eq!(r.gauge.set(GaugeSetRequest { value: 1.0 }), Ok(GaugeSetResponse));
+    assert_eq!(
+        r.gauge.set(GaugeSetRequest { value: 1.0 }),
+        Ok(GaugeSetResponse)
+    );
 }
 
 /// @covers: GaugeSetRequest
@@ -329,9 +344,11 @@ fn test_metrics_response_holds_metric_registry_happy() {
     let registry = RelayRegistry;
     let r = MetricsResponse { metrics: &registry };
     assert_eq!(
-        r.metrics.gauge(GaugeLookupRequest {
-            name: "g".to_string(),
-        }).map(|resp| resp.gauge.set(GaugeSetRequest { value: 1.0 })),
+        r.metrics
+            .gauge(GaugeLookupRequest {
+                name: "g".to_string(),
+            })
+            .map(|resp| resp.gauge.set(GaugeSetRequest { value: 1.0 })),
         Ok(Ok(GaugeSetResponse))
     );
 }

@@ -5,7 +5,9 @@
 use std::sync::Arc;
 
 use async_trait::async_trait;
-use edge_application_handler::{ExecutionRequest as HandlerExecutionRequest, Handler, HandlerError};
+use edge_application_handler::{
+    ExecutionRequest as HandlerExecutionRequest, Handler, HandlerError,
+};
 use edge_application_snapshot::{SnapshotLoadRequest, SnapshotStore};
 
 use crate::api::{OrderSnap, SnapshotLookupRequest, SnapshotLookupResponse};

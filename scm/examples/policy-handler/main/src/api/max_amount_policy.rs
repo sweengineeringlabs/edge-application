@@ -1,6 +1,8 @@
 //! `MaxAmountPolicy` — rejects a withdrawal amount above a fixed maximum.
 
-use edge_application_policy::{Policy, PolicyEvaluateRequest, PolicyError, PolicyNameRequest, PolicyNameResponse};
+use edge_application_policy::{
+    Policy, PolicyError, PolicyEvaluateRequest, PolicyNameRequest, PolicyNameResponse,
+};
 
 pub struct MaxAmountPolicy(pub u64);
 

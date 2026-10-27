@@ -20,7 +20,9 @@ impl Query for LoginStatusQuery {
     ) -> futures::future::BoxFuture<'_, Result<QueryResultResponse<bool>, QueryError>> {
         let token = self.session_token.clone();
         Box::pin(async move {
-            tracing::info!("[infra] LoginStatusQuery::execute — checking session store for {token:?}");
+            tracing::info!(
+                "[infra] LoginStatusQuery::execute — checking session store for {token:?}"
+            );
             let logged_in = !token.is_empty();
             Ok(QueryResultResponse { result: logged_in })
         })

@@ -1,10 +1,10 @@
 //! `MetricRegistry` — metric instrument factory.
 
-use crate::api::context::observe::errors::ObserveError;
 use crate::api::context::observe::dto::{
     CounterLookupRequest, CounterLookupResponse, GaugeLookupRequest, GaugeLookupResponse,
     HistogramLookupRequest, HistogramLookupResponse,
 };
+use crate::api::context::observe::errors::ObserveError;
 
 /// Creates named metric instruments.
 pub trait MetricRegistry: Send + Sync {

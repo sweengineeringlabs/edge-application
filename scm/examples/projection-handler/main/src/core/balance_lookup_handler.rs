@@ -5,7 +5,9 @@
 use std::sync::Arc;
 
 use async_trait::async_trait;
-use edge_application_handler::{ExecutionRequest as HandlerExecutionRequest, Handler, HandlerError};
+use edge_application_handler::{
+    ExecutionRequest as HandlerExecutionRequest, Handler, HandlerError,
+};
 use edge_application_projection::{Projection, ProjectionReadModelRequest};
 use parking_lot::Mutex;
 
@@ -25,7 +27,9 @@ impl Handler for BalanceLookupHandler {
         &self,
         _req: HandlerExecutionRequest<'_, BalanceLookupRequest>,
     ) -> Result<BalanceLookupResponse, HandlerError> {
-        tracing::info!("[1] BalanceLookupHandler::execute — delegating to its own injected Projection");
+        tracing::info!(
+            "[1] BalanceLookupHandler::execute — delegating to its own injected Projection"
+        );
         let total = *self
             .balance
             .lock()

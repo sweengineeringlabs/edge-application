@@ -21,9 +21,8 @@ fn test_publish_noop_publisher_returns_ok_happy() {
 #[test]
 fn test_noop_publisher_via_factory_returns_ok_happy() {
     let pub_ = NoopEventPublisher;
-    let result = futures::executor::block_on(
-        pub_.publish(EventPublisherPublishRequest { event: &Evt }),
-    );
+    let result =
+        futures::executor::block_on(pub_.publish(EventPublisherPublishRequest { event: &Evt }));
     assert_eq!(result, Ok(()));
 }
 

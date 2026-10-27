@@ -7,8 +7,8 @@ use edge_application::InProcessEventBusRequest;
 use edge_application::{
     Domain, DomainEvent, EventAggregateIdRequest, EventAggregateIdResponse, EventBusConfig,
     EventBusPublishRequest, EventBusSubscribeRequest, EventError, EventOccurredAtRequest,
-    EventOccurredAtResponse, EventSource, EventSourceRecvNextRequest, EventTypeRequest,
-    EventTypeResponse, InProcessEventBus,
+    EventOccurredAtResponse, EventSourceRecvNextRequest, EventTypeRequest, EventTypeResponse,
+    InProcessEventBus,
 };
 use futures::executor::block_on;
 use std::sync::Arc;

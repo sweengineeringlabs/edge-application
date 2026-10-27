@@ -41,7 +41,10 @@ impl Snapshot for OrderSnap {
             aggregate_id: &self.aggregate_id,
         })
     }
-    fn version(&self, _req: SnapshotVersionRequest) -> Result<SnapshotVersionResponse, SnapshotError> {
+    fn version(
+        &self,
+        _req: SnapshotVersionRequest,
+    ) -> Result<SnapshotVersionResponse, SnapshotError> {
         Ok(SnapshotVersionResponse {
             version: self.version,
         })

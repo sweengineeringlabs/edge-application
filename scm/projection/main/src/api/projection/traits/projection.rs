@@ -1,9 +1,9 @@
+use crate::api::projection::dto::{
+    ProjectionApplyRequest, ProjectionReadModelRequest, ProjectionReadModelResponse,
+    TryDrainRequest, TryDrainResponse,
+};
 use crate::api::projection::errors::ProjectionError;
 use crate::api::projection::traits::ProjectionEvent;
-use crate::api::projection::dto::{
-    ProjectionApplyRequest, ProjectionReadModelRequest, ProjectionReadModelResponse, TryDrainRequest,
-    TryDrainResponse,
-};
 
 /// Consumes domain events and maintains a read model.
 ///
@@ -17,7 +17,10 @@ pub trait Projection: Send + Sync {
     type ReadModel;
 
     /// Apply one event to update the read model in place.
-    fn apply(&mut self, req: ProjectionApplyRequest<'_, Self::Event>) -> Result<(), ProjectionError>;
+    fn apply(
+        &mut self,
+        req: ProjectionApplyRequest<'_, Self::Event>,
+    ) -> Result<(), ProjectionError>;
 
     /// Return the current read model state.
     fn read_model(
@@ -41,6 +44,8 @@ pub trait Projection: Send + Sync {
         for event in req.events {
             self.apply(ProjectionApplyRequest { event })?;
         }
-        Ok(TryDrainResponse { count: req.events.len() })
+        Ok(TryDrainResponse {
+            count: req.events.len(),
+        })
     }
 }

@@ -74,7 +74,8 @@ fn test_record_repeated_annotations_accumulate_in_order_edge() {
 #[test]
 fn test_finish_called_once_marks_span_finished_happy() {
     let span = RecordingSpan::default();
-    span.finish(SpanFinishRequest).expect("finish should succeed");
+    span.finish(SpanFinishRequest)
+        .expect("finish should succeed");
     assert_eq!(*span.finish_count.lock().unwrap(), 1);
 }
 

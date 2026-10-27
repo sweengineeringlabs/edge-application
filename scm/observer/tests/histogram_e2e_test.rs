@@ -1,6 +1,8 @@
 #![allow(clippy::unwrap_used, clippy::expect_used)]
 
-use edge_application_observer::{HistogramLookupRequest, HistogramRecordRequest, StdObserveFactory};
+use edge_application_observer::{
+    HistogramLookupRequest, HistogramRecordRequest, StdObserveFactory,
+};
 
 // --- record (Histogram) ---
 

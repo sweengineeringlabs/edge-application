@@ -124,9 +124,11 @@ fn test_execute_new_order_persists_in_repository_happy() {
     let response = run(&handler, "order-1", "widget", 3).unwrap();
     assert!(response.saved);
 
-    let found = block_on(repository.find(RepositoryIdRequest { id: &"order-1".to_string() }))
-        .unwrap()
-        .entity;
+    let found = block_on(repository.find(RepositoryIdRequest {
+        id: &"order-1".to_string(),
+    }))
+    .unwrap()
+    .entity;
     assert_eq!(
         found,
         Some(Order {
@@ -156,9 +158,11 @@ fn test_execute_same_id_twice_last_write_wins_edge() {
     run(&handler, "order-2", "first-item", 1).unwrap();
     run(&handler, "order-2", "second-item", 9).unwrap();
 
-    let found = block_on(repository.find(RepositoryIdRequest { id: &"order-2".to_string() }))
-        .unwrap()
-        .entity;
+    let found = block_on(repository.find(RepositoryIdRequest {
+        id: &"order-2".to_string(),
+    }))
+    .unwrap()
+    .entity;
     assert_eq!(
         found,
         Some(Order {

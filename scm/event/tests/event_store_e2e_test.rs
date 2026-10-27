@@ -10,11 +10,25 @@ use edge_application_event::{
 #[derive(Clone)]
 struct OrderEvt(String);
 impl DomainEvent for OrderEvt {
-    fn event_type(&self, _req: EventTypeRequest) -> Result<edge_application_event::EventTypeResponse<'_>, edge_application_event::EventError> {
-        Ok(edge_application_event::EventTypeResponse { event_type: "order.evt" })
+    fn event_type(
+        &self,
+        _req: EventTypeRequest,
+    ) -> Result<edge_application_event::EventTypeResponse<'_>, edge_application_event::EventError>
+    {
+        Ok(edge_application_event::EventTypeResponse {
+            event_type: "order.evt",
+        })
     }
-    fn aggregate_id(&self, _req: EventAggregateIdRequest) -> Result<edge_application_event::EventAggregateIdResponse<'_>, edge_application_event::EventError> {
-        Ok(edge_application_event::EventAggregateIdResponse { aggregate_id: &self.0 })
+    fn aggregate_id(
+        &self,
+        _req: EventAggregateIdRequest,
+    ) -> Result<
+        edge_application_event::EventAggregateIdResponse<'_>,
+        edge_application_event::EventError,
+    > {
+        Ok(edge_application_event::EventAggregateIdResponse {
+            aggregate_id: &self.0,
+        })
     }
 }
 
@@ -35,9 +49,9 @@ fn test_append_any_first_write_returns_sequence_happy() {
 #[test]
 fn test_load_unknown_aggregate_returns_empty_error() {
     let store = MemoryEventStore::<OrderEvt>::new();
-    let events = futures::executor::block_on(
-        store.load(EventStoreLoadRequest { aggregate_id: "unknown" }),
-    )
+    let events = futures::executor::block_on(store.load(EventStoreLoadRequest {
+        aggregate_id: "unknown",
+    }))
     .expect("load")
     .events;
     assert!(events.is_empty());
@@ -53,11 +67,10 @@ fn test_append_then_load_returns_appended_events_happy() {
         expected: ExpectedVersion::Any,
     }))
     .expect("append");
-    let events = futures::executor::block_on(
-        store.load(EventStoreLoadRequest { aggregate_id: "a2" }),
-    )
-    .expect("load")
-    .events;
+    let events =
+        futures::executor::block_on(store.load(EventStoreLoadRequest { aggregate_id: "a2" }))
+            .expect("load")
+            .events;
     assert_eq!(events.len(), 2);
     assert_eq!(events[0].sequence, 1);
     assert_eq!(events[1].sequence, 2);
@@ -69,13 +82,18 @@ fn test_load_from_sequence_2_skips_first_event_edge() {
     let store = MemoryEventStore::<OrderEvt>::new();
     futures::executor::block_on(store.append(EventStoreAppendRequest {
         aggregate_id: "a3",
-        events: vec![OrderEvt("a3".into()), OrderEvt("a3".into()), OrderEvt("a3".into())],
+        events: vec![
+            OrderEvt("a3".into()),
+            OrderEvt("a3".into()),
+            OrderEvt("a3".into()),
+        ],
         expected: ExpectedVersion::Any,
     }))
     .expect("append");
-    let events = futures::executor::block_on(
-        store.load_from(EventStoreLoadFromRequest { aggregate_id: "a3", from_sequence: 2 }),
-    )
+    let events = futures::executor::block_on(store.load_from(EventStoreLoadFromRequest {
+        aggregate_id: "a3",
+        from_sequence: 2,
+    }))
     .expect("load_from")
     .events;
     assert_eq!(events.len(), 2);
@@ -124,11 +142,10 @@ fn test_load_known_aggregate_returns_events_happy() {
         expected: ExpectedVersion::Any,
     }))
     .expect("append");
-    let events = futures::executor::block_on(
-        store.load(EventStoreLoadRequest { aggregate_id: "a6" }),
-    )
-    .expect("load")
-    .events;
+    let events =
+        futures::executor::block_on(store.load(EventStoreLoadRequest { aggregate_id: "a6" }))
+            .expect("load")
+            .events;
     assert_eq!(events.len(), 1);
     assert_eq!(events[0].aggregate_id, "a6");
 }
@@ -143,9 +160,10 @@ fn test_load_from_sequence_1_returns_all_events_happy() {
         expected: ExpectedVersion::Any,
     }))
     .expect("append");
-    let events = futures::executor::block_on(
-        store.load_from(EventStoreLoadFromRequest { aggregate_id: "a7", from_sequence: 1 }),
-    )
+    let events = futures::executor::block_on(store.load_from(EventStoreLoadFromRequest {
+        aggregate_id: "a7",
+        from_sequence: 1,
+    }))
     .expect("load_from")
     .events;
     assert_eq!(events.len(), 2);
@@ -155,9 +173,10 @@ fn test_load_from_sequence_1_returns_all_events_happy() {
 #[test]
 fn test_load_from_unknown_aggregate_returns_empty_error() {
     let store = MemoryEventStore::<OrderEvt>::new();
-    let events = futures::executor::block_on(
-        store.load_from(EventStoreLoadFromRequest { aggregate_id: "missing", from_sequence: 1 }),
-    )
+    let events = futures::executor::block_on(store.load_from(EventStoreLoadFromRequest {
+        aggregate_id: "missing",
+        from_sequence: 1,
+    }))
     .expect("load_from")
     .events;
     assert!(events.is_empty());

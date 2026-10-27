@@ -6,7 +6,11 @@ use edge_application_validator::{AlwaysValid, ValidationRequest, ValidationRespo
 #[test]
 fn test_validate_accepts_by_default_happy() {
     let result = AlwaysValid.validate(ValidationRequest);
-    assert_eq!(result, Ok(ValidationResponse), "AlwaysValid should always succeed");
+    assert_eq!(
+        result,
+        Ok(ValidationResponse),
+        "AlwaysValid should always succeed"
+    );
 }
 
 /// @covers: AlwaysValid — never rejects
@@ -21,5 +25,9 @@ fn test_validate_never_returns_err_error() {
 fn test_validate_via_dyn_dispatch_edge() {
     let v: &dyn Validator = &AlwaysValid;
     let result = v.validate(ValidationRequest);
-    assert_eq!(result, Ok(ValidationResponse), "dyn Validator should succeed");
+    assert_eq!(
+        result,
+        Ok(ValidationResponse),
+        "dyn Validator should succeed"
+    );
 }

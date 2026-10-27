@@ -4,11 +4,11 @@ use std::fmt::Debug;
 
 use async_trait::async_trait;
 
-use crate::api::lifecycle::errors::LifecycleError;
 use crate::api::lifecycle::dto::{
     LifecycleIsInRequest, LifecycleIsInResponse, LifecycleStateRequest, LifecycleStateResponse,
     LifecycleTransitionRequest,
 };
+use crate::api::lifecycle::errors::LifecycleError;
 
 /// A state-machine abstraction for entities that transition through a typed
 /// set of states.
