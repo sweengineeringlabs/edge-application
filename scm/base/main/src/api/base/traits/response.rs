@@ -35,3 +35,5 @@ pub trait Response: Send + 'static {
 // owner so consumers can return vectors directly without introducing wrapper
 // types solely to satisfy the marker bound.
 impl<T: Send + 'static> Response for Vec<T> {}
+
+impl Response for () {}
