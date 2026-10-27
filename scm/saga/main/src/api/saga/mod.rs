@@ -8,8 +8,8 @@ pub mod traits;
 
 pub use dto::{
     SagaCommandDispatchRequest, SagaEventDescribeRequest, SagaEventDescribeResponse,
-    SagaGetRequest, SagaGetResponse, SagaHandleRequest, SagaHandleResponse,
-    SagaIsCompleteRequest, SagaIsCompleteResponse, SagaRegisterRequest,
+    SagaGetRequest, SagaGetResponse, SagaHandleRequest, SagaHandleResponse, SagaIsCompleteRequest,
+    SagaIsCompleteResponse, SagaRegisterRequest,
 };
 pub use errors::SagaError;
 pub use memory_saga_store::MemorySagaStore;

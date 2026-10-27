@@ -1,16 +1,21 @@
 //! Integration tests for `InProcessEventBus`.
 #![allow(clippy::unwrap_used, clippy::expect_used)]
 
-use std::sync::Arc;
 use edge_application_event::{
     DomainEvent, EventBus, EventBusPublishRequest, EventBusSubscribeRequest, EventError,
-    EventSource, EventSourceRecvNextRequest, EventTypeRequest, InProcessEventBus,
+    EventSourceRecvNextRequest, EventTypeRequest, InProcessEventBus,
 };
+use std::sync::Arc;
 
 struct SigEvt;
 impl DomainEvent for SigEvt {
-    fn event_type(&self, _req: EventTypeRequest) -> Result<edge_application_event::EventTypeResponse<'_>, EventError> {
-        Ok(edge_application_event::EventTypeResponse { event_type: "signal" })
+    fn event_type(
+        &self,
+        _req: EventTypeRequest,
+    ) -> Result<edge_application_event::EventTypeResponse<'_>, EventError> {
+        Ok(edge_application_event::EventTypeResponse {
+            event_type: "signal",
+        })
     }
 }
 
@@ -30,7 +35,12 @@ fn test_in_process_event_bus_default_is_usable_error() {
         .expect("rt");
     rt.block_on(async {
         let bus = InProcessEventBus::default();
-        assert!(bus.publish(EventBusPublishRequest { event: Arc::new(SigEvt) }).await.is_ok());
+        assert!(bus
+            .publish(EventBusPublishRequest {
+                event: Arc::new(SigEvt)
+            })
+            .await
+            .is_ok());
     });
 }
 
@@ -44,9 +54,20 @@ fn test_in_process_event_bus_subscriber_receives_event_happy() {
     rt.block_on(async {
         let bus = InProcessEventBus::new(8);
         let mut rx = bus.subscribe(EventBusSubscribeRequest).unwrap().receiver;
-        bus.publish(EventBusPublishRequest { event: Arc::new(SigEvt) }).await.expect("publish");
-        let event = rx.recv_next(EventSourceRecvNextRequest).await.expect("recv").event;
-        assert_eq!(event.event_type(EventTypeRequest).unwrap().event_type, "signal");
+        bus.publish(EventBusPublishRequest {
+            event: Arc::new(SigEvt),
+        })
+        .await
+        .expect("publish");
+        let event = rx
+            .recv_next(EventSourceRecvNextRequest)
+            .await
+            .expect("recv")
+            .event;
+        assert_eq!(
+            event.event_type(EventTypeRequest).unwrap().event_type,
+            "signal"
+        );
     });
 }
 
@@ -59,7 +80,12 @@ fn test_in_process_event_bus_publish_no_receivers_ok_error() {
         .expect("rt");
     rt.block_on(async {
         let bus = InProcessEventBus::new(4);
-        assert!(bus.publish(EventBusPublishRequest { event: Arc::new(SigEvt) }).await.is_ok());
+        assert!(bus
+            .publish(EventBusPublishRequest {
+                event: Arc::new(SigEvt)
+            })
+            .await
+            .is_ok());
     });
 }
 
@@ -74,7 +100,11 @@ fn test_in_process_event_bus_two_subscribers_both_receive_edge() {
         let bus = InProcessEventBus::new(16);
         let mut rx1 = bus.subscribe(EventBusSubscribeRequest).unwrap().receiver;
         let mut rx2 = bus.subscribe(EventBusSubscribeRequest).unwrap().receiver;
-        bus.publish(EventBusPublishRequest { event: Arc::new(SigEvt) }).await.expect("publish");
+        bus.publish(EventBusPublishRequest {
+            event: Arc::new(SigEvt),
+        })
+        .await
+        .expect("publish");
         assert!(rx1.recv_next(EventSourceRecvNextRequest).await.is_ok());
         assert!(rx2.recv_next(EventSourceRecvNextRequest).await.is_ok());
     });

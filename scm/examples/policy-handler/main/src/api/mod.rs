@@ -5,7 +5,8 @@ mod max_amount_policy;
 mod min_amount_policy;
 
 pub use dto::{
-    PolicyIdentityRequest, PolicyIdentityResponse, WithdrawalPolicyRequest, WithdrawalPolicyResponse,
+    PolicyIdentityRequest, PolicyIdentityResponse, WithdrawalPolicyRequest,
+    WithdrawalPolicyResponse,
 };
 pub use max_amount_policy::MaxAmountPolicy;
 pub use min_amount_policy::MinAmountPolicy;

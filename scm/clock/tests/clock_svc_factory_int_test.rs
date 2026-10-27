@@ -7,7 +7,10 @@ fn test_clock_svc_factory_constant_value_happy() {
 
 #[test]
 fn test_clock_svc_factory_constant_not_empty_error() {
-    assert!(!CLOCK_SVC_FACTORY.is_empty(), "CLOCK_SVC_FACTORY must not be empty");
+    assert!(
+        !CLOCK_SVC_FACTORY.is_empty(),
+        "CLOCK_SVC_FACTORY must not be empty"
+    );
 }
 
 #[test]

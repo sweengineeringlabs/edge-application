@@ -1,7 +1,7 @@
 //! [`Policy`] impl for [`CompositePolicy`], plus its constructors.
 
-use crate::api::PolicyError;
 use crate::api::Policy;
+use crate::api::PolicyError;
 use crate::api::{CompositePolicy, PolicyEvaluateRequest, PolicyNameRequest, PolicyNameResponse};
 
 #[expect(

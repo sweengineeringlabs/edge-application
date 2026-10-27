@@ -1,7 +1,9 @@
 //! SAF facade tests — `EventSource` trait via `ClosedEventSource`.
 #![allow(clippy::unwrap_used, clippy::expect_used)]
 
-use edge_application_event::{ClosedEventSource, EventError, EventSource, EventSourceRecvNextRequest};
+use edge_application_event::{
+    ClosedEventSource, EventError, EventSource, EventSourceRecvNextRequest,
+};
 
 /// @covers: ClosedEventSource::recv_next — returns Unavailable immediately
 #[test]
@@ -20,7 +22,10 @@ fn test_recv_next_unavailable_message_is_descriptive_error() {
         Ok(_) => panic!("expected Err from closed source"),
     };
     let msg = err.to_string();
-    assert!(!msg.is_empty(), "expected non-empty error message, got: {msg}");
+    assert!(
+        !msg.is_empty(),
+        "expected non-empty error message, got: {msg}"
+    );
 }
 
 /// @covers: ClosedEventSource — multiple calls all return Unavailable

@@ -12,7 +12,10 @@ fn test_projection_svc_factory_constant_value_happy() {
 
 #[test]
 fn test_projection_svc_factory_constant_not_empty_error() {
-    assert!(!PROJECTION_SVC_FACTORY.is_empty(), "PROJECTION_SVC_FACTORY must not be empty");
+    assert!(
+        !PROJECTION_SVC_FACTORY.is_empty(),
+        "PROJECTION_SVC_FACTORY must not be empty"
+    );
 }
 
 #[test]

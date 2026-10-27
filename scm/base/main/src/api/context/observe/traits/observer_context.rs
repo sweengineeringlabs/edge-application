@@ -1,7 +1,9 @@
 //! `ObserverContext` — composition handle bundling all observability primitives.
 
+use crate::api::context::observe::dto::{
+    DrainRequest, DrainResponse, MetricsRequest, MetricsResponse, TracerRequest, TracerResponse,
+};
 use crate::api::context::observe::errors::ObserveError;
-use crate::api::context::observe::dto::{DrainRequest, DrainResponse, MetricsRequest, MetricsResponse, TracerRequest, TracerResponse};
 
 /// A composition handle that bundles tracing, logging, and metric primitives.
 ///

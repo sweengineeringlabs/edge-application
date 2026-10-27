@@ -19,7 +19,9 @@ use std::sync::Arc;
 
 use edge_application_command::DirectCommandBus;
 use edge_application_event::{EventStore, MemoryEventStore};
-use edge_application_handler::{ExecutionRequest as HandlerExecutionRequest, Handler, HandlerContext};
+use edge_application_handler::{
+    ExecutionRequest as HandlerExecutionRequest, Handler, HandlerContext,
+};
 use edge_application_observer::StdObserveFactory;
 use edge_security_runtime::SecurityContext;
 
@@ -27,7 +29,7 @@ use crate::api::{OrderCreated, OrderCreationRequest, OrderHistoryRequest};
 use crate::core::{OrderCreationHandler, OrderHistoryHandler};
 
 #[tokio::main]
-async fn main() {
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
     tracing_subscriber::fmt::init();
 
     println!("=== Handler + injected EventStore<Event> — constructor injection, Self::Request carries the aggregate id/payload ===\n");
@@ -59,8 +61,7 @@ async fn main() {
             },
             ctx: &ctx,
         })
-        .await
-        .expect("append should succeed");
+        .await?;
     println!(
         "[3] OrderCreationHandler reports sequence = {}\n",
         record_resp.sequence
@@ -75,8 +76,7 @@ async fn main() {
             },
             ctx: &ctx,
         })
-        .await
-        .expect("append should succeed");
+        .await?;
     println!(
         "[3] OrderCreationHandler reports sequence = {}\n",
         record_resp_2.sequence
@@ -90,8 +90,7 @@ async fn main() {
             },
             ctx: &ctx,
         })
-        .await
-        .expect("load should succeed");
+        .await?;
     println!(
         "[3] OrderHistoryHandler returned {:?}\n",
         history_resp.items
@@ -99,7 +98,10 @@ async fn main() {
 
     println!("Conclusion: OrderCreationHandler used ctx.observer for real per-request logging,");
     println!("but both handlers reached the actual event stream only through their own,");
-    println!("independently injected EventStore<OrderCreated> — never through HandlerContext, which");
+    println!(
+        "independently injected EventStore<OrderCreated> — never through HandlerContext, which"
+    );
     println!("structurally cannot hold a generic-per-type port. Swap MemoryEventStore for a real");
     println!("database-backed EventStore impl and neither handler changes.");
+    Ok(())
 }

@@ -7,7 +7,10 @@ fn test_command_bus_svc_constant_value_happy() {
 
 #[test]
 fn test_command_bus_svc_constant_not_empty_error() {
-    assert!(!COMMAND_BUS_SVC.is_empty(), "COMMAND_BUS_SVC must not be empty");
+    assert!(
+        !COMMAND_BUS_SVC.is_empty(),
+        "COMMAND_BUS_SVC must not be empty"
+    );
 }
 
 #[test]

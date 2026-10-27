@@ -4,8 +4,8 @@ use std::marker::PhantomData;
 
 use futures::future::BoxFuture;
 
-use crate::api::QueryBus;
 use crate::api::DirectQueryBus;
+use crate::api::QueryBus;
 use crate::api::QueryError;
 use crate::api::{QueryDispatchRequest, QueryExecuteRequest, QueryResultResponse};
 
@@ -54,9 +54,9 @@ mod tests {
     #[test]
     fn test_dispatch_ok_query_returns_value() {
         let bus = DirectQueryBus::<String>::new();
-        let result = futures::executor::block_on(
-            bus.dispatch(QueryDispatchRequest { query: Box::new(DirectQueryBusOk("pong".into())) })
-        );
+        let result = futures::executor::block_on(bus.dispatch(QueryDispatchRequest {
+            query: Box::new(DirectQueryBusOk("pong".into())),
+        }));
         assert_eq!(result.unwrap().result, "pong");
     }
 }

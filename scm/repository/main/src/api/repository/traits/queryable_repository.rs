@@ -1,14 +1,11 @@
 //! `QueryableRepository` — specification-based query extension for `Repository`.
 
-use std::future::Future;
-use std::pin::Pin;
-
-use crate::api::repository::errors::RepositoryError;
-use crate::api::repository::traits::Repository;
 use crate::api::repository::dto::{
     CountByResponse, MatchingEntitiesResponse, MatchingEntityResponse, RepositoryListRequest,
     SpecMatchesRequest, SpecRequest,
 };
+use crate::api::repository::traits::repository::RepositoryFuture;
+use crate::api::repository::traits::Repository;
 
 /// Extends [`Repository`] with specification-based query methods.
 ///
@@ -23,7 +20,7 @@ where
     fn find_by(
         &self,
         req: SpecRequest<Self::Entity>,
-    ) -> Pin<Box<dyn Future<Output = Result<MatchingEntitiesResponse<Self::Entity>, RepositoryError>> + Send + '_>> {
+    ) -> RepositoryFuture<'_, MatchingEntitiesResponse<Self::Entity>> {
         Box::pin(async move {
             let all = self.list(RepositoryListRequest).await?.items;
             let mut items = Vec::new();
@@ -40,7 +37,7 @@ where
     fn find_one_by(
         &self,
         req: SpecRequest<Self::Entity>,
-    ) -> Pin<Box<dyn Future<Output = Result<MatchingEntityResponse<Self::Entity>, RepositoryError>> + Send + '_>> {
+    ) -> RepositoryFuture<'_, MatchingEntityResponse<Self::Entity>> {
         Box::pin(async move {
             let all = self.list(RepositoryListRequest).await?.items;
             let mut found = None;
@@ -55,10 +52,7 @@ where
     }
 
     /// Returns the count of entities that satisfy the given specification.
-    fn count_by(
-        &self,
-        req: SpecRequest<Self::Entity>,
-    ) -> Pin<Box<dyn Future<Output = Result<CountByResponse, RepositoryError>> + Send + '_>> {
+    fn count_by(&self, req: SpecRequest<Self::Entity>) -> RepositoryFuture<'_, CountByResponse> {
         Box::pin(async move {
             let all = self.list(RepositoryListRequest).await?.items;
             let mut count = 0;
@@ -75,12 +69,15 @@ where
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::api::repository::traits::Spec;
     use crate::api::repository::dto::{
         RepositoryDeleteResponse, RepositoryFindResponse, RepositoryIdRequest,
         RepositoryListResponse, RepositorySaveRequest, SpecMatchesResponse,
     };
+    use crate::api::repository::errors::RepositoryError;
+    use crate::api::repository::traits::Spec;
     use futures::executor::block_on;
+    use std::future::Future;
+    use std::pin::Pin;
 
     struct VecRepo {
         items: Vec<u32>,
@@ -93,7 +90,13 @@ mod tests {
         fn find<'a>(
             &'a self,
             req: RepositoryIdRequest<'a, usize>,
-        ) -> Pin<Box<dyn Future<Output = Result<RepositoryFindResponse<u32>, RepositoryError>> + Send + 'a>> {
+        ) -> Pin<
+            Box<
+                dyn Future<Output = Result<RepositoryFindResponse<u32>, RepositoryError>>
+                    + Send
+                    + 'a,
+            >,
+        > {
             let val = self.items.get(*req.id).copied();
             Box::pin(async move { Ok(RepositoryFindResponse { entity: val }) })
         }
@@ -106,13 +109,21 @@ mod tests {
         fn delete<'a>(
             &'a self,
             _req: RepositoryIdRequest<'a, usize>,
-        ) -> Pin<Box<dyn Future<Output = Result<RepositoryDeleteResponse, RepositoryError>> + Send + 'a>> {
+        ) -> Pin<
+            Box<dyn Future<Output = Result<RepositoryDeleteResponse, RepositoryError>> + Send + 'a>,
+        > {
             Box::pin(async move { Ok(RepositoryDeleteResponse { removed: false }) })
         }
         fn list(
             &self,
             _req: RepositoryListRequest,
-        ) -> Pin<Box<dyn Future<Output = Result<RepositoryListResponse<u32>, RepositoryError>> + Send + '_>> {
+        ) -> Pin<
+            Box<
+                dyn Future<Output = Result<RepositoryListResponse<u32>, RepositoryError>>
+                    + Send
+                    + '_,
+            >,
+        > {
             let vals = self.items.clone();
             Box::pin(async move { Ok(RepositoryListResponse { items: vals }) })
         }

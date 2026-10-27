@@ -69,8 +69,10 @@ mod tests {
         fn aggregate_id(
             &self,
             _req: edge_application_event::EventAggregateIdRequest,
-        ) -> Result<edge_application_event::EventAggregateIdResponse<'_>, edge_application_event::EventError>
-        {
+        ) -> Result<
+            edge_application_event::EventAggregateIdResponse<'_>,
+            edge_application_event::EventError,
+        > {
             Ok(edge_application_event::EventAggregateIdResponse {
                 aggregate_id: "saga-test",
             })

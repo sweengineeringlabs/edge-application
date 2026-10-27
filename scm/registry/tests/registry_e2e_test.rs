@@ -5,7 +5,7 @@
 use std::sync::Arc;
 
 use edge_application_registry::{
-    DeregisterRequest, EmptinessRequest, MemoryRegistry, LenRequest, ListIdsRequest,
+    DeregisterRequest, EmptinessRequest, LenRequest, ListIdsRequest, MemoryRegistry,
     RegisterRequest, Registry, RegistryError, RegistryLookupRequest, TryRegisterRequest,
 };
 
@@ -22,11 +22,9 @@ fn register(r: &MemoryRegistry<str>, id: &str, entry: &str) {
 }
 
 fn get(r: &MemoryRegistry<str>, id: &str) -> Option<Arc<str>> {
-    r.get(RegistryLookupRequest {
-        id: id.to_string(),
-    })
-    .unwrap()
-    .entry
+    r.get(RegistryLookupRequest { id: id.to_string() })
+        .unwrap()
+        .entry
 }
 
 // ── register ──────────────────────────────────────────────────────────────────

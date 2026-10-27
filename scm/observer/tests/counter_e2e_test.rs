@@ -56,5 +56,9 @@ fn test_counter_is_send_sync() {
         .unwrap()
         .counter;
     assert_send_sync(&counter);
-    assert_eq!(std::mem::size_of_val(&*counter), 0, "counter is Send+Sync ZST");
+    assert_eq!(
+        std::mem::size_of_val(&*counter),
+        0,
+        "counter is Send+Sync ZST"
+    );
 }

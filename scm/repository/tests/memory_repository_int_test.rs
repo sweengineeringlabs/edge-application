@@ -2,8 +2,7 @@
 // @allow: no_mocks_in_integration — MemoryRepository is the production-shipped reference impl, not a test double
 
 use edge_application_repository::{
-    MemoryRepository, Repository, RepositoryIdRequest, RepositoryListRequest,
-    RepositorySaveRequest,
+    MemoryRepository, Repository, RepositoryIdRequest, RepositoryListRequest, RepositorySaveRequest,
 };
 use futures::executor::block_on;
 

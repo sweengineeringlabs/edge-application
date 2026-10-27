@@ -7,7 +7,10 @@ fn test_observer_context_svc_constant_value_happy() {
 
 #[test]
 fn test_observer_context_svc_constant_not_empty_error() {
-    assert!(!OBSERVER_CONTEXT_SVC.is_empty(), "OBSERVER_CONTEXT_SVC must not be empty");
+    assert!(
+        !OBSERVER_CONTEXT_SVC.is_empty(),
+        "OBSERVER_CONTEXT_SVC must not be empty"
+    );
 }
 
 #[test]
