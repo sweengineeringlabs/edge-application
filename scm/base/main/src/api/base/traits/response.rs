@@ -30,3 +30,8 @@ pub trait Response: Send + 'static {
         Ok(ValidationResponse)
     }
 }
+
+// Collections are common handler payloads. Implement this at the contract's
+// owner so consumers can return vectors directly without introducing wrapper
+// types solely to satisfy the marker bound.
+impl<T: Send + 'static> Response for Vec<T> {}
