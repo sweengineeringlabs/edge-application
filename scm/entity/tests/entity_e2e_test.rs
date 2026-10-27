@@ -1,6 +1,8 @@
 //! Integration tests for the `Entity` trait.
 
-use edge_application_entity::{Entity, EntityError, IdRequest, IdResponse, ValidationRequest, ValidationResponse};
+use edge_application_entity::{
+    Entity, EntityError, IdRequest, IdResponse, ValidationRequest, ValidationResponse,
+};
 
 struct OrderLine {
     id: u64,
@@ -51,7 +53,10 @@ fn test_validate_no_error_variant_exists_error() {
 /// @covers: Entity::validate — default validate passes for any id value
 #[test]
 fn test_validate_with_max_u64_id_passes_default_impl_edge() {
-    let line = OrderLine { id: u64::MAX, quantity: 0 };
+    let line = OrderLine {
+        id: u64::MAX,
+        quantity: 0,
+    };
     assert_eq!(line.validate(ValidationRequest), Ok(ValidationResponse));
 }
 

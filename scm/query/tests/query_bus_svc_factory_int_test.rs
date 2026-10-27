@@ -12,7 +12,10 @@ fn test_query_bus_svc_factory_constant_value_happy() {
 
 #[test]
 fn test_query_bus_svc_factory_constant_not_empty_error() {
-    assert!(!QUERY_BUS_SVC_FACTORY.is_empty(), "QUERY_BUS_SVC_FACTORY must not be empty");
+    assert!(
+        !QUERY_BUS_SVC_FACTORY.is_empty(),
+        "QUERY_BUS_SVC_FACTORY must not be empty"
+    );
 }
 
 #[test]

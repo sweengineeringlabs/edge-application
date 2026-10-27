@@ -1,7 +1,9 @@
 //! `ProjectionEvent` — local decoupling boundary for `Projection::Event`.
 
+use crate::api::projection::dto::{
+    ProjectionEventDescribeRequest, ProjectionEventDescribeResponse,
+};
 use crate::api::projection::errors::ProjectionError;
-use crate::api::projection::dto::{ProjectionEventDescribeRequest, ProjectionEventDescribeResponse};
 
 /// The minimal contract a [`Projection`](super::Projection)'s associated
 /// `Event` type must satisfy.

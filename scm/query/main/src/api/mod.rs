@@ -1,12 +1,12 @@
 mod query;
 pub use query::DirectQueryBus;
-pub use query::QueryError;
 pub use query::LoggingQueryBus;
-pub use query::Query;
-pub use query::QueryBus;
 pub use query::NoopQuery;
 pub use query::NoopQueryBus;
+pub use query::Query;
+pub use query::QueryBus;
 pub use query::QueryDispatchRequest;
+pub use query::QueryError;
 pub use query::QueryExecuteRequest;
 pub use query::QueryNameRequest;
 pub use query::QueryNameResponse;

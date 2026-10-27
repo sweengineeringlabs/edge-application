@@ -1,8 +1,8 @@
 //! Basic `Policy` usage example.
 
 use edge_application_policy::{
-    CompositePolicy, Policy, PolicyEvaluateRequest, PolicyNameRequest, PolicyNameResponse,
-    PolicyError,
+    CompositePolicy, Policy, PolicyError, PolicyEvaluateRequest, PolicyNameRequest,
+    PolicyNameResponse,
 };
 
 struct MaxLength(usize);
@@ -16,14 +16,26 @@ impl Policy for MaxLength {
         if req.input.len() <= self.0 {
             Ok(())
         } else {
-            Err(PolicyError::new("max-length", format!("exceeds {}", self.0)))
+            Err(PolicyError::new(
+                "max-length",
+                format!("exceeds {}", self.0),
+            ))
         }
     }
 }
 
 fn main() {
-    let policy: CompositePolicy<String> = CompositePolicy::new()
-        .with(Box::new(MaxLength(5)));
-    println!("{:?}", policy.evaluate(PolicyEvaluateRequest { input: &"hi".to_string() }));
-    println!("{:?}", policy.evaluate(PolicyEvaluateRequest { input: &"too long".to_string() }));
+    let policy: CompositePolicy<String> = CompositePolicy::new().with(Box::new(MaxLength(5)));
+    println!(
+        "{:?}",
+        policy.evaluate(PolicyEvaluateRequest {
+            input: &"hi".to_string()
+        })
+    );
+    println!(
+        "{:?}",
+        policy.evaluate(PolicyEvaluateRequest {
+            input: &"too long".to_string()
+        })
+    );
 }

@@ -42,9 +42,11 @@ fn test_new_non_default_initial_state_preserved_error() {
 fn test_state_after_transition_is_target_edge() {
     rt().block_on(async {
         let lc = ManagedLifecycle::new(Phase::Idle, Box::new(PermissivePolicy::new()));
-        lc.transition_to(LifecycleTransitionRequest { target: Phase::Running })
-            .await
-            .expect("transition");
+        lc.transition_to(LifecycleTransitionRequest {
+            target: Phase::Running,
+        })
+        .await
+        .expect("transition");
         assert_eq!(state_of(&lc), Phase::Running);
     });
 }

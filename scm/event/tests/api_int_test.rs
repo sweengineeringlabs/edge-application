@@ -14,7 +14,7 @@ use edge_application_event::{
     EventSourceRecvNextResponse, EventStore, EventStoreAppendRequest, EventStoreAppendResponse,
     EventStoreLoadFromRequest, EventStoreLoadFromResponse, EventStoreLoadRequest,
     EventStoreLoadResponse, EventTypeRequest, EventTypeResponse, ExpectedVersion,
-    MemoryEventStore, InProcessEventBus, NoopAggregate, NoopDomainEvent,
+    InProcessEventBus, MemoryEventStore, NoopAggregate, NoopDomainEvent,
 };
 
 /// @covers: AggregateApplyRequest
@@ -22,14 +22,19 @@ use edge_application_event::{
 fn test_aggregate_apply_request_wraps_event_reference_happy() {
     let evt = NoopDomainEvent;
     let req = AggregateApplyRequest { event: &evt };
-    assert_eq!(req.event.event_type(EventTypeRequest).unwrap().event_type, "event");
+    assert_eq!(
+        req.event.event_type(EventTypeRequest).unwrap().event_type,
+        "event"
+    );
 }
 
 /// @covers: AggregateApplyRequest
 #[test]
 fn test_aggregate_apply_request_used_by_noop_aggregate_apply_edge() {
     let mut agg = NoopAggregate;
-    let result = agg.apply(AggregateApplyRequest { event: &NoopDomainEvent });
+    let result = agg.apply(AggregateApplyRequest {
+        event: &NoopDomainEvent,
+    });
     assert_eq!(result, Ok(AggregateApplyResponse));
 }
 
@@ -43,8 +48,11 @@ fn test_aggregate_apply_response_is_zero_sized_happy() {
 #[test]
 fn test_aggregate_apply_response_returned_by_apply_error() {
     let mut agg = NoopAggregate;
-    let resp: AggregateApplyResponse =
-        agg.apply(AggregateApplyRequest { event: &NoopDomainEvent }).unwrap();
+    let resp: AggregateApplyResponse = agg
+        .apply(AggregateApplyRequest {
+            event: &NoopDomainEvent,
+        })
+        .unwrap();
     assert_eq!(std::mem::size_of_val(&resp), 0);
 }
 
@@ -93,31 +101,40 @@ fn test_event_aggregate_id_request_used_by_noop_event_edge() {
 /// @covers: EventAggregateIdResponse
 #[test]
 fn test_event_aggregate_id_response_exposes_field_happy() {
-    let resp = EventAggregateIdResponse { aggregate_id: "order-1" };
+    let resp = EventAggregateIdResponse {
+        aggregate_id: "order-1",
+    };
     assert_eq!(resp.aggregate_id, "order-1");
 }
 
 /// @covers: EventAggregateIdResponse
 #[test]
 fn test_event_aggregate_id_response_special_chars_edge() {
-    let resp = EventAggregateIdResponse { aggregate_id: "agg/1:v2" };
+    let resp = EventAggregateIdResponse {
+        aggregate_id: "agg/1:v2",
+    };
     assert_eq!(resp.aggregate_id, "agg/1:v2");
 }
 
 /// @covers: EventBusPublishRequest
 #[test]
 fn test_event_bus_publish_request_wraps_arc_dyn_domain_event_happy() {
-    let req = EventBusPublishRequest { event: Arc::new(NoopDomainEvent) };
-    assert_eq!(req.event.event_type(EventTypeRequest).unwrap().event_type, "event");
+    let req = EventBusPublishRequest {
+        event: Arc::new(NoopDomainEvent),
+    };
+    assert_eq!(
+        req.event.event_type(EventTypeRequest).unwrap().event_type,
+        "event"
+    );
 }
 
 /// @covers: EventBusPublishRequest
 #[test]
 fn test_event_bus_publish_request_accepted_by_noop_bus_edge() {
     use edge_application_event::NoopEventBus;
-    let result = futures::executor::block_on(
-        NoopEventBus.publish(EventBusPublishRequest { event: Arc::new(NoopDomainEvent) }),
-    );
+    let result = futures::executor::block_on(NoopEventBus.publish(EventBusPublishRequest {
+        event: Arc::new(NoopDomainEvent),
+    }));
     assert_eq!(result, Ok(()));
 }
 
@@ -185,7 +202,9 @@ fn test_event_occurred_at_response_exposes_field_happy() {
 /// @covers: EventOccurredAtResponse
 #[test]
 fn test_event_occurred_at_response_epoch_boundary_edge() {
-    let resp = EventOccurredAtResponse { occurred_at: SystemTime::UNIX_EPOCH };
+    let resp = EventOccurredAtResponse {
+        occurred_at: SystemTime::UNIX_EPOCH,
+    };
     assert_eq!(resp.occurred_at, SystemTime::UNIX_EPOCH);
 }
 
@@ -194,7 +213,10 @@ fn test_event_occurred_at_response_epoch_boundary_edge() {
 fn test_event_publisher_publish_request_wraps_dyn_domain_event_happy() {
     let evt = NoopDomainEvent;
     let req = EventPublisherPublishRequest { event: &evt };
-    assert_eq!(req.event.event_type(EventTypeRequest).unwrap().event_type, "event");
+    assert_eq!(
+        req.event.event_type(EventTypeRequest).unwrap().event_type,
+        "event"
+    );
 }
 
 /// @covers: EventPublisherPublishRequest
@@ -265,7 +287,10 @@ fn test_event_store_append_response_zero_boundary_edge() {
 /// @covers: EventStoreLoadFromRequest
 #[test]
 fn test_event_store_load_from_request_constructed_with_fields_happy() {
-    let req = EventStoreLoadFromRequest { aggregate_id: "agg-1", from_sequence: 3 };
+    let req = EventStoreLoadFromRequest {
+        aggregate_id: "agg-1",
+        from_sequence: 3,
+    };
     assert_eq!(req.aggregate_id, "agg-1");
     assert_eq!(req.from_sequence, 3);
 }
@@ -274,9 +299,10 @@ fn test_event_store_load_from_request_constructed_with_fields_happy() {
 #[test]
 fn test_event_store_load_from_request_used_by_in_memory_store_edge() {
     let store = MemoryEventStore::<NoopDomainEvent>::new();
-    let events = futures::executor::block_on(
-        store.load_from(EventStoreLoadFromRequest { aggregate_id: "missing", from_sequence: 1 }),
-    )
+    let events = futures::executor::block_on(store.load_from(EventStoreLoadFromRequest {
+        aggregate_id: "missing",
+        from_sequence: 1,
+    }))
     .expect("load_from")
     .events;
     assert!(events.is_empty());
@@ -285,7 +311,9 @@ fn test_event_store_load_from_request_used_by_in_memory_store_edge() {
 /// @covers: EventStoreLoadRequest
 #[test]
 fn test_event_store_load_request_constructed_with_field_happy() {
-    let req = EventStoreLoadRequest { aggregate_id: "agg-1" };
+    let req = EventStoreLoadRequest {
+        aggregate_id: "agg-1",
+    };
     assert_eq!(req.aggregate_id, "agg-1");
 }
 
@@ -293,10 +321,11 @@ fn test_event_store_load_request_constructed_with_field_happy() {
 #[test]
 fn test_event_store_load_request_used_by_in_memory_store_edge() {
     let store = MemoryEventStore::<NoopDomainEvent>::new();
-    let events =
-        futures::executor::block_on(store.load(EventStoreLoadRequest { aggregate_id: "missing" }))
-            .expect("load")
-            .events;
+    let events = futures::executor::block_on(store.load(EventStoreLoadRequest {
+        aggregate_id: "missing",
+    }))
+    .expect("load")
+    .events;
     assert!(events.is_empty());
 }
 
@@ -317,7 +346,9 @@ fn test_event_type_request_used_by_noop_event_edge() {
 /// @covers: EventTypeResponse
 #[test]
 fn test_event_type_response_exposes_field_happy() {
-    let resp = EventTypeResponse { event_type: "order.created" };
+    let resp = EventTypeResponse {
+        event_type: "order.created",
+    };
     assert_eq!(resp.event_type, "order.created");
 }
 
@@ -360,9 +391,9 @@ fn test_event_store_load_response_holds_events_happy() {
 #[test]
 fn test_event_store_load_response_used_by_in_memory_store_edge() {
     let store = MemoryEventStore::<NoopDomainEvent>::new();
-    let resp = futures::executor::block_on(
-        store.load(EventStoreLoadRequest { aggregate_id: "none" }),
-    )
+    let resp = futures::executor::block_on(store.load(EventStoreLoadRequest {
+        aggregate_id: "none",
+    }))
     .expect("load");
     assert_eq!(resp.events.len(), 0);
 }

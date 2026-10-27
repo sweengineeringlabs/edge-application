@@ -9,8 +9,6 @@ use std::sync::Arc;
 use crate::api::Domain;
 
 #[cfg(feature = "command")]
-use crate::api::CommandBus;
-#[cfg(feature = "command")]
 use crate::api::{DirectCommandBusRequest, DirectCommandBusResponse};
 #[cfg(feature = "command")]
 use edge_application_command::DirectCommandBus;
@@ -21,10 +19,6 @@ use crate::api::Aggregate;
 use crate::api::AggregateApplyRequest;
 #[cfg(feature = "event")]
 use crate::api::DomainEvent;
-#[cfg(feature = "event")]
-use crate::api::EventBus;
-#[cfg(feature = "event")]
-use crate::api::EventPublisher;
 #[cfg(feature = "event")]
 use crate::api::EventStore;
 #[cfg(feature = "event")]
@@ -324,7 +318,7 @@ impl Domain {
 }
 
 impl DomainRuntime for Domain {
-    /// Construct a [`CommandBus`] that dispatches commands inline.
+    /// Construct a [`crate::api::CommandBus`] that dispatches commands inline.
     #[cfg(feature = "command")]
     fn direct_command_bus(
         &self,
@@ -335,7 +329,7 @@ impl DomainRuntime for Domain {
         })
     }
 
-    /// Construct an [`EventPublisher`] that discards all events silently.
+    /// Construct an [`crate::api::EventPublisher`] that discards all events silently.
     #[cfg(feature = "event")]
     fn noop_event_publisher(
         &self,
@@ -346,7 +340,7 @@ impl DomainRuntime for Domain {
         })
     }
 
-    /// Construct an in-process broadcast-backed [`EventBus`].
+    /// Construct an in-process broadcast-backed [`crate::api::EventBus`].
     ///
     /// Backed by the tokio broadcast implementation in `edge-domain-event`.
     #[cfg(feature = "event")]
@@ -359,7 +353,7 @@ impl DomainRuntime for Domain {
         })
     }
 
-    /// Construct an [`EventBus`] that silently discards all events.
+    /// Construct a [`crate::api::EventBus`] that silently discards all events.
     #[cfg(feature = "event")]
     fn noop_event_bus(
         &self,

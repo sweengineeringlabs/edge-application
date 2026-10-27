@@ -14,12 +14,8 @@ mod policy;
 mod policy_svc;
 mod projection_svc;
 mod query;
-mod queryable_repository_svc;
-mod repository;
-mod repository_svc;
 mod saga;
 mod snapshot;
-mod spec_svc;
 mod spi;
 mod validator_svc;
 mod value;
@@ -33,7 +29,6 @@ pub use self::event::*;
 pub use self::handler::*;
 pub use self::policy::*;
 pub use self::query::*;
-pub use self::repository::*;
 pub use self::saga::*;
 pub use self::snapshot::*;
 pub use self::spi::*;
@@ -44,9 +39,6 @@ pub use self::aggregate_svc::*;
 pub use self::entity_svc::*;
 pub use self::policy_svc::*;
 pub use self::projection_svc::*;
-pub use self::queryable_repository_svc::*;
-pub use self::repository_svc::*;
-pub use self::spec_svc::*;
 pub use self::validator_svc::*;
 pub use self::value_object_svc::*;
 
@@ -71,8 +63,6 @@ pub use edge_application_clock::FixedClock;
 pub use edge_application_clock::SystemClock;
 
 // ── validator (sub-crate when feature enabled; re-exported publicly via api::*) ─
-#[cfg(feature = "validator")]
-pub(crate) use edge_application_validator::Validator;
 #[cfg(feature = "validator")]
 pub use edge_application_validator::ValidatorError;
 
@@ -185,8 +175,6 @@ pub use edge_pipeline::StepNameResponse;
 pub use edge_pipeline::StepRegistry as PipelineStepRegistry;
 #[cfg(feature = "pipeline")]
 pub use edge_pipeline::StepRegistrySvc as PipelineStepRegistrySvc;
-#[cfg(feature = "pipeline")]
-pub(crate) use edge_pipeline::Validator as PipelineValidator;
 #[cfg(feature = "pipeline")]
 pub use edge_pipeline::ValidatorSvc as PipelineValidatorSvc;
 

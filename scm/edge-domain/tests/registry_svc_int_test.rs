@@ -4,7 +4,7 @@
 #![allow(clippy::unwrap_used, clippy::expect_used)]
 
 use edge_application_registry::{
-    DeregisterRequest, MemoryRegistry, ListIdsRequest, RegisterRequest, Registry,
+    DeregisterRequest, ListIdsRequest, MemoryRegistry, RegisterRequest, Registry,
     RegistryLookupRequest,
 };
 use std::sync::Arc;

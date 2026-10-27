@@ -1,7 +1,7 @@
 //! `Spec` — predicate type for filtering entities in a repository query.
 
-use crate::api::repository::errors::RepositoryError;
 use crate::api::repository::dto::{SpecMatchesRequest, SpecMatchesResponse};
+use crate::api::repository::errors::RepositoryError;
 
 /// A specification predicate used to filter entities of type [`Entity`](Spec::Entity).
 ///

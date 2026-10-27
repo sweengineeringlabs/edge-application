@@ -7,7 +7,10 @@ fn test_counter_svc_factory_constant_value_happy() {
 
 #[test]
 fn test_counter_svc_factory_constant_not_empty_error() {
-    assert!(!COUNTER_SVC_FACTORY.is_empty(), "COUNTER_SVC_FACTORY must not be empty");
+    assert!(
+        !COUNTER_SVC_FACTORY.is_empty(),
+        "COUNTER_SVC_FACTORY must not be empty"
+    );
 }
 
 #[test]

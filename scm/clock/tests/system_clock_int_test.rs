@@ -16,9 +16,10 @@ fn test_now_system_clock_returns_recent_time_happy() {
 /// @covers: SystemClock (Clock::now monotonicity within a single thread)
 #[test]
 fn test_now_system_clock_successive_calls_do_not_panic_error() {
-    let _t1 = SystemClock.now(NowRequest);
-    let _t2 = SystemClock.now(NowRequest);
-    assert!(true);
+    let first = SystemClock.now(NowRequest);
+    let second = SystemClock.now(NowRequest);
+    assert!(first.is_ok());
+    assert!(second.is_ok());
 }
 
 /// @covers: SystemClock (zero-sized)

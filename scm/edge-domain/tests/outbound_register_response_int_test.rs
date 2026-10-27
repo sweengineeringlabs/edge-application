@@ -6,10 +6,8 @@ use edge_application::OutboundRegisterResponse;
 /// @covers: OutboundRegisterResponse
 #[test]
 fn test_outbound_register_response_default_happy() {
-    assert_eq!(
-        OutboundRegisterResponse::default(),
-        OutboundRegisterResponse
-    );
+    let default: OutboundRegisterResponse = Default::default();
+    assert_eq!(default, OutboundRegisterResponse,);
 }
 
 /// @covers: OutboundRegisterResponse

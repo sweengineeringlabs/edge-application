@@ -5,7 +5,9 @@
     clippy::default_constructed_unit_structs
 )]
 
-use edge_application_valueobject::{NonEmptyString, ValidationRequest, ValueObject, ValueObjectError};
+use edge_application_valueobject::{
+    NonEmptyString, ValidationRequest, ValueObject, ValueObjectError,
+};
 
 fn accepts_value_object<V: ValueObject>(_v: V) {}
 

@@ -1,7 +1,10 @@
 //! Integration tests for `CompositePolicy` AND-composition.
 #![allow(clippy::unwrap_used, clippy::expect_used)]
 
-use edge_application_policy::{CompositePolicy, Policy, PolicyEvaluateRequest, PolicyNameRequest, PolicyNameResponse, PolicyError};
+use edge_application_policy::{
+    CompositePolicy, Policy, PolicyError, PolicyEvaluateRequest, PolicyNameRequest,
+    PolicyNameResponse,
+};
 
 struct Reject(&'static str);
 impl Policy for Reject {
@@ -33,7 +36,11 @@ fn eval(input: &String) -> PolicyEvaluateRequest<'_, String> {
 #[test]
 fn test_evaluate_empty_composite_passes_happy() {
     let c: CompositePolicy<String> = CompositePolicy::new();
-    assert_eq!(c.evaluate(eval(&"x".to_string())), Ok(()), "empty composite should pass");
+    assert_eq!(
+        c.evaluate(eval(&"x".to_string())),
+        Ok(()),
+        "empty composite should pass"
+    );
 }
 
 /// @covers: CompositePolicy::with + evaluate — failing member short-circuits

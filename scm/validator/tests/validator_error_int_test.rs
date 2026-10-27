@@ -14,11 +14,7 @@ fn test_invalid_display_includes_message_happy() {
 fn test_invalid_equality_by_value_error() {
     let err1 = ValidatorError::Invalid("x".into());
     let err2 = ValidatorError::Invalid("x".into());
-    assert_eq!(
-        err1,
-        err2,
-        "errors with same message must be equal"
-    );
+    assert_eq!(err1, err2, "errors with same message must be equal");
 }
 
 /// @covers: ValidatorError::Invalid — distinct messages differ
@@ -26,6 +22,13 @@ fn test_invalid_equality_by_value_error() {
 fn test_invalid_distinct_messages_differ_edge() {
     let err_a = ValidatorError::Invalid("a".into());
     let err_b = ValidatorError::Invalid("b".into());
-    assert_ne!(err_a, err_b, "errors with different messages must not be equal");
-    assert_eq!(err_a, ValidatorError::Invalid("a".into()), "same messages must be equal");
+    assert_ne!(
+        err_a, err_b,
+        "errors with different messages must not be equal"
+    );
+    assert_eq!(
+        err_a,
+        ValidatorError::Invalid("a".into()),
+        "same messages must be equal"
+    );
 }

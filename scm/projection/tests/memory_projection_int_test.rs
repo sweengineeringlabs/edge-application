@@ -13,17 +13,26 @@ struct ItemEvt {
 }
 
 impl DomainEvent for ItemEvt {
-    fn aggregate_id(&self, _req: EventAggregateIdRequest) -> Result<EventAggregateIdResponse<'_>, EventError> {
-        Ok(EventAggregateIdResponse { aggregate_id: "cart" })
+    fn aggregate_id(
+        &self,
+        _req: EventAggregateIdRequest,
+    ) -> Result<EventAggregateIdResponse<'_>, EventError> {
+        Ok(EventAggregateIdResponse {
+            aggregate_id: "cart",
+        })
     }
 }
 
-fn make(seed: usize) -> MemoryProjection<ItemEvt, usize, impl Fn(&mut usize, &ItemEvt) + Send + Sync> {
+fn make(
+    seed: usize,
+) -> MemoryProjection<ItemEvt, usize, impl Fn(&mut usize, &ItemEvt) + Send + Sync> {
     MemoryProjection::new(seed, |total: &mut usize, e: &ItemEvt| *total += e.count)
 }
 
 fn read(p: &impl Projection<Event = ItemEvt, ReadModel = usize>) -> usize {
-    *p.read_model(ProjectionReadModelRequest).expect("read_model should succeed").read_model
+    *p.read_model(ProjectionReadModelRequest)
+        .expect("read_model should succeed")
+        .read_model
 }
 
 #[test]
@@ -42,7 +51,10 @@ fn test_new_projection_with_zero_initial_is_zero_error() {
 fn test_projection_reducers_are_independent_edge() {
     let mut p1 = make(0);
     let p2 = MemoryProjection::new(0usize, |_n: &mut usize, _e: &ItemEvt| {});
-    p1.apply(ProjectionApplyRequest { event: &ItemEvt { count: 10 } }).expect("apply should succeed");
+    p1.apply(ProjectionApplyRequest {
+        event: &ItemEvt { count: 10 },
+    })
+    .expect("apply should succeed");
     assert_eq!(read(&p1), 10);
     assert_eq!(read(&p2), 0);
 }
@@ -50,7 +62,13 @@ fn test_projection_reducers_are_independent_edge() {
 #[test]
 fn test_apply_then_read_model_returns_updated_value_happy() {
     let mut p = make(0);
-    p.apply(ProjectionApplyRequest { event: &ItemEvt { count: 3 } }).expect("apply should succeed");
-    p.apply(ProjectionApplyRequest { event: &ItemEvt { count: 7 } }).expect("apply should succeed");
+    p.apply(ProjectionApplyRequest {
+        event: &ItemEvt { count: 3 },
+    })
+    .expect("apply should succeed");
+    p.apply(ProjectionApplyRequest {
+        event: &ItemEvt { count: 7 },
+    })
+    .expect("apply should succeed");
     assert_eq!(read(&p), 10);
 }

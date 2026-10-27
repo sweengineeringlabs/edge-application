@@ -23,13 +23,8 @@ fn test_errors_are_equality_comparable_edge() {
     let internal1 = ProjectionError::Internal("x".into());
     let internal2 = ProjectionError::Internal("x".into());
     assert_eq!(
-        internal1,
-        internal2,
+        internal1, internal2,
         "identical internal errors must be equal"
     );
-    assert_ne!(
-        err1,
-        internal1,
-        "different variants must not be equal"
-    );
+    assert_ne!(err1, internal1, "different variants must not be equal");
 }

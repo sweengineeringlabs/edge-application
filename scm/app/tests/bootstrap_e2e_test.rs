@@ -2,8 +2,8 @@
 #![allow(clippy::unwrap_used, clippy::expect_used)]
 
 use edge_application_app::{
-    AppError, Application, ApplicationBuildRequest, ApplicationBuildResponse, ApplicationRunRequest,
-    ApplicationRunResponse, Bootstrap, NameRequest, NameResponse,
+    AppError, Application, ApplicationBuildRequest, ApplicationBuildResponse,
+    ApplicationRunRequest, ApplicationRunResponse, Bootstrap, NameRequest, NameResponse,
 };
 use futures::executor::block_on;
 use futures::future::BoxFuture;
@@ -13,7 +13,10 @@ impl Application for EchoApp {
     fn name(&self, _req: NameRequest) -> Result<NameResponse, AppError> {
         Ok(NameResponse { name: "echo" })
     }
-    fn run(&self, _req: ApplicationRunRequest) -> BoxFuture<'_, Result<ApplicationRunResponse, AppError>> {
+    fn run(
+        &self,
+        _req: ApplicationRunRequest,
+    ) -> BoxFuture<'_, Result<ApplicationRunResponse, AppError>> {
         Box::pin(async { Ok(ApplicationRunResponse) })
     }
 }
@@ -58,8 +61,14 @@ fn test_build_fails_with_creation_error_error() {
 /// @covers: Bootstrap::build — produced application is runnable
 #[test]
 fn test_build_application_runs_successfully_edge() {
-    let app = AlwaysBuilds.build(ApplicationBuildRequest).unwrap().application;
-    assert_eq!(block_on(app.run(ApplicationRunRequest)), Ok(ApplicationRunResponse));
+    let app = AlwaysBuilds
+        .build(ApplicationBuildRequest)
+        .unwrap()
+        .application;
+    assert_eq!(
+        block_on(app.run(ApplicationRunRequest)),
+        Ok(ApplicationRunResponse)
+    );
 }
 
 /// @covers: Bootstrap::noop — returns NoopAppBootstrap that builds successfully
@@ -79,7 +88,10 @@ fn test_noop_returns_noop_bootstrap_happy() {
 fn test_noop_bootstrap_build_returns_default_name_error() {
     use edge_application_app::NoopAppBootstrap;
     let noop: NoopAppBootstrap = AlwaysBuilds::noop();
-    let app = noop.build(ApplicationBuildRequest).expect("build succeeds").application;
+    let app = noop
+        .build(ApplicationBuildRequest)
+        .expect("build succeeds")
+        .application;
     assert_ne!(app.name(NameRequest).unwrap().name, "echo");
     assert_eq!(app.name(NameRequest).unwrap().name, "application");
 }
@@ -90,7 +102,10 @@ fn test_noop_bootstrap_is_copy_edge() {
     use edge_application_app::NoopAppBootstrap;
     let noop: NoopAppBootstrap = AlwaysBuilds::noop();
     let copy = noop;
-    let app = copy.build(ApplicationBuildRequest).expect("copy builds ok").application;
+    let app = copy
+        .build(ApplicationBuildRequest)
+        .expect("copy builds ok")
+        .application;
     assert_eq!(app.name(NameRequest).unwrap().name, "application");
 }
 

@@ -7,7 +7,10 @@ fn test_gauge_svc_factory_constant_value_happy() {
 
 #[test]
 fn test_gauge_svc_factory_constant_not_empty_error() {
-    assert!(!GAUGE_SVC_FACTORY.is_empty(), "GAUGE_SVC_FACTORY must not be empty");
+    assert!(
+        !GAUGE_SVC_FACTORY.is_empty(),
+        "GAUGE_SVC_FACTORY must not be empty"
+    );
 }
 
 #[test]
