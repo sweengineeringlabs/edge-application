@@ -2,10 +2,10 @@
 
 use std::time::SystemTime;
 
-use crate::api::clock::errors::ClockError;
 use crate::api::clock::dto::{
     ElapsedSinceEpochRequest, ElapsedSinceEpochResponse, NowRequest, NowResponse,
 };
+use crate::api::clock::errors::ClockError;
 
 /// Source of the current wall time.
 ///

@@ -37,11 +37,15 @@ fn test_counter_empty_name_error() {
 fn test_counter_multiple_instruments_edge() {
     let registry = StdObserveFactory::noop_metric_registry();
     let a = registry
-        .counter(CounterLookupRequest { name: "a".to_string() })
+        .counter(CounterLookupRequest {
+            name: "a".to_string(),
+        })
         .unwrap()
         .counter;
     let b = registry
-        .counter(CounterLookupRequest { name: "b".to_string() })
+        .counter(CounterLookupRequest {
+            name: "b".to_string(),
+        })
         .unwrap()
         .counter;
     a.increment(IncrementRequest { delta: 1 }).unwrap();
@@ -83,11 +87,15 @@ fn test_histogram_empty_name_error() {
 fn test_histogram_same_name_multiple_times_edge() {
     let registry = StdObserveFactory::noop_metric_registry();
     let h1 = registry
-        .histogram(HistogramLookupRequest { name: "h".to_string() })
+        .histogram(HistogramLookupRequest {
+            name: "h".to_string(),
+        })
         .unwrap()
         .histogram;
     let h2 = registry
-        .histogram(HistogramLookupRequest { name: "h".to_string() })
+        .histogram(HistogramLookupRequest {
+            name: "h".to_string(),
+        })
         .unwrap()
         .histogram;
     h1.record(HistogramRecordRequest { value: 1.0 }).unwrap();
@@ -128,15 +136,21 @@ fn test_gauge_empty_name_error() {
 fn test_gauge_all_instruments_together_edge() {
     let registry = StdObserveFactory::noop_metric_registry();
     let c = registry
-        .counter(CounterLookupRequest { name: "c".to_string() })
+        .counter(CounterLookupRequest {
+            name: "c".to_string(),
+        })
         .unwrap()
         .counter;
     let h = registry
-        .histogram(HistogramLookupRequest { name: "h".to_string() })
+        .histogram(HistogramLookupRequest {
+            name: "h".to_string(),
+        })
         .unwrap()
         .histogram;
     let g = registry
-        .gauge(GaugeLookupRequest { name: "g".to_string() })
+        .gauge(GaugeLookupRequest {
+            name: "g".to_string(),
+        })
         .unwrap()
         .gauge;
     c.increment(IncrementRequest { delta: 1 }).unwrap();
@@ -152,7 +166,11 @@ fn test_metric_registry_is_send_sync() {
     fn assert_send_sync<T: Send + Sync>(_: &T) {}
     let registry = StdObserveFactory::noop_metric_registry();
     assert_send_sync(&registry);
-    assert_eq!(std::mem::size_of_val(&*registry), 0, "noop metric registry is ZST");
+    assert_eq!(
+        std::mem::size_of_val(&*registry),
+        0,
+        "noop metric registry is ZST"
+    );
 }
 
 #[test]

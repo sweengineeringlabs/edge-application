@@ -38,7 +38,9 @@ impl Handler for WithdrawalPolicyHandler {
             })
             .map_err(|e| HandlerError::ExecutionFailed(e.to_string()))?;
 
-        tracing::info!("[1] WithdrawalPolicyHandler::execute — delegating to its own injected Policy");
+        tracing::info!(
+            "[1] WithdrawalPolicyHandler::execute — delegating to its own injected Policy"
+        );
         self.policy
             .evaluate(PolicyEvaluateRequest {
                 input: &req.req.amount,

@@ -6,11 +6,11 @@ use std::sync::RwLock;
 
 use crate::api::DeregisterRequest;
 use crate::api::DeregisterResponse;
-use crate::api::MemoryRegistry;
 use crate::api::LenRequest;
 use crate::api::LenResponse;
 use crate::api::ListIdsRequest;
 use crate::api::ListIdsResponse;
+use crate::api::MemoryRegistry;
 use crate::api::RegisterRequest;
 use crate::api::RegisterResponse;
 use crate::api::Registry;
@@ -64,10 +64,7 @@ impl<V: ?Sized + Send + Sync> Registry for MemoryRegistry<V> {
         Ok(DeregisterResponse { was_present })
     }
 
-    fn get(
-        &self,
-        req: RegistryLookupRequest,
-    ) -> Result<RegistryLookupResponse<V>, RegistryError> {
+    fn get(&self, req: RegistryLookupRequest) -> Result<RegistryLookupResponse<V>, RegistryError> {
         let map = self.entries.read().unwrap_or_else(|e| e.into_inner());
         let entry = map.get(&req.id).map(Arc::clone);
         Ok(RegistryLookupResponse { entry })

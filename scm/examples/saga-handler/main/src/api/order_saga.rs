@@ -31,7 +31,10 @@ impl Saga for OrderSaga {
         })
     }
 
-    fn is_complete(&self, _req: SagaIsCompleteRequest) -> Result<SagaIsCompleteResponse, SagaError> {
+    fn is_complete(
+        &self,
+        _req: SagaIsCompleteRequest,
+    ) -> Result<SagaIsCompleteResponse, SagaError> {
         Ok(SagaIsCompleteResponse {
             complete: self.shipped,
         })

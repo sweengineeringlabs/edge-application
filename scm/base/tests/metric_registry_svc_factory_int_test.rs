@@ -7,7 +7,10 @@ fn test_metric_registry_svc_factory_constant_value_happy() {
 
 #[test]
 fn test_metric_registry_svc_factory_constant_not_empty_error() {
-    assert!(!METRIC_REGISTRY_SVC_FACTORY.is_empty(), "METRIC_REGISTRY_SVC_FACTORY must not be empty");
+    assert!(
+        !METRIC_REGISTRY_SVC_FACTORY.is_empty(),
+        "METRIC_REGISTRY_SVC_FACTORY must not be empty"
+    );
 }
 
 #[test]

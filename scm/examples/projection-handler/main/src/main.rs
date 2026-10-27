@@ -18,7 +18,9 @@ mod core;
 use std::sync::Arc;
 
 use edge_application_command::DirectCommandBus;
-use edge_application_handler::{ExecutionRequest as HandlerExecutionRequest, Handler, HandlerContext};
+use edge_application_handler::{
+    ExecutionRequest as HandlerExecutionRequest, Handler, HandlerContext,
+};
 use edge_application_observer::StdObserveFactory;
 use edge_security_runtime::SecurityContext;
 use parking_lot::Mutex;
@@ -27,7 +29,7 @@ use crate::api::{Balance, BalanceLookupRequest, CreditPostingRequest};
 use crate::core::{BalanceLookupHandler, CreditPostingHandler};
 
 #[tokio::main]
-async fn main() {
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
     tracing_subscriber::fmt::init();
 
     println!("=== Handler + injected Projection<Event, ReadModel> (Arc<Mutex<P>>) — constructor injection, Self::Request carries the events ===\n");
@@ -57,9 +59,11 @@ async fn main() {
             },
             ctx: &ctx,
         })
-        .await
-        .expect("apply should succeed");
-    println!("[3] CreditPostingHandler applied {} event(s)\n", applied.applied);
+        .await?;
+    println!(
+        "[3] CreditPostingHandler applied {} event(s)\n",
+        applied.applied
+    );
 
     println!("[0] get_handler.execute(BalanceLookupRequest)");
     let balance_resp = get_handler
@@ -67,9 +71,11 @@ async fn main() {
             req: BalanceLookupRequest,
             ctx: &ctx,
         })
-        .await
-        .expect("read_model should succeed");
-    println!("[3] BalanceLookupHandler reports total = {}\n", balance_resp.total);
+        .await?;
+    println!(
+        "[3] BalanceLookupHandler reports total = {}\n",
+        balance_resp.total
+    );
 
     println!("[0] apply_handler.execute(CreditPostingRequest {{ amounts: [] }}) — empty batch");
     let empty = apply_handler
@@ -87,4 +93,5 @@ async fn main() {
     println!("independently injected Arc<Mutex<Balance>> — never through HandlerContext, which");
     println!("structurally cannot hold a generic-per-type port. The projection's own empty-batch");
     println!("rejection propagated cleanly as a real HandlerError.");
+    Ok(())
 }

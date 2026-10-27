@@ -3,9 +3,11 @@
 use std::future::Future;
 use std::pin::Pin;
 
+use crate::api::app::dto::{
+    ApplicationRunRequest, ApplicationRunResponse, NameRequest, NameResponse,
+};
 use crate::api::AppError;
 use crate::api::NoopApplication;
-use crate::api::app::dto::{ApplicationRunRequest, ApplicationRunResponse, NameRequest, NameResponse};
 
 /// The top-level lifecycle contract for an edge application.
 ///
@@ -14,7 +16,9 @@ use crate::api::app::dto::{ApplicationRunRequest, ApplicationRunResponse, NameRe
 pub trait Application: Send + Sync {
     /// Stable identifier for this application.
     fn name(&self, _req: NameRequest) -> Result<NameResponse, AppError> {
-        Ok(NameResponse { name: "application" })
+        Ok(NameResponse {
+            name: "application",
+        })
     }
 
     /// Boot the application.

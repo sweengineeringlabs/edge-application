@@ -7,7 +7,10 @@ fn test_observer_context_svc_factory_constant_value_happy() {
 
 #[test]
 fn test_observer_context_svc_factory_constant_not_empty_error() {
-    assert!(!OBSERVER_CONTEXT_SVC_FACTORY.is_empty(), "OBSERVER_CONTEXT_SVC_FACTORY must not be empty");
+    assert!(
+        !OBSERVER_CONTEXT_SVC_FACTORY.is_empty(),
+        "OBSERVER_CONTEXT_SVC_FACTORY must not be empty"
+    );
 }
 
 #[test]

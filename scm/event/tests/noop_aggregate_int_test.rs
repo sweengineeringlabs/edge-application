@@ -1,7 +1,9 @@
 //! Integration tests for `NoopAggregate`.
 #![allow(clippy::unwrap_used, clippy::expect_used)]
 
-use edge_application_event::{Aggregate, AggregateApplyRequest, AggregateIdentityRequest, NoopAggregate, NoopDomainEvent};
+use edge_application_event::{
+    Aggregate, AggregateApplyRequest, AggregateIdentityRequest, NoopAggregate, NoopDomainEvent,
+};
 
 /// @covers: NoopAggregate::id — returns empty string before any apply
 #[test]
@@ -14,7 +16,10 @@ fn test_id_noop_aggregate_before_apply_returns_empty_happy() {
 #[test]
 fn test_apply_noop_aggregate_after_apply_id_unchanged_happy() {
     let mut agg = NoopAggregate;
-    agg.apply(AggregateApplyRequest { event: &NoopDomainEvent }).unwrap();
+    agg.apply(AggregateApplyRequest {
+        event: &NoopDomainEvent,
+    })
+    .unwrap();
     assert_eq!(agg.id(AggregateIdentityRequest).unwrap().id, "");
 }
 
@@ -31,7 +36,10 @@ fn test_default_noop_aggregate_constructs_edge() {
 fn test_apply_noop_aggregate_repeated_calls_do_not_panic_edge() {
     let mut agg = NoopAggregate;
     for _ in 0..5 {
-        agg.apply(AggregateApplyRequest { event: &NoopDomainEvent }).unwrap();
+        agg.apply(AggregateApplyRequest {
+            event: &NoopDomainEvent,
+        })
+        .unwrap();
     }
     assert_eq!(agg.id(AggregateIdentityRequest).unwrap().id, "");
 }

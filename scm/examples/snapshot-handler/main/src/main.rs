@@ -19,7 +19,9 @@ mod core;
 use std::sync::Arc;
 
 use edge_application_command::DirectCommandBus;
-use edge_application_handler::{ExecutionRequest as HandlerExecutionRequest, Handler, HandlerContext};
+use edge_application_handler::{
+    ExecutionRequest as HandlerExecutionRequest, Handler, HandlerContext,
+};
 use edge_application_observer::StdObserveFactory;
 use edge_application_snapshot::{MemorySnapshotStore, SnapshotStore};
 use edge_security_runtime::SecurityContext;
@@ -28,7 +30,7 @@ use crate::api::{OrderSnap, SnapshotLookupRequest, SnapshotPersistenceRequest};
 use crate::core::{SnapshotLookupHandler, SnapshotPersistenceHandler};
 
 #[tokio::main]
-async fn main() {
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
     tracing_subscriber::fmt::init();
 
     println!("=== Handler + injected SnapshotStore<AggregateId, Snap> — constructor injection, Self::Request carries the version ===\n");
@@ -61,9 +63,11 @@ async fn main() {
             },
             ctx: &ctx,
         })
-        .await
-        .expect("save should succeed");
-    println!("[3] SnapshotPersistenceHandler reports saved = {}\n", save_resp.saved);
+        .await?;
+    println!(
+        "[3] SnapshotPersistenceHandler reports saved = {}\n",
+        save_resp.saved
+    );
 
     println!("[0] lookup_handler.execute(SnapshotLookupRequest {{ aggregate_id: \"order-1\" }})");
     let load_resp = lookup_handler
@@ -73,9 +77,11 @@ async fn main() {
             },
             ctx: &ctx,
         })
-        .await
-        .expect("load should succeed");
-    println!("[3] SnapshotLookupHandler returned {:?}\n", load_resp.snapshot);
+        .await?;
+    println!(
+        "[3] SnapshotLookupHandler returned {:?}\n",
+        load_resp.snapshot
+    );
 
     println!("[0] persistence_handler.execute(SnapshotPersistenceRequest {{ aggregate_id: \"order-2\", version: 0, total: 0 }}) — invalid version");
     let invalid = persistence_handler
@@ -96,6 +102,9 @@ async fn main() {
     println!("Conclusion: SnapshotPersistenceHandler used ctx.observer for real per-request logging, but");
     println!("both handlers reached the actual store only through their own, independently");
     println!("injected SnapshotStore<String, OrderSnap> — never through HandlerContext, which");
-    println!("structurally cannot hold a generic-per-type port. The store's own version-0 rejection");
+    println!(
+        "structurally cannot hold a generic-per-type port. The store's own version-0 rejection"
+    );
     println!("propagated cleanly as a real HandlerError, not a fabricated one.");
+    Ok(())
 }

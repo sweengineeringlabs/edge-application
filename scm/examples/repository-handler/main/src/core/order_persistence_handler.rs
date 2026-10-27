@@ -38,7 +38,9 @@ impl Handler for OrderPersistenceHandler {
             })
             .map_err(|e| HandlerError::ExecutionFailed(e.to_string()))?;
 
-        tracing::info!("[1] OrderPersistenceHandler::execute — delegating to its own injected Repository");
+        tracing::info!(
+            "[1] OrderPersistenceHandler::execute — delegating to its own injected Repository"
+        );
         self.repository
             .save(RepositorySaveRequest {
                 id: req.req.order_id,

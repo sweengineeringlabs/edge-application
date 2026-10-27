@@ -19,7 +19,10 @@ impl TransitionPolicy for LockFinalPolicy {
     fn is_allowed(
         &self,
         req: TransitionAllowedRequest<Gate>,
-    ) -> Result<edge_application_lifecycle::TransitionAllowedResponse, edge_application_lifecycle::LifecycleError> {
+    ) -> Result<
+        edge_application_lifecycle::TransitionAllowedResponse,
+        edge_application_lifecycle::LifecycleError,
+    > {
         Ok(edge_application_lifecycle::TransitionAllowedResponse {
             allowed: req.to != Gate::Locked || req.from == Gate::Open,
         })
@@ -27,7 +30,9 @@ impl TransitionPolicy for LockFinalPolicy {
 }
 
 fn allowed(p: &LockFinalPolicy, from: Gate, to: Gate) -> bool {
-    p.is_allowed(TransitionAllowedRequest { from, to }).unwrap().allowed
+    p.is_allowed(TransitionAllowedRequest { from, to })
+        .unwrap()
+        .allowed
 }
 
 /// @covers: TransitionPolicy::is_allowed — custom policy allows a permitted transition

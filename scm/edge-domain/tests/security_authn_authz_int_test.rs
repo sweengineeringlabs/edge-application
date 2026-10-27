@@ -62,8 +62,10 @@ async fn test_authenticate_missing_token_returns_error_error() {
 #[tokio::test]
 async fn test_authenticate_with_token_present_succeeds_edge() {
     let mut ctx = AuthnContext::new(SecurityContext::unauthenticated());
-    ctx.metadata_mut()
-        .insert("authorization".to_string(), "Bearer valid-token".to_string());
+    ctx.metadata_mut().insert(
+        "authorization".to_string(),
+        "Bearer valid-token".to_string(),
+    );
     RejectsUnlessBearerPresent
         .authenticate(AuthenticateRequest { ctx: &mut ctx })
         .await
@@ -132,12 +134,9 @@ async fn test_authorize_with_principal_present_succeeds_edge() {
 /// edge_security_authn/edge_security_authz traits, not look-alike wrappers.
 #[test]
 fn test_facade_authenticator_authorizer_are_the_raw_traits_edge() {
-    fn assert_authenticator<T: Authenticator + RawAuthenticator>() -> bool {
-        true
-    }
-    fn assert_authorizer<T: Authorizer + RawAuthorizer>() -> bool {
-        true
-    }
-    assert!(assert_authenticator::<AlwaysAuthenticates>());
-    assert!(assert_authorizer::<AlwaysAuthorizes>());
+    fn assert_authenticator<T: Authenticator + RawAuthenticator>(_: &T) {}
+    fn assert_authorizer<T: Authorizer + RawAuthorizer>(_: &T) {}
+
+    assert_authenticator(&AlwaysAuthenticates);
+    assert_authorizer(&AlwaysAuthorizes);
 }

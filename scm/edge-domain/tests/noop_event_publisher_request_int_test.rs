@@ -7,10 +7,8 @@ use edge_application::NoopEventPublisherRequest;
 /// @covers: NoopEventPublisherRequest
 #[test]
 fn test_noop_event_publisher_request_default_happy() {
-    assert_eq!(
-        NoopEventPublisherRequest::default(),
-        NoopEventPublisherRequest
-    );
+    let default: NoopEventPublisherRequest = Default::default();
+    assert_eq!(default, NoopEventPublisherRequest,);
 }
 
 /// @covers: NoopEventPublisherRequest

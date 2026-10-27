@@ -1,7 +1,9 @@
 //! Integration tests for `ClosedEventSource`.
 #![allow(clippy::unwrap_used, clippy::expect_used)]
 
-use edge_application_event::{ClosedEventSource, EventError, EventSource, EventSourceRecvNextRequest};
+use edge_application_event::{
+    ClosedEventSource, EventError, EventSource, EventSourceRecvNextRequest,
+};
 
 /// @covers: ClosedEventSource — recv_next always returns Unavailable
 #[test]

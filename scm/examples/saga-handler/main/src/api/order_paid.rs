@@ -1,6 +1,8 @@
 //! `OrderPaid` — the `SagaEvent` handled by `SagaEventHandler`'s injected `OrderSaga`.
 
-use edge_application_saga::{SagaError, SagaEvent, SagaEventDescribeRequest, SagaEventDescribeResponse};
+use edge_application_saga::{
+    SagaError, SagaEvent, SagaEventDescribeRequest, SagaEventDescribeResponse,
+};
 
 #[derive(Debug, Clone)]
 pub struct OrderPaid {

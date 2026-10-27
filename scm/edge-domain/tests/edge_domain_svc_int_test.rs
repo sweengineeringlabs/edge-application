@@ -1,5 +1,10 @@
 //! Integration tests for saf factory functions.
-#![cfg(all(feature = "repository", feature = "query", feature = "command", feature = "event"))]
+#![cfg(all(
+    feature = "repository",
+    feature = "query",
+    feature = "command",
+    feature = "event"
+))]
 #![allow(clippy::unwrap_used, clippy::expect_used)]
 
 use edge_application::DomainRuntime;
@@ -8,7 +13,9 @@ use edge_application::{
     Repository, RepositoryIdRequest, RepositorySaveRequest, SpecRequest,
 };
 use edge_application::{DirectCommandBusRequest, NoopEventPublisherRequest};
-use edge_application_command::{CommandDispatchRequest, ExecutionRequest, NameRequest, NameResponse};
+use edge_application_command::{
+    CommandDispatchRequest, ExecutionRequest, NameRequest, NameResponse,
+};
 use edge_application_handler::{
     EmptinessRequest as HandlerEmptinessRequest, LenRequest as HandlerLenRequest,
 };

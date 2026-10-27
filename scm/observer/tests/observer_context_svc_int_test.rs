@@ -2,8 +2,8 @@
 
 use edge_application_observer::{
     CounterLookupRequest, DrainRequest, GaugeLookupRequest, GaugeSetRequest, IncrementRequest,
-    LogEmitRequest, MetricsRequest, ObserverContext, SpanFinishRequest,
-    SpanStartRequest, StdObserveFactory, TracerRequest, OBSERVE_CONTEXT_SVC,
+    LogEmitRequest, MetricsRequest, ObserverContext, SpanFinishRequest, SpanStartRequest,
+    StdObserveFactory, TracerRequest, OBSERVE_CONTEXT_SVC,
 };
 
 // ── factory method ────────────────────────────────────────────────────────────
@@ -190,5 +190,9 @@ fn test_noop_observer_context_svc_multiple_calls_independent_edge() {
         .gauge;
     gauge_a.set(GaugeSetRequest { value: 1.0 }).unwrap();
     gauge_b.set(GaugeSetRequest { value: 2.0 }).unwrap();
-    assert_eq!(std::mem::size_of_val(&*gauge_a), 0, "contexts are independent");
+    assert_eq!(
+        std::mem::size_of_val(&*gauge_a),
+        0,
+        "contexts are independent"
+    );
 }

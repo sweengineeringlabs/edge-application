@@ -16,7 +16,10 @@ fn test_noop_app_bootstrap_build_returns_application_happy() {
 fn test_noop_app_bootstrap_build_never_errors_error() {
     let result = NoopAppBootstrap.build(ApplicationBuildRequest);
     assert!(result.is_ok());
-    assert_eq!(result.unwrap().application.name(NameRequest).unwrap().name, "application");
+    assert_eq!(
+        result.unwrap().application.name(NameRequest).unwrap().name,
+        "application"
+    );
 }
 
 /// @covers: NoopAppBootstrap — is Copy; repeated builds all succeed

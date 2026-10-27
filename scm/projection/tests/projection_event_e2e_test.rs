@@ -2,7 +2,8 @@
 #![allow(clippy::unwrap_used, clippy::expect_used)]
 
 use edge_application_projection::{
-    ProjectionError, ProjectionEvent, ProjectionEventDescribeRequest, ProjectionEventDescribeResponse,
+    ProjectionError, ProjectionEvent, ProjectionEventDescribeRequest,
+    ProjectionEventDescribeResponse,
 };
 
 struct ConfiguredEvt {
@@ -40,7 +41,9 @@ fn test_describe_configured_event_returns_response_happy() {
         event_type: "order.created",
         aggregate_id: "order-1",
     };
-    let response = e.describe(ProjectionEventDescribeRequest).expect("describe should succeed");
+    let response = e
+        .describe(ProjectionEventDescribeRequest)
+        .expect("describe should succeed");
     assert_eq!(response.event_type, "order.created");
     assert_eq!(response.aggregate_id, "order-1");
 }
@@ -48,8 +51,13 @@ fn test_describe_configured_event_returns_response_happy() {
 /// @covers: ProjectionEvent::describe — implementor may fail
 #[test]
 fn test_describe_failing_impl_returns_err_error() {
-    let err = FailingEvt.describe(ProjectionEventDescribeRequest).unwrap_err();
-    assert_eq!(err, ProjectionError::Internal("description unavailable".into()));
+    let err = FailingEvt
+        .describe(ProjectionEventDescribeRequest)
+        .unwrap_err();
+    assert_eq!(
+        err,
+        ProjectionError::Internal("description unavailable".into())
+    );
 }
 
 /// @covers: ProjectionEvent::describe — via dyn dispatch
@@ -59,7 +67,9 @@ fn test_describe_via_dyn_dispatch_returns_response_edge() {
         event_type: "x",
         aggregate_id: "",
     };
-    let response = e.describe(ProjectionEventDescribeRequest).expect("describe should succeed");
+    let response = e
+        .describe(ProjectionEventDescribeRequest)
+        .expect("describe should succeed");
     assert_eq!(response.event_type, "x");
     assert_eq!(response.aggregate_id, "");
 }

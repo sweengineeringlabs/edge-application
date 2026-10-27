@@ -3,9 +3,8 @@
 use edge_application_observer::{
     CounterLookupRequest, GaugeLookupRequest, GaugeSetRequest, HandlerTracerBuildRequest,
     HistogramLookupRequest, HistogramRecordRequest, IncrementRequest, LogDrainBuildRequest,
-    LogEmitRequest, MetricRegistryBuildRequest, ObserveBootstrap,
-    SpanAnnotationRequest, SpanFinishRequest, SpanStartRequest, StdObserveFactory,
-    ValidationRequest, ValidationResponse,
+    LogEmitRequest, MetricRegistryBuildRequest, ObserveBootstrap, SpanAnnotationRequest,
+    SpanFinishRequest, SpanStartRequest, StdObserveFactory, ValidationRequest, ValidationResponse,
 };
 
 // --- std_factory ---
@@ -25,7 +24,11 @@ fn test_std_factory_returns_usable_factory_happy() {
         .unwrap()
         .span;
     span.finish(SpanFinishRequest).unwrap();
-    assert_eq!(std::mem::size_of_val(&*span), 0, "factory produces ZST spans");
+    assert_eq!(
+        std::mem::size_of_val(&*span),
+        0,
+        "factory produces ZST spans"
+    );
 }
 
 #[test]
@@ -46,7 +49,11 @@ fn test_std_factory_called_multiple_times_error() {
     span.finish(SpanFinishRequest).unwrap();
     // `b` is a separate factory instance; ensure it is also usable.
     let _ = b.build_handler_tracer(HandlerTracerBuildRequest).unwrap();
-    assert_eq!(std::mem::size_of_val(&*span), 0, "factories produce same ZST");
+    assert_eq!(
+        std::mem::size_of_val(&*span),
+        0,
+        "factories produce same ZST"
+    );
 }
 
 #[test]
@@ -75,7 +82,11 @@ fn test_std_factory_all_three_primitives_edge() {
 fn test_validate_initialized_factory_happy() {
     let factory = StdObserveFactory::create_factory();
     let result = factory.validate(ValidationRequest);
-    assert_eq!(result, Ok(ValidationResponse), "factory.validate() should return Ok");
+    assert_eq!(
+        result,
+        Ok(ValidationResponse),
+        "factory.validate() should return Ok"
+    );
 }
 
 #[test]
@@ -94,8 +105,16 @@ fn test_validate_called_multiple_times_edge() {
     let factory = StdObserveFactory::create_factory();
     let first = factory.validate(ValidationRequest);
     let second = factory.validate(ValidationRequest);
-    assert_eq!(first, Ok(ValidationResponse), "first validate should succeed");
-    assert_eq!(second, Ok(ValidationResponse), "second validate should also succeed");
+    assert_eq!(
+        first,
+        Ok(ValidationResponse),
+        "first validate should succeed"
+    );
+    assert_eq!(
+        second,
+        Ok(ValidationResponse),
+        "second validate should also succeed"
+    );
 }
 
 // --- build_handler_tracer ---
@@ -115,7 +134,11 @@ fn test_build_handler_tracer_std_factory_happy() {
         .unwrap()
         .span;
     span.finish(SpanFinishRequest).unwrap();
-    assert_eq!(std::mem::size_of_val(&*span), 0, "tracer produces ZST spans");
+    assert_eq!(
+        std::mem::size_of_val(&*span),
+        0,
+        "tracer produces ZST spans"
+    );
 }
 
 #[test]
@@ -133,7 +156,11 @@ fn test_build_handler_tracer_uninitialized_error() {
         .unwrap()
         .span;
     span.finish(SpanFinishRequest).unwrap();
-    assert_eq!(std::mem::size_of_val(&*span), 0, "uninitialized factory produces ZST spans");
+    assert_eq!(
+        std::mem::size_of_val(&*span),
+        0,
+        "uninitialized factory produces ZST spans"
+    );
 }
 
 #[test]
@@ -163,7 +190,11 @@ fn test_build_handler_tracer_multiple_calls_edge() {
         .span;
     s1.finish(SpanFinishRequest).unwrap();
     s2.finish(SpanFinishRequest).unwrap();
-    assert_eq!(std::mem::size_of_val(&*s1), 0, "multiple tracers produce ZST spans");
+    assert_eq!(
+        std::mem::size_of_val(&*s1),
+        0,
+        "multiple tracers produce ZST spans"
+    );
 }
 
 // --- build_metric_registry ---
@@ -176,11 +207,17 @@ fn test_build_metric_registry_std_factory_happy() {
         .unwrap()
         .metric_registry;
     let counter = registry
-        .counter(CounterLookupRequest { name: "c".to_string() })
+        .counter(CounterLookupRequest {
+            name: "c".to_string(),
+        })
         .unwrap()
         .counter;
     counter.increment(IncrementRequest { delta: 1 }).unwrap();
-    assert_eq!(std::mem::size_of_val(&*counter), 0, "registry produces ZST counters");
+    assert_eq!(
+        std::mem::size_of_val(&*counter),
+        0,
+        "registry produces ZST counters"
+    );
 }
 
 #[test]
@@ -191,11 +228,17 @@ fn test_build_metric_registry_uninitialized_error() {
         .unwrap()
         .metric_registry;
     let gauge = registry
-        .gauge(GaugeLookupRequest { name: "g".to_string() })
+        .gauge(GaugeLookupRequest {
+            name: "g".to_string(),
+        })
         .unwrap()
         .gauge;
     gauge.set(GaugeSetRequest { value: 0.0 }).unwrap();
-    assert_eq!(std::mem::size_of_val(&*gauge), 0, "uninitialized factory produces ZST gauges");
+    assert_eq!(
+        std::mem::size_of_val(&*gauge),
+        0,
+        "uninitialized factory produces ZST gauges"
+    );
 }
 
 #[test]
@@ -210,16 +253,24 @@ fn test_build_metric_registry_multiple_calls_edge() {
         .unwrap()
         .metric_registry;
     let c1 = r1
-        .counter(CounterLookupRequest { name: "a".to_string() })
+        .counter(CounterLookupRequest {
+            name: "a".to_string(),
+        })
         .unwrap()
         .counter;
     let c2 = r2
-        .counter(CounterLookupRequest { name: "b".to_string() })
+        .counter(CounterLookupRequest {
+            name: "b".to_string(),
+        })
         .unwrap()
         .counter;
     c1.increment(IncrementRequest { delta: 1 }).unwrap();
     c2.increment(IncrementRequest { delta: 2 }).unwrap();
-    assert_eq!(std::mem::size_of_val(&*c1), 0, "multiple registries produce ZST instruments");
+    assert_eq!(
+        std::mem::size_of_val(&*c1),
+        0,
+        "multiple registries produce ZST instruments"
+    );
 }
 
 // --- build_log_drain ---
@@ -238,7 +289,11 @@ fn test_build_log_drain_std_factory_happy() {
             message: "msg".to_string(),
         })
         .unwrap();
-    assert_eq!(std::mem::size_of_val(&*drain), 0, "factory produces ZST drain");
+    assert_eq!(
+        std::mem::size_of_val(&*drain),
+        0,
+        "factory produces ZST drain"
+    );
 }
 
 #[test]
@@ -255,7 +310,11 @@ fn test_build_log_drain_uninitialized_error() {
             message: "err".to_string(),
         })
         .unwrap();
-    assert_eq!(std::mem::size_of_val(&*drain), 0, "uninitialized factory produces ZST drain");
+    assert_eq!(
+        std::mem::size_of_val(&*drain),
+        0,
+        "uninitialized factory produces ZST drain"
+    );
 }
 
 #[test]
@@ -338,7 +397,11 @@ fn test_observe_factory_all_three_primitives_independently_usable() {
             message: "done".to_string(),
         })
         .unwrap();
-    assert_eq!(std::mem::size_of_val(&*span), 0, "all primitives work independently");
+    assert_eq!(
+        std::mem::size_of_val(&*span),
+        0,
+        "all primitives work independently"
+    );
 }
 
 #[test]

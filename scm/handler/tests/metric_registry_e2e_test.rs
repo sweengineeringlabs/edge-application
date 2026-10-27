@@ -17,7 +17,10 @@ impl Counter for StubCounter {
 
 struct StubHistogram;
 impl Histogram for StubHistogram {
-    fn record(&self, _req: HistogramRecordRequest) -> Result<HistogramRecordResponse, ObserveError> {
+    fn record(
+        &self,
+        _req: HistogramRecordRequest,
+    ) -> Result<HistogramRecordResponse, ObserveError> {
         Ok(HistogramRecordResponse)
     }
 }
@@ -65,9 +68,14 @@ impl MetricRegistry for FakeRegistry {
 fn test_counter_known_name_returns_counter_happy() {
     let registry = FakeRegistry;
     let response = registry
-        .counter(CounterLookupRequest { name: "requests".into() })
+        .counter(CounterLookupRequest {
+            name: "requests".into(),
+        })
         .expect("counter should succeed");
-    assert!(response.counter.increment(IncrementRequest { delta: 1 }).is_ok());
+    assert!(response
+        .counter
+        .increment(IncrementRequest { delta: 1 })
+        .is_ok());
 }
 
 /// @covers: MetricRegistry::counter — empty name is rejected
@@ -75,7 +83,9 @@ fn test_counter_known_name_returns_counter_happy() {
 fn test_counter_empty_name_returns_err_error() {
     let registry = FakeRegistry;
     assert!(matches!(
-        registry.counter(CounterLookupRequest { name: String::new() }),
+        registry.counter(CounterLookupRequest {
+            name: String::new()
+        }),
         Err(ObserveError::BackendUnavailable(_))
     ));
 }
@@ -84,8 +94,12 @@ fn test_counter_empty_name_returns_err_error() {
 #[test]
 fn test_counter_repeated_lookups_return_independent_instruments_edge() {
     let registry = FakeRegistry;
-    let a = registry.counter(CounterLookupRequest { name: "a".into() }).unwrap();
-    let b = registry.counter(CounterLookupRequest { name: "b".into() }).unwrap();
+    let a = registry
+        .counter(CounterLookupRequest { name: "a".into() })
+        .unwrap();
+    let b = registry
+        .counter(CounterLookupRequest { name: "b".into() })
+        .unwrap();
     assert!(a.counter.increment(IncrementRequest { delta: 1 }).is_ok());
     assert!(b.counter.increment(IncrementRequest { delta: 1 }).is_ok());
 }
@@ -95,7 +109,9 @@ fn test_counter_repeated_lookups_return_independent_instruments_edge() {
 fn test_histogram_known_name_returns_histogram_happy() {
     let registry = FakeRegistry;
     let response = registry
-        .histogram(HistogramLookupRequest { name: "latency".into() })
+        .histogram(HistogramLookupRequest {
+            name: "latency".into(),
+        })
         .expect("histogram should succeed");
     assert!(response
         .histogram
@@ -108,7 +124,9 @@ fn test_histogram_known_name_returns_histogram_happy() {
 fn test_histogram_empty_name_returns_err_error() {
     let registry = FakeRegistry;
     assert!(matches!(
-        registry.histogram(HistogramLookupRequest { name: String::new() }),
+        registry.histogram(HistogramLookupRequest {
+            name: String::new()
+        }),
         Err(ObserveError::BackendUnavailable(_))
     ));
 }
@@ -123,8 +141,14 @@ fn test_histogram_repeated_lookups_return_independent_instruments_edge() {
     let b = registry
         .histogram(HistogramLookupRequest { name: "b".into() })
         .unwrap();
-    assert!(a.histogram.record(HistogramRecordRequest { value: 1.0 }).is_ok());
-    assert!(b.histogram.record(HistogramRecordRequest { value: 2.0 }).is_ok());
+    assert!(a
+        .histogram
+        .record(HistogramRecordRequest { value: 1.0 })
+        .is_ok());
+    assert!(b
+        .histogram
+        .record(HistogramRecordRequest { value: 2.0 })
+        .is_ok());
 }
 
 /// @covers: MetricRegistry::gauge — resolves a usable gauge for a known name
@@ -132,7 +156,9 @@ fn test_histogram_repeated_lookups_return_independent_instruments_edge() {
 fn test_gauge_known_name_returns_gauge_happy() {
     let registry = FakeRegistry;
     let response = registry
-        .gauge(GaugeLookupRequest { name: "queue_depth".into() })
+        .gauge(GaugeLookupRequest {
+            name: "queue_depth".into(),
+        })
         .expect("gauge should succeed");
     assert!(response.gauge.set(GaugeSetRequest { value: 3.0 }).is_ok());
 }
@@ -142,7 +168,9 @@ fn test_gauge_known_name_returns_gauge_happy() {
 fn test_gauge_empty_name_returns_err_error() {
     let registry = FakeRegistry;
     assert!(matches!(
-        registry.gauge(GaugeLookupRequest { name: String::new() }),
+        registry.gauge(GaugeLookupRequest {
+            name: String::new()
+        }),
         Err(ObserveError::BackendUnavailable(_))
     ));
 }
@@ -151,8 +179,12 @@ fn test_gauge_empty_name_returns_err_error() {
 #[test]
 fn test_gauge_repeated_lookups_return_independent_instruments_edge() {
     let registry = FakeRegistry;
-    let a = registry.gauge(GaugeLookupRequest { name: "a".into() }).unwrap();
-    let b = registry.gauge(GaugeLookupRequest { name: "b".into() }).unwrap();
+    let a = registry
+        .gauge(GaugeLookupRequest { name: "a".into() })
+        .unwrap();
+    let b = registry
+        .gauge(GaugeLookupRequest { name: "b".into() })
+        .unwrap();
     assert!(a.gauge.set(GaugeSetRequest { value: 1.0 }).is_ok());
     assert!(b.gauge.set(GaugeSetRequest { value: 2.0 }).is_ok());
 }
