@@ -37,6 +37,22 @@ fn test_response_bound_accepts_zero_sized_type_edge() {
     assert_eq!(std::mem::size_of_val(&resp), 0);
 }
 
+/// @covers: Response — empty collection payloads satisfy the shared handler bound
+#[test]
+fn test_response_bound_accepts_empty_vec_happy() {
+    let resp = accept_response(Vec::<String>::new());
+    assert!(resp.is_empty());
+    assert_eq!(resp.validate(ValidationRequest), Ok(ValidationResponse));
+}
+
+/// @covers: Response — populated collection payloads preserve their values
+#[test]
+fn test_response_bound_accepts_populated_vec_happy() {
+    let resp = accept_response(vec![String::from("first"), String::from("second")]);
+    assert_eq!(resp, ["first", "second"]);
+    assert_eq!(resp.validate(ValidationRequest), Ok(ValidationResponse));
+}
+
 /// @covers: Response::validate — default implementation always passes
 #[test]
 fn test_validate_default_impl_returns_ok_happy() {
