@@ -148,7 +148,11 @@ fn test_finish_span_no_records_edge() {
         .unwrap()
         .span;
     span.finish(SpanFinishRequest).unwrap();
-    assert_eq!(std::mem::size_of_val(&*span), 0, "finish without records works");
+    assert_eq!(
+        std::mem::size_of_val(&*span),
+        0,
+        "finish without records works"
+    );
 }
 
 #[test]

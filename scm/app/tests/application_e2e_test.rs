@@ -1,7 +1,9 @@
 //! Integration tests — `Application` trait via SAF facade.
 #![allow(clippy::unwrap_used, clippy::expect_used)]
 
-use edge_application_app::{AppError, Application, ApplicationRunRequest, ApplicationRunResponse, NameRequest};
+use edge_application_app::{
+    AppError, Application, ApplicationRunRequest, ApplicationRunResponse, NameRequest,
+};
 use futures::executor::block_on;
 use futures::future::BoxFuture;
 
@@ -10,14 +12,20 @@ impl Application for Echo {
     fn name(&self, _req: NameRequest) -> Result<edge_application_app::NameResponse, AppError> {
         Ok(edge_application_app::NameResponse { name: "echo" })
     }
-    fn run(&self, _req: ApplicationRunRequest) -> BoxFuture<'_, Result<ApplicationRunResponse, AppError>> {
+    fn run(
+        &self,
+        _req: ApplicationRunRequest,
+    ) -> BoxFuture<'_, Result<ApplicationRunResponse, AppError>> {
         Box::pin(async { Ok(ApplicationRunResponse) })
     }
 }
 
 struct AlwaysFails;
 impl Application for AlwaysFails {
-    fn run(&self, _req: ApplicationRunRequest) -> BoxFuture<'_, Result<ApplicationRunResponse, AppError>> {
+    fn run(
+        &self,
+        _req: ApplicationRunRequest,
+    ) -> BoxFuture<'_, Result<ApplicationRunResponse, AppError>> {
         Box::pin(async { Err(AppError::BootFailed("deliberate".into())) })
     }
 }
@@ -44,7 +52,10 @@ fn test_name_via_dyn_dispatch_returns_name_edge() {
 /// @covers: Application::run — success path
 #[test]
 fn test_run_returns_ok_happy() {
-    assert_eq!(block_on(Echo.run(ApplicationRunRequest)), Ok(ApplicationRunResponse));
+    assert_eq!(
+        block_on(Echo.run(ApplicationRunRequest)),
+        Ok(ApplicationRunResponse)
+    );
 }
 
 /// @covers: Application::run — failure propagates error
@@ -62,8 +73,14 @@ fn test_run_returns_boot_failed_error() {
 /// @covers: Application::run — repeated calls are independent
 #[test]
 fn test_run_repeated_calls_are_independent_edge() {
-    assert_eq!(block_on(Echo.run(ApplicationRunRequest)), Ok(ApplicationRunResponse));
-    assert_eq!(block_on(Echo.run(ApplicationRunRequest)), Ok(ApplicationRunResponse));
+    assert_eq!(
+        block_on(Echo.run(ApplicationRunRequest)),
+        Ok(ApplicationRunResponse)
+    );
+    assert_eq!(
+        block_on(Echo.run(ApplicationRunRequest)),
+        Ok(ApplicationRunResponse)
+    );
 }
 
 /// @covers: Application::noop — returns NoopApplication with default name
@@ -79,7 +96,10 @@ fn test_noop_returns_noop_application_happy() {
 fn test_noop_name_differs_from_caller_name_error() {
     use edge_application_app::NoopApplication;
     let noop: NoopApplication = Echo::noop();
-    assert_ne!(noop.name(NameRequest).unwrap().name, Echo.name(NameRequest).unwrap().name);
+    assert_ne!(
+        noop.name(NameRequest).unwrap().name,
+        Echo.name(NameRequest).unwrap().name
+    );
 }
 
 /// @covers: Application::noop — returned NoopApplication is Copy
@@ -88,5 +108,8 @@ fn test_noop_application_is_copy_edge() {
     use edge_application_app::NoopApplication;
     let noop: NoopApplication = Echo::noop();
     let copy = noop;
-    assert_eq!(noop.name(NameRequest).unwrap().name, copy.name(NameRequest).unwrap().name);
+    assert_eq!(
+        noop.name(NameRequest).unwrap().name,
+        copy.name(NameRequest).unwrap().name
+    );
 }

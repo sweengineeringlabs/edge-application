@@ -7,7 +7,10 @@ fn test_noop_observe_svc_factory_constant_value_happy() {
 
 #[test]
 fn test_noop_observe_svc_factory_constant_not_empty_error() {
-    assert!(!NOOP_OBSERVE_SVC_FACTORY.is_empty(), "NOOP_OBSERVE_SVC_FACTORY must not be empty");
+    assert!(
+        !NOOP_OBSERVE_SVC_FACTORY.is_empty(),
+        "NOOP_OBSERVE_SVC_FACTORY must not be empty"
+    );
 }
 
 #[test]

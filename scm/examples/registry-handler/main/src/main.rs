@@ -18,7 +18,9 @@ mod core;
 use std::sync::Arc;
 
 use edge_application_command::DirectCommandBus;
-use edge_application_handler::{ExecutionRequest as HandlerExecutionRequest, Handler, HandlerContext};
+use edge_application_handler::{
+    ExecutionRequest as HandlerExecutionRequest, Handler, HandlerContext,
+};
 use edge_application_observer::StdObserveFactory;
 use edge_application_registry::{MemoryRegistry, Registry};
 use edge_security_runtime::SecurityContext;
@@ -27,12 +29,13 @@ use crate::api::{Greeter, GreeterRegistrationRequest, GreeterResolutionRequest};
 use crate::core::{GreeterRegistrationHandler, GreeterResolutionHandler};
 
 #[tokio::main]
-async fn main() {
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
     tracing_subscriber::fmt::init();
 
     println!("=== Handler + injected Registry<Value> — constructor injection, Self::Request carries the id ===\n");
 
-    let registry: Arc<dyn Registry<Value = dyn Greeter>> = Arc::new(MemoryRegistry::<dyn Greeter>::new());
+    let registry: Arc<dyn Registry<Value = dyn Greeter>> =
+        Arc::new(MemoryRegistry::<dyn Greeter>::new());
     let register_handler = GreeterRegistrationHandler {
         registry: Arc::clone(&registry),
     };
@@ -58,9 +61,11 @@ async fn main() {
             },
             ctx: &ctx,
         })
-        .await
-        .expect("register should succeed");
-    println!("[3] GreeterRegistrationHandler reports registered = {}\n", register_resp.registered);
+        .await?;
+    println!(
+        "[3] GreeterRegistrationHandler reports registered = {}\n",
+        register_resp.registered
+    );
 
     println!("[0] resolve_handler.execute(GreeterResolutionRequest {{ id: \"es-greeter\", name: \"Ada\" }})");
     let resolve_resp = resolve_handler
@@ -71,9 +76,11 @@ async fn main() {
             },
             ctx: &ctx,
         })
-        .await
-        .expect("resolve should succeed");
-    println!("[3] GreeterResolutionHandler returned {:?}\n", resolve_resp.greeting);
+        .await?;
+    println!(
+        "[3] GreeterResolutionHandler returned {:?}\n",
+        resolve_resp.greeting
+    );
 
     println!("[0] register_handler.execute(GreeterRegistrationRequest {{ id: \"es-greeter\", language: \"en\" }}) — duplicate id");
     let duplicate = register_handler
@@ -90,9 +97,14 @@ async fn main() {
         Err(e) => println!("[3] GreeterRegistrationHandler returned an error, as expected: {e}\n"),
     }
 
-    println!("Conclusion: GreeterRegistrationHandler used ctx.observer for real per-request logging,");
+    println!(
+        "Conclusion: GreeterRegistrationHandler used ctx.observer for real per-request logging,"
+    );
     println!("but both handlers reached the actual registry only through their own, independently");
     println!("injected Registry<dyn Greeter> — never through HandlerContext, which structurally");
     println!("cannot hold a generic-per-type port. The registry's own duplicate-id rejection");
-    println!("propagated cleanly as a real HandlerError. This completes all seven applicable ports.");
+    println!(
+        "propagated cleanly as a real HandlerError. This completes all seven applicable ports."
+    );
+    Ok(())
 }

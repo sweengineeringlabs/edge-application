@@ -12,9 +12,9 @@ mod saf;
 
 pub use api::AlwaysMatchSpec;
 pub use api::CountByResponse;
-pub use api::MemoryRepository;
 pub use api::MatchingEntitiesResponse;
 pub use api::MatchingEntityResponse;
+pub use api::MemoryRepository;
 pub use api::Page;
 pub use api::RepositoryCountResponse;
 pub use api::RepositoryDeleteResponse;

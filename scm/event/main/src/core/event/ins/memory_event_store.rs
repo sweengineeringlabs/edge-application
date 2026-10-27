@@ -126,7 +126,10 @@ where
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::api::{EventAggregateIdRequest, EventAggregateIdResponse, EventError, EventTypeRequest, EventTypeResponse};
+    use crate::api::{
+        EventAggregateIdRequest, EventAggregateIdResponse, EventError, EventTypeRequest,
+        EventTypeResponse,
+    };
 
     #[derive(Clone)]
     struct MemoryEventStoreEvt(String);

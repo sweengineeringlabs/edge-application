@@ -17,6 +17,10 @@ service_type     = "base"
 [lib]
 path = "main/src/lib.rs"
 
+[[example]]
+name = "base_basic"
+path = "examples/basic.rs"
+
 [dependencies]
 serde.workspace = true
 thiserror.workspace = true

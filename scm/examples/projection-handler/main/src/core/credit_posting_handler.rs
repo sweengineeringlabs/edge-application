@@ -11,7 +11,7 @@ use edge_application_handler::{
 use edge_application_projection::{Projection, TryDrainRequest};
 use parking_lot::Mutex;
 
-use crate::api::{Balance, Credited, CreditPostingRequest, CreditPostingResponse};
+use crate::api::{Balance, CreditPostingRequest, CreditPostingResponse, Credited};
 
 /// Holds its own injected projection behind a lock; genuinely reads `req.ctx`.
 pub struct CreditPostingHandler {
@@ -40,7 +40,9 @@ impl Handler for CreditPostingHandler {
             })
             .map_err(|e| HandlerError::ExecutionFailed(e.to_string()))?;
 
-        tracing::info!("[1] CreditPostingHandler::execute — delegating to its own injected Projection");
+        tracing::info!(
+            "[1] CreditPostingHandler::execute — delegating to its own injected Projection"
+        );
         let events: Vec<Credited> = req
             .req
             .amounts

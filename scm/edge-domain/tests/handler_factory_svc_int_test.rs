@@ -5,7 +5,7 @@
 
 use edge_application::DirectCommandBusRequest;
 use edge_application::DomainRuntime;
-use edge_application::{Domain, Handler, HandlerContext};
+use edge_application::{Domain, HandlerContext};
 use edge_application_handler::{ExecutionRequest, IdRequest, PatternRequest};
 use edge_application_observer::StdObserveFactory;
 use edge_security_runtime::SecurityContext;

@@ -1,7 +1,8 @@
 //! `Credited` — the event type folded into the injected `Projection<Credited, u64>`.
 
 use edge_application_projection::{
-    ProjectionError, ProjectionEvent, ProjectionEventDescribeRequest, ProjectionEventDescribeResponse,
+    ProjectionError, ProjectionEvent, ProjectionEventDescribeRequest,
+    ProjectionEventDescribeResponse,
 };
 
 #[derive(Debug, Clone, Copy)]

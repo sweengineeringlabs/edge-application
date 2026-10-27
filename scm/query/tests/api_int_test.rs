@@ -51,7 +51,9 @@ fn test_query_result_response_holds_result_happy() {
 /// @covers: QueryDispatchRequest
 #[test]
 fn test_query_dispatch_request_holds_boxed_query_happy() {
-    let req = QueryDispatchRequest { query: Box::new(Echo("hi".into())) };
+    let req = QueryDispatchRequest {
+        query: Box::new(Echo("hi".into())),
+    };
     let result = futures::executor::block_on(req.query.execute(QueryExecuteRequest)).unwrap();
     assert_eq!(result.result, "hi");
 }

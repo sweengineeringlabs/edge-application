@@ -7,7 +7,10 @@ fn test_log_drain_svc_factory_constant_value_happy() {
 
 #[test]
 fn test_log_drain_svc_factory_constant_not_empty_error() {
-    assert!(!LOG_DRAIN_SVC_FACTORY.is_empty(), "LOG_DRAIN_SVC_FACTORY must not be empty");
+    assert!(
+        !LOG_DRAIN_SVC_FACTORY.is_empty(),
+        "LOG_DRAIN_SVC_FACTORY must not be empty"
+    );
 }
 
 #[test]

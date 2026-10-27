@@ -13,7 +13,10 @@ fn test_invalid_transition_display_includes_from_and_to_happy() {
     let msg = e.to_string();
     assert!(msg.contains("Idle"), "expected 'Idle' in: {msg}");
     assert!(msg.contains("Stopped"), "expected 'Stopped' in: {msg}");
-    assert!(msg.contains("not allowed"), "expected 'not allowed' in: {msg}");
+    assert!(
+        msg.contains("not allowed"),
+        "expected 'not allowed' in: {msg}"
+    );
 }
 
 /// @covers: LifecycleError::InvalidTransition — equality discriminates on both fields

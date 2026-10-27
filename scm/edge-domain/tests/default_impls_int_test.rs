@@ -10,7 +10,9 @@ use edge_application::{
     EventPublisher, EventPublisherPublishRequest, EventTypeRequest, EventTypeResponse,
 };
 use edge_application::{DirectCommandBusRequest, NoopEventPublisherRequest};
-use edge_application_command::{CommandDispatchRequest, ExecutionRequest, NameRequest, NameResponse};
+use edge_application_command::{
+    CommandDispatchRequest, ExecutionRequest, NameRequest, NameResponse,
+};
 use futures::future::BoxFuture;
 use std::sync::Arc;
 use std::time::SystemTime;

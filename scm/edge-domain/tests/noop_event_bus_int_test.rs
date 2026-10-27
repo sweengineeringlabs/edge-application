@@ -4,8 +4,8 @@
 use edge_application::DomainRuntime;
 use edge_application::NoopEventBusRequest;
 use edge_application::{
-    Domain, EventBusPublishRequest, EventBusSubscribeRequest, EventSource,
-    EventSourceRecvNextRequest, NoopEventBus,
+    Domain, EventBusPublishRequest, EventBusSubscribeRequest, EventSourceRecvNextRequest,
+    NoopEventBus,
 };
 use futures::executor::block_on;
 use std::sync::Arc;
