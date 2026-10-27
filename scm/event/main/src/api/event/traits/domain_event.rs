@@ -2,11 +2,11 @@
 
 use std::time::SystemTime;
 
-use crate::api::event::errors::EventError;
 use crate::api::event::dto::{
     EventAggregateIdRequest, EventAggregateIdResponse, EventOccurredAtRequest,
     EventOccurredAtResponse, EventTypeRequest, EventTypeResponse,
 };
+use crate::api::event::errors::EventError;
 
 /// A fact that occurred in the domain.
 ///
@@ -15,7 +15,9 @@ use crate::api::event::dto::{
 pub trait DomainEvent: Send + Sync {
     /// Stable type name for this event, e.g. `"order.created"`.
     fn event_type(&self, _req: EventTypeRequest) -> Result<EventTypeResponse<'_>, EventError> {
-        Ok(EventTypeResponse { event_type: "event" })
+        Ok(EventTypeResponse {
+            event_type: "event",
+        })
     }
 
     /// ID of the aggregate that produced this event.

@@ -6,7 +6,9 @@
 
 use std::time::{Duration, SystemTime};
 
-use edge_application_clock::{ElapsedSinceEpochRequest, ElapsedSinceEpochResponse, NowRequest, NowResponse};
+use edge_application_clock::{
+    ElapsedSinceEpochRequest, ElapsedSinceEpochResponse, NowRequest, NowResponse,
+};
 
 /// @covers: ElapsedSinceEpochRequest
 #[test]

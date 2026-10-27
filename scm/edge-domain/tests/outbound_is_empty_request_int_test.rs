@@ -6,7 +6,8 @@ use edge_application::OutboundIsEmptyRequest;
 /// @covers: OutboundIsEmptyRequest
 #[test]
 fn test_outbound_is_empty_request_default_happy() {
-    assert_eq!(OutboundIsEmptyRequest::default(), OutboundIsEmptyRequest);
+    let default: OutboundIsEmptyRequest = Default::default();
+    assert_eq!(default, OutboundIsEmptyRequest);
 }
 
 /// @covers: OutboundIsEmptyRequest

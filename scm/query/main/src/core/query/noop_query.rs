@@ -5,10 +5,10 @@ use std::marker::PhantomData;
 
 use futures::future::BoxFuture;
 
-use crate::api::Query;
-use crate::api::QueryBus;
 use crate::api::NoopQuery;
 use crate::api::NoopQueryBus;
+use crate::api::Query;
+use crate::api::QueryBus;
 use crate::api::QueryError;
 use crate::api::{QueryDispatchRequest, QueryExecuteRequest, QueryResultResponse};
 

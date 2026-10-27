@@ -10,14 +10,22 @@ use std::time::SystemTime;
 #[test]
 fn test_event_type_noop_domain_event_returns_default_happy() {
     let evt = NoopDomainEvent;
-    assert_eq!(evt.event_type(EventTypeRequest).unwrap().event_type, "event");
+    assert_eq!(
+        evt.event_type(EventTypeRequest).unwrap().event_type,
+        "event"
+    );
 }
 
 /// @covers: NoopDomainEvent — aggregate_id returns empty string
 #[test]
 fn test_aggregate_id_noop_domain_event_returns_empty_happy() {
     let evt = NoopDomainEvent;
-    assert_eq!(evt.aggregate_id(EventAggregateIdRequest).unwrap().aggregate_id, "");
+    assert_eq!(
+        evt.aggregate_id(EventAggregateIdRequest)
+            .unwrap()
+            .aggregate_id,
+        ""
+    );
 }
 
 /// @covers: NoopDomainEvent — occurred_at returns a time within the test window
@@ -47,5 +55,8 @@ fn test_clone_noop_domain_event_is_independent_edge() {
 fn test_noop_domain_event_satisfies_dyn_domain_event_happy() {
     let evt = NoopDomainEvent;
     let dyn_evt: &dyn DomainEvent = &evt;
-    assert_eq!(dyn_evt.event_type(EventTypeRequest).unwrap().event_type, "event");
+    assert_eq!(
+        dyn_evt.event_type(EventTypeRequest).unwrap().event_type,
+        "event"
+    );
 }

@@ -1,7 +1,9 @@
 //! Structural coverage for [`CommandDispatchRequest`].
 #![allow(clippy::unwrap_used, clippy::expect_used)]
 
-use edge_application_base::{Command, CommandDispatchRequest, CommandError, CommandExecutionRequest};
+use edge_application_base::{
+    Command, CommandDispatchRequest, CommandError, CommandExecutionRequest,
+};
 use futures::executor::block_on;
 use futures::future::BoxFuture;
 
@@ -25,7 +27,10 @@ fn test_command_dispatch_request_wraps_the_given_command_happy() {
     let req = CommandDispatchRequest {
         command: Box::new(Ok_),
     };
-    assert_eq!(block_on(req.command.execute(CommandExecutionRequest)), Ok(()));
+    assert_eq!(
+        block_on(req.command.execute(CommandExecutionRequest)),
+        Ok(())
+    );
 }
 
 /// @covers: CommandDispatchRequest
@@ -43,5 +48,8 @@ fn test_command_dispatch_request_field_is_publicly_constructible_edge() {
     let req = CommandDispatchRequest {
         command: Box::new(Ok_),
     };
-    assert_eq!(block_on(req.command.execute(CommandExecutionRequest)), Ok(()));
+    assert_eq!(
+        block_on(req.command.execute(CommandExecutionRequest)),
+        Ok(())
+    );
 }

@@ -7,9 +7,8 @@
 use edge_application_observer::{
     CounterLookupRequest, GaugeLookupRequest, GaugeSetRequest, HandlerTracerBuildRequest,
     HistogramLookupRequest, HistogramRecordRequest, IncrementRequest, LogDrainBuildRequest,
-    LogEmitRequest, MetricRegistryBuildRequest, ObserveBootstrap,
-    SpanAnnotationRequest, SpanFinishRequest, SpanStartRequest, StdObserveFactory,
-    ValidationRequest,
+    LogEmitRequest, MetricRegistryBuildRequest, ObserveBootstrap, SpanAnnotationRequest,
+    SpanFinishRequest, SpanStartRequest, StdObserveFactory, ValidationRequest,
 };
 
 fn main() {
@@ -32,7 +31,8 @@ fn main() {
         value: "3".to_string(),
     })
     .expect("record should succeed");
-    span.finish(SpanFinishRequest).expect("finish should succeed");
+    span.finish(SpanFinishRequest)
+        .expect("finish should succeed");
 
     // --- Metrics ---
     let registry = StdObserveFactory::noop_metric_registry();

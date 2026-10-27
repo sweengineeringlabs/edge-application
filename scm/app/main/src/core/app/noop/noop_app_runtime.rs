@@ -24,7 +24,10 @@ mod tests {
 
     struct NoopAppRuntimeStubBootstrap;
     impl Bootstrap for NoopAppRuntimeStubBootstrap {
-        fn build(&self, _req: ApplicationBuildRequest) -> Result<ApplicationBuildResponse, AppError> {
+        fn build(
+            &self,
+            _req: ApplicationBuildRequest,
+        ) -> Result<ApplicationBuildResponse, AppError> {
             Err(AppError::BootFailed("stub".into()))
         }
     }
@@ -51,6 +54,9 @@ mod tests {
 
     #[test]
     fn test_name_returns_app_runtime_edge() {
-        assert_eq!(NoopAppRuntime.name(NameRequest).unwrap().name, "app_runtime");
+        assert_eq!(
+            NoopAppRuntime.name(NameRequest).unwrap().name,
+            "app_runtime"
+        );
     }
 }

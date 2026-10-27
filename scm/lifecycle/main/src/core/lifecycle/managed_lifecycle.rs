@@ -5,9 +5,9 @@ use std::sync::RwLock;
 
 use async_trait::async_trait;
 
+use crate::api::Lifecycle;
 use crate::api::LifecycleError;
 use crate::api::ManagedLifecycle;
-use crate::api::Lifecycle;
 use crate::api::TransitionPolicy;
 use crate::api::{
     LifecycleStateRequest, LifecycleStateResponse, LifecycleTransitionRequest,

@@ -1,7 +1,5 @@
 //! Object-safe runtime seam for `Domain`'s non-generic constructors.
 
-#[cfg(any(feature = "command", feature = "event"))]
-use crate::api::domain::errors::DomainError;
 #[cfg(feature = "command")]
 use crate::api::domain::dto::{DirectCommandBusRequest, DirectCommandBusResponse};
 #[cfg(feature = "event")]
@@ -9,6 +7,8 @@ use crate::api::domain::dto::{
     InProcessEventBusRequest, InProcessEventBusResponse, NoopEventBusRequest, NoopEventBusResponse,
     NoopEventPublisherRequest, NoopEventPublisherResponse,
 };
+#[cfg(any(feature = "command", feature = "event"))]
+use crate::api::domain::errors::DomainError;
 
 /// Instance-based factory seam for [`Domain`](crate::api::domain::domain::Domain)'s
 /// constructors that take no caller-supplied type parameters.

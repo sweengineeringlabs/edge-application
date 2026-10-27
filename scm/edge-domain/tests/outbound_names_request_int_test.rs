@@ -6,7 +6,8 @@ use edge_application::OutboundNamesRequest;
 /// @covers: OutboundNamesRequest
 #[test]
 fn test_outbound_names_request_default_happy() {
-    assert_eq!(OutboundNamesRequest::default(), OutboundNamesRequest);
+    let default: OutboundNamesRequest = Default::default();
+    assert_eq!(default, OutboundNamesRequest);
 }
 
 /// @covers: OutboundNamesRequest

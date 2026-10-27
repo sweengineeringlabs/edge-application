@@ -8,7 +8,9 @@ use edge_application::CommandError;
 use edge_application::DirectCommandBusRequest;
 use edge_application::Domain;
 use edge_application::DomainRuntime;
-use edge_application_command::{CommandDispatchRequest, ExecutionRequest, NameRequest, NameResponse};
+use edge_application_command::{
+    CommandDispatchRequest, ExecutionRequest, NameRequest, NameResponse,
+};
 
 struct Noop;
 impl Command for Noop {

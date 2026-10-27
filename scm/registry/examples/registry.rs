@@ -3,7 +3,7 @@
 use std::sync::Arc;
 
 use edge_application_registry::{
-    DeregisterRequest, MemoryRegistry, ListIdsRequest, RegisterRequest, Registry, RegistryError,
+    DeregisterRequest, ListIdsRequest, MemoryRegistry, RegisterRequest, Registry, RegistryError,
     RegistryLookupRequest, TryRegisterRequest,
 };
 

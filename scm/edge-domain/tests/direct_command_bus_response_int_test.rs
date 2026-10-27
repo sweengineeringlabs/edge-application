@@ -5,7 +5,9 @@
 use edge_application::{
     Command, CommandBus, CommandError, DirectCommandBusRequest, Domain, DomainRuntime,
 };
-use edge_application_command::{CommandDispatchRequest, ExecutionRequest, NameRequest, NameResponse};
+use edge_application_command::{
+    CommandDispatchRequest, ExecutionRequest, NameRequest, NameResponse,
+};
 
 struct Noop;
 impl Command for Noop {

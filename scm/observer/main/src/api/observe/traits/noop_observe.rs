@@ -1,7 +1,7 @@
 //! `NoopObserve` — factory trait for all noop observability primitives.
 
-use crate::api::observe::errors::ObserveError;
 use crate::api::observe::dto::{BootstrapNameRequest, BootstrapNameResponse};
+use crate::api::observe::errors::ObserveError;
 
 use super::Counter;
 use super::Gauge;

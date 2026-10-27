@@ -1,7 +1,10 @@
 //! SAF facade tests — `Query` trait.
 #![allow(clippy::unwrap_used, clippy::expect_used)]
 
-use edge_application_query::{Query, QueryError, QueryExecuteRequest, QueryNameRequest, QueryNameResponse, QueryResultResponse};
+use edge_application_query::{
+    Query, QueryError, QueryExecuteRequest, QueryNameRequest, QueryNameResponse,
+    QueryResultResponse,
+};
 use futures::executor::block_on;
 use futures::future::BoxFuture;
 
@@ -37,7 +40,13 @@ impl Query for Fail {
 /// @covers: Query::name — configured name returned
 #[test]
 fn test_name_configured_value_returned_happy() {
-    assert_eq!(GetStr("get-order".into()).name(QueryNameRequest).unwrap().name, "get-order");
+    assert_eq!(
+        GetStr("get-order".into())
+            .name(QueryNameRequest)
+            .unwrap()
+            .name,
+        "get-order"
+    );
 }
 
 /// @covers: Query::name — default impl returns "query"
@@ -56,7 +65,12 @@ fn test_name_via_dyn_dispatch_returns_name_edge() {
 /// @covers: Query::execute — success
 #[test]
 fn test_execute_ok_query_returns_ok_happy() {
-    assert_eq!(block_on(GetStr("hi".into()).execute(QueryExecuteRequest)).unwrap().result, "hi");
+    assert_eq!(
+        block_on(GetStr("hi".into()).execute(QueryExecuteRequest))
+            .unwrap()
+            .result,
+        "hi"
+    );
 }
 
 /// @covers: Query::execute — failure propagates
@@ -69,6 +83,14 @@ fn test_execute_failing_query_returns_err_error() {
 #[test]
 fn test_execute_repeated_calls_are_independent_edge() {
     let q = GetStr("z".into());
-    assert_eq!(block_on(q.execute(QueryExecuteRequest)).unwrap().result, "z", "first call should return correct value");
-    assert_eq!(block_on(q.execute(QueryExecuteRequest)).unwrap().result, "z", "second call should return correct value");
+    assert_eq!(
+        block_on(q.execute(QueryExecuteRequest)).unwrap().result,
+        "z",
+        "first call should return correct value"
+    );
+    assert_eq!(
+        block_on(q.execute(QueryExecuteRequest)).unwrap().result,
+        "z",
+        "second call should return correct value"
+    );
 }

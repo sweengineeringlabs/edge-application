@@ -38,20 +38,28 @@ mod tests {
             &self,
             _req: EventAggregateIdRequest,
         ) -> Result<EventAggregateIdResponse<'_>, EventError> {
-            Ok(EventAggregateIdResponse { aggregate_id: "agg-1" })
+            Ok(EventAggregateIdResponse {
+                aggregate_id: "agg-1",
+            })
         }
     }
 
     #[test]
     fn test_describe_domain_event_default_type_returns_event_happy() {
         let e = SagaEventBridgeTestEvt;
-        assert_eq!(e.describe(SagaEventDescribeRequest).unwrap().event_type, "event");
+        assert_eq!(
+            e.describe(SagaEventDescribeRequest).unwrap().event_type,
+            "event"
+        );
     }
 
     #[test]
     fn test_describe_domain_event_overridden_aggregate_id_returns_agg_1_error() {
         let e = SagaEventBridgeTestEvt;
-        assert_eq!(e.describe(SagaEventDescribeRequest).unwrap().aggregate_id, "agg-1");
+        assert_eq!(
+            e.describe(SagaEventDescribeRequest).unwrap().aggregate_id,
+            "agg-1"
+        );
     }
 
     #[test]

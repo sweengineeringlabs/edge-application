@@ -6,7 +6,8 @@ use edge_application::OutboundLenRequest;
 /// @covers: OutboundLenRequest
 #[test]
 fn test_outbound_len_request_default_happy() {
-    assert_eq!(OutboundLenRequest::default(), OutboundLenRequest);
+    let default: OutboundLenRequest = Default::default();
+    assert_eq!(default, OutboundLenRequest);
 }
 
 /// @covers: OutboundLenRequest

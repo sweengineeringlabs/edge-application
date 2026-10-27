@@ -10,9 +10,8 @@ use edge_application_handler::{
     DeregisterHandlerRequest, DeregisterHandlerResponse, EmptinessRequest, EmptinessResponse,
     ExecutionRequest, Handler, HandlerContext, HandlerError, HandlerLookupRequest,
     HandlerLookupResponse, HandlerRegistry, HealthCheckRequest, HealthCheckResponse, IdRequest,
-    IdResponse, InProcessHandlerRegistry, LenRequest, LenResponse, ListIdsRequest,
-    ListIdsResponse, PatternRequest, PatternResponse, RegisterHandlerRequest,
-    RegisterHandlerResponse,
+    IdResponse, InProcessHandlerRegistry, LenRequest, LenResponse, ListIdsRequest, ListIdsResponse,
+    PatternRequest, PatternResponse, RegisterHandlerRequest, RegisterHandlerResponse,
 };
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -171,7 +170,8 @@ fn test_handler_lookup_request_holds_id_happy() {
 /// @covers: HandlerLookupResponse
 #[test]
 fn test_handler_lookup_response_holds_none_when_absent_edge() {
-    let r: HandlerLookupResponse<TextPayload, TextPayload> = HandlerLookupResponse { handler: None };
+    let r: HandlerLookupResponse<TextPayload, TextPayload> =
+        HandlerLookupResponse { handler: None };
     assert!(r.handler.is_none());
 }
 
@@ -189,8 +189,9 @@ fn test_handler_lookup_response_holds_some_handler_happy() {
 /// @covers: RegisterHandlerRequest
 #[test]
 fn test_register_handler_request_new_wraps_handler_happy() {
-    let req = RegisterHandlerRequest::new(Arc::new(HandlerDouble)
-        as Arc<dyn Handler<Request = TextPayload, Response = TextPayload>>);
+    let req =
+        RegisterHandlerRequest::new(Arc::new(HandlerDouble)
+            as Arc<dyn Handler<Request = TextPayload, Response = TextPayload>>);
     let reg = InProcessHandlerRegistry::<TextPayload, TextPayload>::default();
     reg.register(req).unwrap();
     assert_eq!(reg.len(LenRequest).unwrap().count, 1);
