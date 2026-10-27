@@ -2,8 +2,8 @@
 
 use futures::future::BoxFuture;
 
-use crate::api::QueryBus;
 use crate::api::LoggingQueryBus;
+use crate::api::QueryBus;
 use crate::api::QueryError;
 use crate::api::{QueryDispatchRequest, QueryNameRequest, QueryResultResponse};
 
@@ -45,7 +45,10 @@ mod tests {
     impl Query for LoggingQueryBusOk {
         type Result = String;
 
-        fn name(&self, _req: QueryNameRequest) -> Result<crate::api::QueryNameResponse<'_>, QueryError> {
+        fn name(
+            &self,
+            _req: QueryNameRequest,
+        ) -> Result<crate::api::QueryNameResponse<'_>, QueryError> {
             Ok(crate::api::QueryNameResponse { name: "ok-query" })
         }
         fn execute(
@@ -61,7 +64,10 @@ mod tests {
     impl Query for LoggingQueryBusErr {
         type Result = String;
 
-        fn name(&self, _req: QueryNameRequest) -> Result<crate::api::QueryNameResponse<'_>, QueryError> {
+        fn name(
+            &self,
+            _req: QueryNameRequest,
+        ) -> Result<crate::api::QueryNameResponse<'_>, QueryError> {
             Ok(crate::api::QueryNameResponse { name: "err-query" })
         }
         fn execute(
@@ -75,9 +81,13 @@ mod tests {
     /// @covers: dispatch
     #[tokio::test]
     async fn test_dispatch_ok_query_returns_value() {
-        let bus = LoggingQueryBus::<String> { inner: Arc::new(DirectQueryBus::new()) };
+        let bus = LoggingQueryBus::<String> {
+            inner: Arc::new(DirectQueryBus::new()),
+        };
         let result = bus
-            .dispatch(QueryDispatchRequest { query: Box::new(LoggingQueryBusOk("pong".into())) })
+            .dispatch(QueryDispatchRequest {
+                query: Box::new(LoggingQueryBusOk("pong".into())),
+            })
             .await;
         assert_eq!(result.unwrap().result, "pong");
     }
@@ -85,9 +95,13 @@ mod tests {
     /// @covers: dispatch
     #[tokio::test]
     async fn test_dispatch_error_query_propagates_err() {
-        let bus = LoggingQueryBus::<String> { inner: Arc::new(NoopQueryBus::new()) };
+        let bus = LoggingQueryBus::<String> {
+            inner: Arc::new(NoopQueryBus::new()),
+        };
         assert!(bus
-            .dispatch(QueryDispatchRequest { query: Box::new(LoggingQueryBusErr) })
+            .dispatch(QueryDispatchRequest {
+                query: Box::new(LoggingQueryBusErr)
+            })
             .await
             .is_err());
     }

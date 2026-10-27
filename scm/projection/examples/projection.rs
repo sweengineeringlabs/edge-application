@@ -25,13 +25,24 @@ impl Projection for Balance {
     fn read_model(
         &self,
         _req: ProjectionReadModelRequest,
-    ) -> Result<edge_application_projection::ProjectionReadModelResponse<'_, u64>, ProjectionError> {
-        Ok(edge_application_projection::ProjectionReadModelResponse { read_model: &self.total })
+    ) -> Result<edge_application_projection::ProjectionReadModelResponse<'_, u64>, ProjectionError>
+    {
+        Ok(edge_application_projection::ProjectionReadModelResponse {
+            read_model: &self.total,
+        })
     }
 }
 
 fn main() {
     let mut b = Balance { total: 0 };
-    b.apply(ProjectionApplyRequest { event: &Credited { amount: 42 } }).expect("apply should succeed");
-    println!("balance: {}", b.read_model(ProjectionReadModelRequest).expect("read_model").read_model);
+    b.apply(ProjectionApplyRequest {
+        event: &Credited { amount: 42 },
+    })
+    .expect("apply should succeed");
+    println!(
+        "balance: {}",
+        b.read_model(ProjectionReadModelRequest)
+            .expect("read_model")
+            .read_model
+    );
 }

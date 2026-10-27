@@ -1,10 +1,10 @@
 //! `Bootstrap` trait — produces [`Application`] instances from a wired service graph.
 
+use crate::api::app::dto::{ApplicationBuildRequest, ApplicationBuildResponse};
 use crate::api::AppError;
 use crate::api::NoopAppBootstrap;
 use crate::api::NoopAppRuntime;
 use crate::api::NoopAppSvcFactory;
-use crate::api::app::dto::{ApplicationBuildRequest, ApplicationBuildResponse};
 
 /// Constructs an [`Application`](crate::api::Application) from a resolved service graph.
 ///

@@ -18,7 +18,9 @@ mod core;
 use std::sync::Arc;
 
 use edge_application_command::DirectCommandBus;
-use edge_application_handler::{ExecutionRequest as HandlerExecutionRequest, Handler, HandlerContext};
+use edge_application_handler::{
+    ExecutionRequest as HandlerExecutionRequest, Handler, HandlerContext,
+};
 use edge_application_observer::StdObserveFactory;
 use edge_application_repository::{MemoryRepository, Repository};
 use edge_security_runtime::SecurityContext;
@@ -27,7 +29,7 @@ use crate::api::{OrderLookupRequest, OrderPersistenceRequest};
 use crate::core::{OrderLookupHandler, OrderPersistenceHandler};
 
 #[tokio::main]
-async fn main() {
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
     tracing_subscriber::fmt::init();
 
     println!("=== Handler + injected Repository<Entity, Id> — constructor injection, Self::Request carries the id ===\n");
@@ -60,9 +62,11 @@ async fn main() {
             },
             ctx: &ctx,
         })
-        .await
-        .expect("save should succeed");
-    println!("[3] OrderPersistenceHandler reports saved = {}\n", save_resp.saved);
+        .await?;
+    println!(
+        "[3] OrderPersistenceHandler reports saved = {}\n",
+        save_resp.saved
+    );
 
     println!("[0] lookup_handler.execute(OrderLookupRequest {{ order_id: \"order-1\" }})");
     let get_resp = lookup_handler
@@ -72,8 +76,7 @@ async fn main() {
             },
             ctx: &ctx,
         })
-        .await
-        .expect("get should succeed");
+        .await?;
     println!("[3] OrderLookupHandler returned {:?}\n", get_resp.order);
 
     println!("[0] lookup_handler.execute(OrderLookupRequest {{ order_id: \"missing\" }})");
@@ -84,13 +87,19 @@ async fn main() {
             },
             ctx: &ctx,
         })
-        .await
-        .expect("get should succeed even on a miss");
+        .await?;
     println!("[3] OrderLookupHandler returned {:?}\n", missing_resp.order);
 
-    println!("Conclusion: OrderPersistenceHandler used ctx.observer for real per-request logging, but");
+    println!(
+        "Conclusion: OrderPersistenceHandler used ctx.observer for real per-request logging, but"
+    );
     println!("both handlers reached the actual store only through their own, independently");
-    println!("injected Repository<Order, String> — never through HandlerContext, which structurally");
-    println!("cannot hold a generic-per-type port. Swap MemoryRepository for a real database-backed");
+    println!(
+        "injected Repository<Order, String> — never through HandlerContext, which structurally"
+    );
+    println!(
+        "cannot hold a generic-per-type port. Swap MemoryRepository for a real database-backed"
+    );
     println!("Repository impl and neither handler changes.");
+    Ok(())
 }

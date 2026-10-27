@@ -16,7 +16,11 @@ fn test_noop_handler_tracer_svc_builds_usable_tracer_happy() {
         .span
         .finish(SpanFinishRequest)
         .unwrap();
-    assert_eq!(std::mem::size_of_val(&*tracer), 0, "noop handler tracer is ZST");
+    assert_eq!(
+        std::mem::size_of_val(&*tracer),
+        0,
+        "noop handler tracer is ZST"
+    );
 }
 
 #[test]
@@ -31,7 +35,11 @@ fn test_noop_handler_tracer_svc_empty_handler_id_error() {
         .span
         .finish(SpanFinishRequest)
         .unwrap();
-    assert_eq!(std::mem::size_of_val(&*tracer), 0, "noop handler tracer is ZST");
+    assert_eq!(
+        std::mem::size_of_val(&*tracer),
+        0,
+        "noop handler tracer is ZST"
+    );
 }
 
 #[test]
@@ -48,7 +56,11 @@ fn test_noop_handler_tracer_svc_multiple_spans_edge() {
             .finish(SpanFinishRequest)
             .unwrap();
     }
-    assert_eq!(std::mem::size_of_val(&*tracer), 0, "noop handler tracer is ZST");
+    assert_eq!(
+        std::mem::size_of_val(&*tracer),
+        0,
+        "noop handler tracer is ZST"
+    );
 }
 
 #[test]

@@ -2,11 +2,11 @@
 
 use async_trait::async_trait;
 
-use crate::api::handler::errors::HandlerError;
 use crate::api::handler::dto::{
     ExecutionRequest, HealthCheckRequest, HealthCheckResponse, IdRequest, IdResponse,
     PatternRequest, PatternResponse,
 };
+use crate::api::handler::errors::HandlerError;
 
 /// An async request/response execution unit identified by an id and pattern.
 #[async_trait]

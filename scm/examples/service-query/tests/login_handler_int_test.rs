@@ -20,8 +20,8 @@ use std::sync::{Arc, Mutex};
 
 use async_trait::async_trait;
 use edge_application_command::{
-    Command as DomainCommand, CommandBus, CommandDispatchRequest, CommandError,
-    DirectCommandBus, ExecutionRequest as CommandExecutionRequest,
+    Command as DomainCommand, CommandBus, CommandDispatchRequest, CommandError, DirectCommandBus,
+    ExecutionRequest as CommandExecutionRequest,
 };
 use edge_application_handler::{
     DrainRequest, ExecutionRequest as HandlerExecutionRequest, Handler, HandlerContext,

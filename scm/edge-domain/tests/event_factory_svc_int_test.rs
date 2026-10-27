@@ -6,7 +6,7 @@
 use edge_application::{
     ClosedEventSource, DomainEvent, EventAggregateIdRequest, EventAggregateIdResponse, EventError,
     EventOccurredAtRequest, EventOccurredAtResponse, EventTypeRequest, EventTypeResponse,
-    MemoryEventStore, InProcessEventBus, NoopEventBus, NoopEventPublisher,
+    InProcessEventBus, MemoryEventStore, NoopEventBus, NoopEventPublisher,
 };
 
 #[derive(Clone)]

@@ -129,7 +129,9 @@ fn test_metrics_request_is_zero_sized_edge() {
 #[test]
 fn test_metrics_response_holds_metric_registry_happy() {
     let registry = StdObserveFactory::build_noop_metric_registry();
-    let r = MetricsResponse { metrics: &*registry };
+    let r = MetricsResponse {
+        metrics: &*registry,
+    };
     r.metrics
         .gauge(GaugeLookupRequest {
             name: "g".to_string(),

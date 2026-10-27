@@ -2,11 +2,11 @@
 
 use std::hash::Hash;
 
-use crate::api::snapshot::errors::SnapshotError;
 use crate::api::snapshot::dto::{
     SnapshotAggregateIdRequest, SnapshotAggregateIdResponse, SnapshotVersionRequest,
     SnapshotVersionResponse,
 };
+use crate::api::snapshot::errors::SnapshotError;
 
 /// A point-in-time capture of aggregate state used to short-circuit full event replay.
 pub trait Snapshot: Send + Sync {

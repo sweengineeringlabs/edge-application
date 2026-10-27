@@ -11,7 +11,6 @@ enum TaskState {
     Pending,
     Running,
     Done,
-    Failed,
 }
 
 /// Only allow transitions that move a task forward; never backward.
@@ -27,9 +26,7 @@ impl TransitionPolicy for ForwardOnlyPolicy {
         Ok(TransitionAllowedResponse {
             allowed: matches!(
                 (req.from, req.to),
-                (TaskState::Pending, TaskState::Running)
-                    | (TaskState::Running, TaskState::Done)
-                    | (TaskState::Running, TaskState::Failed)
+                (TaskState::Pending, TaskState::Running) | (TaskState::Running, TaskState::Done)
             ),
         })
     }
@@ -42,19 +39,31 @@ fn main() {
         .block_on(async {
             let task = ManagedLifecycle::new(TaskState::Pending, Box::new(ForwardOnlyPolicy));
 
-            task.transition_to(LifecycleTransitionRequest { target: TaskState::Running })
-                .await
-                .expect("Pending→Running");
-            println!("state = {:?}", task.state(LifecycleStateRequest).expect("state").state);
+            task.transition_to(LifecycleTransitionRequest {
+                target: TaskState::Running,
+            })
+            .await
+            .expect("Pending→Running");
+            println!(
+                "state = {:?}",
+                task.state(LifecycleStateRequest).expect("state").state
+            );
 
-            task.transition_to(LifecycleTransitionRequest { target: TaskState::Done })
-                .await
-                .expect("Running→Done");
-            println!("state = {:?}", task.state(LifecycleStateRequest).expect("state").state);
+            task.transition_to(LifecycleTransitionRequest {
+                target: TaskState::Done,
+            })
+            .await
+            .expect("Running→Done");
+            println!(
+                "state = {:?}",
+                task.state(LifecycleStateRequest).expect("state").state
+            );
 
             // backward transition is rejected
             let result = task
-                .transition_to(LifecycleTransitionRequest { target: TaskState::Pending })
+                .transition_to(LifecycleTransitionRequest {
+                    target: TaskState::Pending,
+                })
                 .await;
             println!("reverse transition: {result:?}");
         });

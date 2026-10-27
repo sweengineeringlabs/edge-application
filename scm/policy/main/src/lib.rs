@@ -14,10 +14,10 @@ mod core;
 mod saf;
 
 pub use api::CompositePolicy;
+pub use api::PolicyError;
 pub use api::PolicyEvaluateRequest;
 pub use api::PolicyNameRequest;
 pub use api::PolicyNameResponse;
-pub use api::PolicyError;
 pub use saf::Policy;
 pub use saf::POLICY_SVC;
 pub use saf::POLICY_SVC_FACTORY;
