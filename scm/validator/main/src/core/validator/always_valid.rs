@@ -1,12 +1,15 @@
 //! [`Validator`] impl for [`AlwaysValid`].
 
 use crate::api::AlwaysValid;
-use crate::api::Validator;
 use crate::api::ValidationRequest;
 use crate::api::ValidationResponse;
+use crate::api::Validator;
 
 impl Validator for AlwaysValid {
-    fn validate(&self, _req: ValidationRequest) -> Result<ValidationResponse, crate::api::ValidatorError> {
+    fn validate(
+        &self,
+        _req: ValidationRequest,
+    ) -> Result<ValidationResponse, crate::api::ValidatorError> {
         Ok(ValidationResponse)
     }
 }
@@ -18,6 +21,10 @@ mod tests {
     #[test]
     fn test_validate_always_returns_ok() {
         let result = AlwaysValid.validate(ValidationRequest);
-        assert_eq!(result, Ok(ValidationResponse), "AlwaysValid should always succeed");
+        assert_eq!(
+            result,
+            Ok(ValidationResponse),
+            "AlwaysValid should always succeed"
+        );
     }
 }

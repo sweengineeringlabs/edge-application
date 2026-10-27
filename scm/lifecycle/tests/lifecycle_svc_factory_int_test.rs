@@ -12,7 +12,10 @@ fn test_lifecycle_svc_factory_constant_value_happy() {
 
 #[test]
 fn test_lifecycle_svc_factory_constant_not_empty_error() {
-    assert!(!LIFECYCLE_SVC_FACTORY.is_empty(), "LIFECYCLE_SVC_FACTORY must not be empty");
+    assert!(
+        !LIFECYCLE_SVC_FACTORY.is_empty(),
+        "LIFECYCLE_SVC_FACTORY must not be empty"
+    );
 }
 
 #[test]

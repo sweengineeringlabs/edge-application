@@ -1,7 +1,9 @@
 //! SAF facade tests — `Command` trait.
 #![allow(clippy::unwrap_used, clippy::expect_used)]
 
-use edge_application_command::{Command, CommandError, ExecutionRequest, NameRequest, NameResponse};
+use edge_application_command::{
+    Command, CommandError, ExecutionRequest, NameRequest, NameResponse,
+};
 use futures::executor::block_on;
 use futures::future::BoxFuture;
 

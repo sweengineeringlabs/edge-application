@@ -1,7 +1,9 @@
 //! SAF facade tests — `CommandBus` trait.
 #![allow(clippy::unwrap_used, clippy::expect_used)]
 
-use edge_application_handler::{Command, CommandBus, CommandDispatchRequest, CommandError, CommandExecutionRequest};
+use edge_application_handler::{
+    Command, CommandBus, CommandDispatchRequest, CommandError, CommandExecutionRequest,
+};
 use futures::executor::block_on;
 use futures::future::BoxFuture;
 
@@ -23,10 +25,7 @@ impl Command for Err_ {
 /// legal `CommandBus` implementation a consumer could provide.
 struct TestBus;
 impl CommandBus for TestBus {
-    fn dispatch(
-        &self,
-        req: CommandDispatchRequest,
-    ) -> BoxFuture<'_, Result<(), CommandError>> {
+    fn dispatch(&self, req: CommandDispatchRequest) -> BoxFuture<'_, Result<(), CommandError>> {
         Box::pin(async move { req.command.execute(CommandExecutionRequest).await })
     }
 }

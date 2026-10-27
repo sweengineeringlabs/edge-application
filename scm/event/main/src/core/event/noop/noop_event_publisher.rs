@@ -7,7 +7,10 @@ use crate::api::EventPublisher;
 use crate::api::{EventPublisherPublishRequest, NoopEventPublisher};
 
 impl EventPublisher for NoopEventPublisher {
-    fn publish(&self, _req: EventPublisherPublishRequest<'_>) -> BoxFuture<'_, Result<(), EventError>> {
+    fn publish(
+        &self,
+        _req: EventPublisherPublishRequest<'_>,
+    ) -> BoxFuture<'_, Result<(), EventError>> {
         Box::pin(async { Ok(()) })
     }
 }
@@ -27,8 +30,9 @@ mod tests {
     /// @covers: publish
     #[test]
     fn test_publish_any_event_returns_ok_happy() {
-        let result =
-            futures::executor::block_on(NoopEventPublisher.publish(req(&NoopEventPublisherTestEvt)));
+        let result = futures::executor::block_on(
+            NoopEventPublisher.publish(req(&NoopEventPublisherTestEvt)),
+        );
         assert_eq!(result, Ok(()));
     }
 
@@ -46,7 +50,9 @@ mod tests {
     fn test_publish_repeated_calls_all_ok_edge() {
         for _ in 0..5 {
             assert_eq!(
-                futures::executor::block_on(NoopEventPublisher.publish(req(&NoopEventPublisherTestEvt))),
+                futures::executor::block_on(
+                    NoopEventPublisher.publish(req(&NoopEventPublisherTestEvt))
+                ),
                 Ok(())
             );
         }

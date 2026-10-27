@@ -1,12 +1,15 @@
 //! SAF facade tests — `Policy` trait.
 #![allow(clippy::unwrap_used, clippy::expect_used)]
 
-use edge_application_policy::{Policy, PolicyEvaluateRequest, PolicyNameRequest, PolicyError};
+use edge_application_policy::{Policy, PolicyError, PolicyEvaluateRequest, PolicyNameRequest};
 
 struct NonZero;
 impl Policy for NonZero {
     type Input = u64;
-    fn name(&self, _req: PolicyNameRequest) -> Result<edge_application_policy::PolicyNameResponse, PolicyError> {
+    fn name(
+        &self,
+        _req: PolicyNameRequest,
+    ) -> Result<edge_application_policy::PolicyNameResponse, PolicyError> {
         Ok(edge_application_policy::PolicyNameResponse { name: "non-zero" })
     }
     fn evaluate(&self, req: PolicyEvaluateRequest<'_, u64>) -> Result<(), PolicyError> {

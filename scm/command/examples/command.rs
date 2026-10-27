@@ -1,8 +1,8 @@
 //! Basic `Command` usage example.
 
 use edge_application_command::{
-    Command, CommandDispatchRequest, CommandError, DirectCommandBus, ExecutionRequest,
-    NameRequest, NameResponse,
+    Command, CommandDispatchRequest, CommandError, DirectCommandBus, ExecutionRequest, NameRequest,
+    NameResponse,
 };
 use futures::future::BoxFuture;
 

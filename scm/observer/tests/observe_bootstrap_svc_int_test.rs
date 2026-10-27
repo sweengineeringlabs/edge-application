@@ -8,7 +8,10 @@ use edge_application_observer::{BootstrapNameRequest, ObserveBootstrap, StdObser
 fn test_bootstrap_name_returns_nonempty_string_happy() {
     let f = StdObserveFactory;
     assert!(
-        !f.bootstrap_name(BootstrapNameRequest).unwrap().name.is_empty(),
+        !f.bootstrap_name(BootstrapNameRequest)
+            .unwrap()
+            .name
+            .is_empty(),
         "bootstrap_name must return a non-empty identifier"
     );
 }
@@ -19,7 +22,10 @@ fn test_bootstrap_name_is_idempotent_error() {
     let f = StdObserveFactory;
     let first = f.bootstrap_name(BootstrapNameRequest).unwrap().name;
     let second = f.bootstrap_name(BootstrapNameRequest).unwrap().name;
-    assert_eq!(first, second, "bootstrap_name must return the same value on repeated calls");
+    assert_eq!(
+        first, second,
+        "bootstrap_name must return the same value on repeated calls"
+    );
 }
 
 /// @covers: ObserveBootstrap::bootstrap_name

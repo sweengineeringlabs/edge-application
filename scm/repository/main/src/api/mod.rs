@@ -1,9 +1,9 @@
 mod repository;
 pub use repository::AlwaysMatchSpec;
 pub use repository::CountByResponse;
-pub use repository::MemoryRepository;
 pub use repository::MatchingEntitiesResponse;
 pub use repository::MatchingEntityResponse;
+pub use repository::MemoryRepository;
 pub use repository::Page;
 pub use repository::QueryableRepository;
 pub use repository::Repository;

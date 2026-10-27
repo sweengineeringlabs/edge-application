@@ -14,14 +14,18 @@ impl Response for Ping {}
 
 /// @covers: edge_application_base::Request, edge_application_base::Response — satisfied via echo_handler
 #[test]
-fn test_echo_handler_accepts_base_request_response_impl_happy() {
+fn test_echo_handler_accepts_base_request_response_impl_happy(
+) -> Result<(), Box<dyn std::error::Error>> {
     let h = Domain.echo_handler::<Ping>("echo", "/ping");
-    assert_eq!(h.id(edge_application_handler::IdRequest).unwrap().id, "echo");
+    assert_eq!(h.id(edge_application_handler::IdRequest)?.id, "echo");
+    Ok(())
 }
 
 /// @covers: edge_application_base::Request, edge_application_base::Response — satisfied via new_handler_registry
 #[test]
-fn test_new_handler_registry_accepts_base_request_response_impl_edge() {
+fn test_new_handler_registry_accepts_base_request_response_impl_edge(
+) -> Result<(), Box<dyn std::error::Error>> {
     let registry = Domain.new_handler_registry::<Ping, Ping>();
-    assert!(registry.is_empty(EmptinessRequest).unwrap().empty);
+    assert!(registry.is_empty(EmptinessRequest)?.empty);
+    Ok(())
 }

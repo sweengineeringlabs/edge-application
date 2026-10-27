@@ -37,11 +37,16 @@ impl Handler for GreeterRegistrationHandler {
             .emit(LogEmitRequest {
                 level: "INFO".to_string(),
                 handler_id: "greeter_registration_handler".to_string(),
-                message: format!("registering {:?} greeter under {:?}", req.req.language, req.req.id),
+                message: format!(
+                    "registering {:?} greeter under {:?}",
+                    req.req.language, req.req.id
+                ),
             })
             .map_err(|e| HandlerError::ExecutionFailed(e.to_string()))?;
 
-        tracing::info!("[1] GreeterRegistrationHandler::execute — delegating to its own injected Registry");
+        tracing::info!(
+            "[1] GreeterRegistrationHandler::execute — delegating to its own injected Registry"
+        );
         let greeter: Arc<dyn Greeter> = match req.req.language.as_str() {
             "es" => Arc::new(SpanishGreeter),
             _ => Arc::new(EnglishGreeter),
@@ -52,7 +57,9 @@ impl Handler for GreeterRegistrationHandler {
                 entry: greeter,
             })
             .map_err(|e| HandlerError::ExecutionFailed(e.to_string()))?;
-        tracing::info!("[2] GreeterRegistrationHandler::execute — registry confirmed the registration");
+        tracing::info!(
+            "[2] GreeterRegistrationHandler::execute — registry confirmed the registration"
+        );
         Ok(GreeterRegistrationResponse { registered: true })
     }
 }

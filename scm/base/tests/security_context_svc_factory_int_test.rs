@@ -7,7 +7,10 @@ fn test_security_context_svc_factory_constant_value_happy() {
 
 #[test]
 fn test_security_context_svc_factory_constant_not_empty_error() {
-    assert!(!SECURITY_CONTEXT_SVC_FACTORY.is_empty(), "SECURITY_CONTEXT_SVC_FACTORY must not be empty");
+    assert!(
+        !SECURITY_CONTEXT_SVC_FACTORY.is_empty(),
+        "SECURITY_CONTEXT_SVC_FACTORY must not be empty"
+    );
 }
 
 #[test]

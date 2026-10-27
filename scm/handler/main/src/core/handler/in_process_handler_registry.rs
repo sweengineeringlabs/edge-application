@@ -112,19 +112,23 @@ mod tests {
     impl edge_application_base::Request for TextPayload {}
     impl edge_application_base::Response for TextPayload {}
 
-    fn handler_with_id(id: &str) -> Arc<dyn Handler<Request = TextPayload, Response = TextPayload>> {
+    fn handler_with_id(
+        id: &str,
+    ) -> Arc<dyn Handler<Request = TextPayload, Response = TextPayload>> {
         Arc::new(EchoHandler::<TextPayload>::from((id, "/")))
     }
 
     #[test]
     fn test_new_creates_empty_registry_happy() {
-        let reg: InProcessHandlerRegistry<TextPayload, TextPayload> = InProcessHandlerRegistry::new();
+        let reg: InProcessHandlerRegistry<TextPayload, TextPayload> =
+            InProcessHandlerRegistry::new();
         assert!(reg.is_empty(EmptinessRequest).unwrap().empty);
     }
 
     #[test]
     fn test_register_makes_handler_retrievable_happy() {
-        let reg: InProcessHandlerRegistry<TextPayload, TextPayload> = InProcessHandlerRegistry::new();
+        let reg: InProcessHandlerRegistry<TextPayload, TextPayload> =
+            InProcessHandlerRegistry::new();
         reg.register(RegisterHandlerRequest::new(handler_with_id("s1")))
             .unwrap();
         assert_eq!(reg.len(LenRequest).unwrap().count, 1);
@@ -132,7 +136,8 @@ mod tests {
 
     #[test]
     fn test_deregister_existing_returns_true_happy() {
-        let reg: InProcessHandlerRegistry<TextPayload, TextPayload> = InProcessHandlerRegistry::new();
+        let reg: InProcessHandlerRegistry<TextPayload, TextPayload> =
+            InProcessHandlerRegistry::new();
         reg.register(RegisterHandlerRequest::new(handler_with_id("s1")))
             .unwrap();
         assert!(
@@ -146,7 +151,8 @@ mod tests {
 
     #[test]
     fn test_deregister_missing_returns_false_edge() {
-        let reg: InProcessHandlerRegistry<TextPayload, TextPayload> = InProcessHandlerRegistry::new();
+        let reg: InProcessHandlerRegistry<TextPayload, TextPayload> =
+            InProcessHandlerRegistry::new();
         assert!(
             !reg.deregister(DeregisterHandlerRequest {
                 id: "missing".to_string()
@@ -158,7 +164,8 @@ mod tests {
 
     #[test]
     fn test_get_missing_id_returns_none_error() {
-        let reg: InProcessHandlerRegistry<TextPayload, TextPayload> = InProcessHandlerRegistry::new();
+        let reg: InProcessHandlerRegistry<TextPayload, TextPayload> =
+            InProcessHandlerRegistry::new();
         let handler = reg
             .get(HandlerLookupRequest {
                 id: "missing".to_string(),
@@ -170,7 +177,8 @@ mod tests {
 
     #[test]
     fn test_list_ids_returns_sorted_ids_happy() {
-        let reg: InProcessHandlerRegistry<TextPayload, TextPayload> = InProcessHandlerRegistry::new();
+        let reg: InProcessHandlerRegistry<TextPayload, TextPayload> =
+            InProcessHandlerRegistry::new();
         reg.register(RegisterHandlerRequest::new(handler_with_id("z")))
             .unwrap();
         reg.register(RegisterHandlerRequest::new(handler_with_id("a")))
@@ -180,7 +188,8 @@ mod tests {
 
     #[test]
     fn test_len_empty_registry_returns_zero_edge() {
-        let reg: InProcessHandlerRegistry<TextPayload, TextPayload> = InProcessHandlerRegistry::new();
+        let reg: InProcessHandlerRegistry<TextPayload, TextPayload> =
+            InProcessHandlerRegistry::new();
         assert_eq!(reg.len(LenRequest).unwrap().count, 0);
     }
 }

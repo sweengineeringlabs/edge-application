@@ -146,15 +146,21 @@ fn test_metrics_all_instrument_types_edge() {
     let ctx = StdObserveFactory::noop_observer_context();
     let r = ctx.metrics(MetricsRequest).unwrap().metrics;
     let c = r
-        .counter(CounterLookupRequest { name: "c".to_string() })
+        .counter(CounterLookupRequest {
+            name: "c".to_string(),
+        })
         .unwrap()
         .counter;
     let g = r
-        .gauge(GaugeLookupRequest { name: "g".to_string() })
+        .gauge(GaugeLookupRequest {
+            name: "g".to_string(),
+        })
         .unwrap()
         .gauge;
     let h = r
-        .histogram(HistogramLookupRequest { name: "h".to_string() })
+        .histogram(HistogramLookupRequest {
+            name: "h".to_string(),
+        })
         .unwrap()
         .histogram;
     c.increment(IncrementRequest { delta: 1 }).unwrap();
@@ -173,7 +179,10 @@ fn test_observe_context_is_object_safe_error() {
     let ctx: Box<dyn ObserverContext> = StdObserveFactory::noop_observer_context();
     let a: Arc<dyn ObserverContext> = Arc::from(ctx);
     _takes(a.clone());
-    assert!(Arc::strong_count(&a) > 0, "Arc should be valid after passing to function");
+    assert!(
+        Arc::strong_count(&a) > 0,
+        "Arc should be valid after passing to function"
+    );
 }
 
 // ── multiple instances ────────────────────────────────────────────────────────

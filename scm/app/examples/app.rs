@@ -1,8 +1,8 @@
 //! Basic `Application` and `Bootstrap` usage example.
 
 use edge_application_app::{
-    AppError, Application, ApplicationBuildRequest, ApplicationBuildResponse, ApplicationRunRequest,
-    ApplicationRunResponse, Bootstrap, NameRequest, NameResponse,
+    AppError, Application, ApplicationBuildRequest, ApplicationBuildResponse,
+    ApplicationRunRequest, ApplicationRunResponse, Bootstrap, NameRequest, NameResponse,
 };
 use futures::executor::block_on;
 use futures::future::BoxFuture;
@@ -13,7 +13,10 @@ impl Application for GreetApp {
     fn name(&self, _req: NameRequest) -> Result<NameResponse, AppError> {
         Ok(NameResponse { name: "greet" })
     }
-    fn run(&self, _req: ApplicationRunRequest) -> BoxFuture<'_, Result<ApplicationRunResponse, AppError>> {
+    fn run(
+        &self,
+        _req: ApplicationRunRequest,
+    ) -> BoxFuture<'_, Result<ApplicationRunResponse, AppError>> {
         Box::pin(async {
             println!("Hello from edge-domain-app!");
             Ok(ApplicationRunResponse)

@@ -18,16 +18,20 @@ mod core;
 use std::sync::Arc;
 
 use edge_application_command::DirectCommandBus;
-use edge_application_handler::{ExecutionRequest as HandlerExecutionRequest, Handler, HandlerContext};
+use edge_application_handler::{
+    ExecutionRequest as HandlerExecutionRequest, Handler, HandlerContext,
+};
 use edge_application_observer::StdObserveFactory;
 use edge_application_policy::{CompositePolicy, Policy};
 use edge_security_runtime::SecurityContext;
 
-use crate::api::{MaxAmountPolicy, MinAmountPolicy, PolicyIdentityRequest, WithdrawalPolicyRequest};
+use crate::api::{
+    MaxAmountPolicy, MinAmountPolicy, PolicyIdentityRequest, WithdrawalPolicyRequest,
+};
 use crate::core::{PolicyIdentityHandler, WithdrawalPolicyHandler};
 
 #[tokio::main]
-async fn main() {
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
     tracing_subscriber::fmt::init();
 
     println!("=== Handler + injected Policy<Input> — constructor injection, Self::Request carries the value ===\n");
@@ -59,9 +63,11 @@ async fn main() {
             req: PolicyIdentityRequest,
             ctx: &ctx,
         })
-        .await
-        .expect("name should succeed");
-    println!("[3] PolicyIdentityHandler reports name = {:?}\n", name_resp.name);
+        .await?;
+    println!(
+        "[3] PolicyIdentityHandler reports name = {:?}\n",
+        name_resp.name
+    );
 
     println!("[0] withdrawal_handler.execute(WithdrawalPolicyRequest {{ amount: 500 }})");
     let allowed = withdrawal_handler
@@ -69,11 +75,15 @@ async fn main() {
             req: WithdrawalPolicyRequest { amount: 500 },
             ctx: &ctx,
         })
-        .await
-        .expect("500 should be within bounds");
-    println!("[3] WithdrawalPolicyHandler reports allowed = {}\n", allowed.allowed);
+        .await?;
+    println!(
+        "[3] WithdrawalPolicyHandler reports allowed = {}\n",
+        allowed.allowed
+    );
 
-    println!("[0] withdrawal_handler.execute(WithdrawalPolicyRequest {{ amount: 5 }}) — below minimum");
+    println!(
+        "[0] withdrawal_handler.execute(WithdrawalPolicyRequest {{ amount: 5 }}) — below minimum"
+    );
     let rejected = withdrawal_handler
         .execute(HandlerExecutionRequest {
             req: WithdrawalPolicyRequest { amount: 5 },
@@ -85,9 +95,14 @@ async fn main() {
         Err(e) => println!("[3] WithdrawalPolicyHandler returned an error, as expected: {e}\n"),
     }
 
-    println!("Conclusion: WithdrawalPolicyHandler used ctx.observer for real per-request logging, but");
+    println!(
+        "Conclusion: WithdrawalPolicyHandler used ctx.observer for real per-request logging, but"
+    );
     println!("both handlers reached the actual policy only through their own, independently");
-    println!("injected Policy<u64> — never through HandlerContext, which structurally cannot hold a");
+    println!(
+        "injected Policy<u64> — never through HandlerContext, which structurally cannot hold a"
+    );
     println!("generic-per-type port. The composite policy's own violation propagated cleanly as a");
     println!("real HandlerError.");
+    Ok(())
 }

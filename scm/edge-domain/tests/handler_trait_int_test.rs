@@ -51,7 +51,10 @@ impl Handler for SickHandler {
             id: "sick".to_string(),
         })
     }
-    async fn execute(&self, _req: ExecutionRequest<'_, IntPayload>) -> Result<IntPayload, HandlerError> {
+    async fn execute(
+        &self,
+        _req: ExecutionRequest<'_, IntPayload>,
+    ) -> Result<IntPayload, HandlerError> {
         Err(HandlerError::Unhealthy)
     }
     async fn health_check(

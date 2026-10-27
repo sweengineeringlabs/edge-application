@@ -51,7 +51,9 @@ impl Handler for SnapshotPersistenceHandler {
             })
             .await
             .map_err(|e| HandlerError::ExecutionFailed(e.to_string()))?;
-        tracing::info!("[2] SnapshotPersistenceHandler::execute — snapshot store confirmed the save");
+        tracing::info!(
+            "[2] SnapshotPersistenceHandler::execute — snapshot store confirmed the save"
+        );
         Ok(SnapshotPersistenceResponse { saved: true })
     }
 }

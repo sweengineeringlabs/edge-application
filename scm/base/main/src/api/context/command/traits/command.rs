@@ -19,5 +19,8 @@ pub trait Command: Send + Sync {
     }
 
     /// Execute the command, mutating domain state.
-    fn execute(&self, _req: ExecutionRequest) -> Pin<Box<dyn Future<Output = Result<(), CommandError>> + Send + '_>>;
+    fn execute(
+        &self,
+        _req: ExecutionRequest,
+    ) -> Pin<Box<dyn Future<Output = Result<(), CommandError>> + Send + '_>>;
 }

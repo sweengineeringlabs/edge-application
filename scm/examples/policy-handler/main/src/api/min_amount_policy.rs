@@ -1,6 +1,8 @@
 //! `MinAmountPolicy` — rejects a withdrawal amount below a fixed minimum.
 
-use edge_application_policy::{Policy, PolicyEvaluateRequest, PolicyError, PolicyNameRequest, PolicyNameResponse};
+use edge_application_policy::{
+    Policy, PolicyError, PolicyEvaluateRequest, PolicyNameRequest, PolicyNameResponse,
+};
 
 pub struct MinAmountPolicy(pub u64);
 

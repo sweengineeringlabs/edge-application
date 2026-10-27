@@ -4,9 +4,13 @@ use std::future::Future;
 use std::hash::Hash;
 use std::pin::Pin;
 
+use crate::api::snapshot::dto::{SnapshotLoadRequest, SnapshotLoadResponse, SnapshotSaveRequest};
 use crate::api::snapshot::errors::SnapshotError;
 use crate::api::snapshot::traits::Snapshot;
-use crate::api::snapshot::dto::{SnapshotLoadRequest, SnapshotLoadResponse, SnapshotSaveRequest};
+
+/// Boxed future returned when loading a snapshot.
+pub type SnapshotLoadFuture<'a, S> =
+    Pin<Box<dyn Future<Output = Result<SnapshotLoadResponse<S>, SnapshotError>> + Send + 'a>>;
 
 /// Stores and retrieves [`Snapshot`]s keyed by aggregate id.
 pub trait SnapshotStore: Send + Sync {
@@ -26,5 +30,5 @@ pub trait SnapshotStore: Send + Sync {
     fn load<'a>(
         &'a self,
         req: SnapshotLoadRequest<'a, Self::AggregateId>,
-    ) -> Pin<Box<dyn Future<Output = Result<SnapshotLoadResponse<Self::Snap>, SnapshotError>> + Send + 'a>>;
+    ) -> SnapshotLoadFuture<'a, Self::Snap>;
 }

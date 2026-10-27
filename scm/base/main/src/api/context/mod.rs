@@ -13,7 +13,11 @@ pub mod command;
 pub mod observe;
 pub mod security;
 
-pub use command::{Command, CommandBus, CommandDispatchRequest, CommandError, ExecutionRequest as CommandExecutionRequest, NameRequest as CommandNameRequest, NameResponse as CommandNameResponse};
+pub use command::{
+    Command, CommandBus, CommandDispatchRequest, CommandError,
+    ExecutionRequest as CommandExecutionRequest, NameRequest as CommandNameRequest,
+    NameResponse as CommandNameResponse,
+};
 pub use observe::{
     Counter, CounterLookupRequest, CounterLookupResponse, DrainRequest, DrainResponse, Gauge,
     GaugeLookupRequest, GaugeLookupResponse, GaugeSetRequest, GaugeSetResponse, HandlerTracer,

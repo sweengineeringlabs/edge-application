@@ -36,7 +36,11 @@ fn test_start_span_empty_handler_id_error() {
         .unwrap()
         .span;
     span.finish(SpanFinishRequest).unwrap();
-    assert_eq!(std::mem::size_of_val(&*span), 0, "noop span handles empty ids");
+    assert_eq!(
+        std::mem::size_of_val(&*span),
+        0,
+        "noop span handles empty ids"
+    );
 }
 
 #[test]
@@ -51,7 +55,11 @@ fn test_start_span_very_long_ids_edge() {
         .unwrap()
         .span;
     span.finish(SpanFinishRequest).unwrap();
-    assert_eq!(std::mem::size_of_val(&*span), 0, "noop span handles long ids");
+    assert_eq!(
+        std::mem::size_of_val(&*span),
+        0,
+        "noop span handles long ids"
+    );
 }
 
 #[test]
@@ -59,7 +67,11 @@ fn test_handler_tracer_is_send_sync() {
     fn assert_send_sync<T: Send + Sync>(_: &T) {}
     let tracer = StdObserveFactory::noop_handler_tracer();
     assert_send_sync(&tracer);
-    assert_eq!(std::mem::size_of_val(&*tracer), 0, "noop handler tracer is ZST");
+    assert_eq!(
+        std::mem::size_of_val(&*tracer),
+        0,
+        "noop handler tracer is ZST"
+    );
 }
 
 #[test]

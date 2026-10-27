@@ -5,7 +5,9 @@
 use std::sync::Arc;
 
 use async_trait::async_trait;
-use edge_application_handler::{ExecutionRequest as HandlerExecutionRequest, Handler, HandlerError};
+use edge_application_handler::{
+    ExecutionRequest as HandlerExecutionRequest, Handler, HandlerError,
+};
 use edge_application_repository::{Repository, RepositoryIdRequest};
 
 use crate::api::{Order, OrderLookupRequest, OrderLookupResponse};
@@ -23,7 +25,9 @@ impl Handler for OrderLookupHandler {
         &self,
         req: HandlerExecutionRequest<'_, OrderLookupRequest>,
     ) -> Result<OrderLookupResponse, HandlerError> {
-        tracing::info!("[1] OrderLookupHandler::execute — delegating to its own injected Repository");
+        tracing::info!(
+            "[1] OrderLookupHandler::execute — delegating to its own injected Repository"
+        );
         let found = self
             .repository
             .find(RepositoryIdRequest {

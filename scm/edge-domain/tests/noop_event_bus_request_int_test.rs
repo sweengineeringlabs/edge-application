@@ -7,7 +7,8 @@ use edge_application::NoopEventBusRequest;
 /// @covers: NoopEventBusRequest
 #[test]
 fn test_noop_event_bus_request_default_happy() {
-    assert_eq!(NoopEventBusRequest::default(), NoopEventBusRequest);
+    let default: NoopEventBusRequest = Default::default();
+    assert_eq!(default, NoopEventBusRequest);
 }
 
 /// @covers: NoopEventBusRequest
