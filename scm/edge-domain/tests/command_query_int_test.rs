@@ -6,7 +6,9 @@ use edge_application::{
     Command, CommandBus, CommandError, Query, QueryBus, QueryDispatchRequest, QueryError,
     QueryExecuteRequest, QueryNameRequest, QueryNameResponse, QueryResultResponse,
 };
-use edge_application_command::{CommandDispatchRequest, ExecutionRequest, NameRequest, NameResponse};
+use edge_application_command::{
+    CommandDispatchRequest, ExecutionRequest, NameRequest, NameResponse,
+};
 use futures::future::BoxFuture;
 use std::sync::Arc;
 

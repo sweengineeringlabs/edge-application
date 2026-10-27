@@ -3,9 +3,9 @@
 
 use edge_application_base::{
     CounterLookupRequest, CounterLookupResponse, DrainRequest, GaugeLookupRequest,
-    GaugeLookupResponse, HandlerTracer, HistogramLookupRequest, HistogramLookupResponse,
-    LogDrain, LogEmitRequest, LogEmitResponse, MetricRegistry, MetricsRequest, ObserveError,
-    ObserverContext, SpanStartRequest, SpanStartResponse, TracerRequest,
+    GaugeLookupResponse, HandlerTracer, HistogramLookupRequest, HistogramLookupResponse, LogDrain,
+    LogEmitRequest, LogEmitResponse, MetricRegistry, MetricsRequest, ObserveError, ObserverContext,
+    SpanStartRequest, SpanStartResponse, TracerRequest,
 };
 
 struct StubTracer;
@@ -48,7 +48,9 @@ impl ObserverContext for FakeContext {
         &self,
         _req: TracerRequest,
     ) -> Result<edge_application_base::TracerResponse<'_>, ObserveError> {
-        Ok(edge_application_base::TracerResponse { tracer: &self.tracer })
+        Ok(edge_application_base::TracerResponse {
+            tracer: &self.tracer,
+        })
     }
     fn drain(
         &self,
@@ -182,7 +184,10 @@ fn test_metrics_delegates_to_underlying_registry_error() {
     let ctx = context();
     let response = ctx.metrics(MetricsRequest).expect("metrics should succeed");
     assert_eq!(
-        response.metrics.gauge(GaugeLookupRequest { name: "x".into() }).err(),
+        response
+            .metrics
+            .gauge(GaugeLookupRequest { name: "x".into() })
+            .err(),
         Some(ObserveError::NotInitialised)
     );
 }
@@ -194,7 +199,10 @@ fn test_metrics_repeated_calls_each_resolve_edge() {
     for _ in 0..2 {
         let response = ctx.metrics(MetricsRequest).expect("metrics should succeed");
         assert_eq!(
-            response.metrics.counter(CounterLookupRequest { name: "x".into() }).err(),
+            response
+                .metrics
+                .counter(CounterLookupRequest { name: "x".into() })
+                .err(),
             Some(ObserveError::NotInitialised)
         );
     }

@@ -21,5 +21,5 @@ pub use noop_observe_svc::{NoopObserve, NOOP_OBSERVE_SVC};
 pub use noop_observe_svc_factory::NOOP_OBSERVE_SVC_FACTORY;
 pub use observe_bootstrap_svc::{ObserveBootstrap, OBSERVE_FACTORY_SVC};
 pub use observe_bootstrap_svc_factory::OBSERVE_BOOTSTRAP_SVC_FACTORY;
-pub use observer::{ObserverContext, OBSERVE_CONTEXT_SVC, OBSERVER_CONTEXT_SVC_FACTORY};
+pub use observer::{ObserverContext, OBSERVER_CONTEXT_SVC_FACTORY, OBSERVE_CONTEXT_SVC};
 pub use span::{Span, SPAN_SVC, SPAN_SVC_FACTORY};

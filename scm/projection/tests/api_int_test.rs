@@ -1,7 +1,8 @@
 //! Layer-level coverage for `api/projection/dto/*.rs` request/response types.
 
 use edge_application_projection::{
-    ProjectionApplyRequest, ProjectionReadModelRequest, ProjectionReadModelResponse, TryDrainResponse,
+    ProjectionApplyRequest, ProjectionReadModelRequest, ProjectionReadModelResponse,
+    TryDrainResponse,
 };
 
 /// @covers: ProjectionApplyRequest

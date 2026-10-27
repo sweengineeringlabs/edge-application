@@ -11,7 +11,9 @@ enum S {
 }
 
 fn allowed(p: &PermissivePolicy<S>, from: S, to: S) -> bool {
-    p.is_allowed(TransitionAllowedRequest { from, to }).unwrap().allowed
+    p.is_allowed(TransitionAllowedRequest { from, to })
+        .unwrap()
+        .allowed
 }
 
 /// @covers: PermissivePolicy — allows any forward transition

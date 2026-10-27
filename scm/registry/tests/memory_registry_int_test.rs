@@ -5,8 +5,7 @@
 use std::sync::Arc;
 
 use edge_application_registry::{
-    EmptinessRequest, MemoryRegistry, LenRequest, RegisterRequest, Registry,
-    RegistryLookupRequest,
+    EmptinessRequest, LenRequest, MemoryRegistry, RegisterRequest, Registry, RegistryLookupRequest,
 };
 
 /// @covers: MemoryRegistry::new — starts empty

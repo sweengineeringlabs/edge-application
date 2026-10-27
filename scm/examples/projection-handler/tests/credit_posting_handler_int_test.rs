@@ -15,8 +15,8 @@ use edge_application_handler::{
 };
 use edge_application_observer::StdObserveFactory;
 use edge_application_projection::{
-    Projection, ProjectionApplyRequest, ProjectionEvent, ProjectionEventDescribeRequest,
-    ProjectionEventDescribeResponse, ProjectionError, ProjectionReadModelRequest,
+    Projection, ProjectionApplyRequest, ProjectionError, ProjectionEvent,
+    ProjectionEventDescribeRequest, ProjectionEventDescribeResponse, ProjectionReadModelRequest,
     ProjectionReadModelResponse, TryDrainRequest,
 };
 use edge_security_runtime::SecurityContext;

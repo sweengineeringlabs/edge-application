@@ -3,9 +3,8 @@
 #![allow(clippy::unwrap_used, clippy::expect_used)]
 
 use edge_application::{
-    MemoryOutboundRegistry, OutboundDeregisterRequest, OutboundGetRequest,
-    OutboundIsEmptyRequest, OutboundLenRequest, OutboundNamesRequest, OutboundRegisterRequest,
-    OutboundRegistry,
+    MemoryOutboundRegistry, OutboundDeregisterRequest, OutboundGetRequest, OutboundIsEmptyRequest,
+    OutboundLenRequest, OutboundNamesRequest, OutboundRegisterRequest, OutboundRegistry,
 };
 
 /// @covers: OutboundRegistry::is_empty — new registry starts empty

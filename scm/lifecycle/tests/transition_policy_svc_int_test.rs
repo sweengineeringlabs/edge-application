@@ -33,7 +33,9 @@ impl TransitionPolicy for RecoveryOnlyPolicy {
 }
 
 fn allowed(p: &RecoveryOnlyPolicy, from: State, to: State) -> bool {
-    p.is_allowed(TransitionAllowedRequest { from, to }).unwrap().allowed
+    p.is_allowed(TransitionAllowedRequest { from, to })
+        .unwrap()
+        .allowed
 }
 
 // ── TRANSITION_POLICY_SVC ─────────────────────────────────────────────────────

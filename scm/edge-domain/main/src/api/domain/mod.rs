@@ -8,11 +8,6 @@ mod memory_outbound_registry;
 mod noop_domain_extension;
 pub mod traits;
 
-pub use errors::DomainError;
-pub use traits::{
-    Domain, DomainExtension, DomainExtensionHealthRequest, DomainRuntime, MemoryOutboundRegistry,
-    NoopDomainExtension, OutboundRegistry,
-};
 #[cfg(feature = "command")]
 pub use dto::{DirectCommandBusRequest, DirectCommandBusResponse};
 #[cfg(feature = "event")]
@@ -24,4 +19,9 @@ pub use dto::{
     OutboundDeregisterRequest, OutboundDeregisterResponse, OutboundGetRequest, OutboundGetResponse,
     OutboundIsEmptyRequest, OutboundIsEmptyResponse, OutboundLenRequest, OutboundLenResponse,
     OutboundNamesRequest, OutboundNamesResponse, OutboundRegisterRequest, OutboundRegisterResponse,
+};
+pub use errors::DomainError;
+pub use traits::{
+    Domain, DomainExtension, DomainExtensionHealthRequest, DomainRuntime, MemoryOutboundRegistry,
+    NoopDomainExtension, OutboundRegistry,
 };

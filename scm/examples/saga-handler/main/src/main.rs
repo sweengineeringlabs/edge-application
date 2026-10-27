@@ -25,7 +25,9 @@ mod core;
 use std::sync::Arc;
 
 use edge_application_command::DirectCommandBus;
-use edge_application_handler::{ExecutionRequest as HandlerExecutionRequest, Handler, HandlerContext};
+use edge_application_handler::{
+    ExecutionRequest as HandlerExecutionRequest, Handler, HandlerContext,
+};
 use edge_application_observer::StdObserveFactory;
 use edge_security_runtime::SecurityContext;
 use parking_lot::Mutex;
@@ -34,7 +36,7 @@ use crate::api::{OrderSaga, SagaCompletionRequest, SagaEventRequest};
 use crate::core::{SagaCompletionHandler, SagaEventHandler};
 
 #[tokio::main]
-async fn main() {
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
     tracing_subscriber::fmt::init();
 
     println!("=== Handler + injected Saga (Arc<Mutex<S>>) — constructor injection, Self::Request carries the event ===\n");
@@ -62,9 +64,11 @@ async fn main() {
             req: SagaCompletionRequest,
             ctx: &ctx,
         })
-        .await
-        .expect("is_complete should succeed");
-    println!("[3] SagaCompletionHandler reports complete = {}\n", before.complete);
+        .await?;
+    println!(
+        "[3] SagaCompletionHandler reports complete = {}\n",
+        before.complete
+    );
 
     println!("[0] handle_handler.execute(SagaEventRequest {{ order_id: \"order-1\" }})");
     let handled = handle_handler
@@ -74,8 +78,7 @@ async fn main() {
             },
             ctx: &ctx,
         })
-        .await
-        .expect("handle should succeed");
+        .await?;
     println!(
         "[3] SagaEventHandler dispatched {} command(s)\n",
         handled.commands_dispatched
@@ -87,12 +90,17 @@ async fn main() {
             req: SagaCompletionRequest,
             ctx: &ctx,
         })
-        .await
-        .expect("is_complete should succeed");
-    println!("[3] SagaCompletionHandler reports complete = {}\n", after.complete);
+        .await?;
+    println!(
+        "[3] SagaCompletionHandler reports complete = {}\n",
+        after.complete
+    );
 
     println!("Conclusion: both handlers reached the same saga only through their own,");
     println!("independently injected Arc<Mutex<OrderSaga>> — never through HandlerContext. This");
-    println!("bypasses SagaStore entirely, because SagaStore::get()'s immutable-borrow return type");
+    println!(
+        "bypasses SagaStore entirely, because SagaStore::get()'s immutable-borrow return type"
+    );
     println!("cannot support the get-then-handle mutation path Saga::handle requires.");
+    Ok(())
 }

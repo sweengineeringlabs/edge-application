@@ -7,7 +7,10 @@ fn test_histogram_svc_factory_constant_value_happy() {
 
 #[test]
 fn test_histogram_svc_factory_constant_not_empty_error() {
-    assert!(!HISTOGRAM_SVC_FACTORY.is_empty(), "HISTOGRAM_SVC_FACTORY must not be empty");
+    assert!(
+        !HISTOGRAM_SVC_FACTORY.is_empty(),
+        "HISTOGRAM_SVC_FACTORY must not be empty"
+    );
 }
 
 #[test]

@@ -1,7 +1,9 @@
 //! Layer-level coverage for `api/policy/dto/*.rs` request/response types.
 #![allow(clippy::unwrap_used, clippy::expect_used)]
 
-use edge_application_policy::{Policy, PolicyEvaluateRequest, PolicyNameRequest, PolicyNameResponse};
+use edge_application_policy::{
+    Policy, PolicyEvaluateRequest, PolicyNameRequest, PolicyNameResponse,
+};
 
 /// @covers: PolicyNameRequest
 #[test]
@@ -39,5 +41,7 @@ fn test_policy_evaluate_request_used_by_policy_impl_happy() {
     let value = 5u64;
     let req = PolicyEvaluateRequest { input: &value };
     assert_eq!(req.input, &5);
-    assert!(AlwaysOk.evaluate(PolicyEvaluateRequest { input: &value }).is_ok());
+    assert!(AlwaysOk
+        .evaluate(PolicyEvaluateRequest { input: &value })
+        .is_ok());
 }

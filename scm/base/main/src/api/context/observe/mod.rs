@@ -25,4 +25,6 @@ pub use dto::{
     SpanStartRequest, SpanStartResponse, TracerRequest, TracerResponse,
 };
 pub use errors::ObserveError;
-pub use traits::{Counter, Gauge, HandlerTracer, Histogram, LogDrain, MetricRegistry, ObserverContext, Span};
+pub use traits::{
+    Counter, Gauge, HandlerTracer, Histogram, LogDrain, MetricRegistry, ObserverContext, Span,
+};

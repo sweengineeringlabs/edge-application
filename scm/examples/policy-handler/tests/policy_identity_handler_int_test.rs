@@ -13,8 +13,8 @@ use edge_application_handler::{
 };
 use edge_application_observer::StdObserveFactory;
 use edge_application_policy::{
-    CompositePolicy, Policy, PolicyEvaluateRequest, PolicyNameRequest, PolicyNameResponse,
-    PolicyError,
+    CompositePolicy, Policy, PolicyError, PolicyEvaluateRequest, PolicyNameRequest,
+    PolicyNameResponse,
 };
 use edge_security_runtime::SecurityContext;
 use futures::executor::block_on;

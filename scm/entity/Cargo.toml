@@ -17,6 +17,10 @@ service_type     = "entity"
 [lib]
 path = "main/src/lib.rs"
 
+[[example]]
+name = "entity_basic"
+path = "examples/basic.rs"
+
 [dependencies]
 serde.workspace = true
 

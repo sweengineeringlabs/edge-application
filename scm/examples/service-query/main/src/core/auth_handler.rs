@@ -5,7 +5,8 @@ use std::sync::Arc;
 
 use async_trait::async_trait;
 use edge_application_handler::{
-    DrainRequest, ExecutionRequest as HandlerExecutionRequest, Handler, HandlerError, LogEmitRequest,
+    DrainRequest, ExecutionRequest as HandlerExecutionRequest, Handler, HandlerError,
+    LogEmitRequest,
 };
 use edge_application_query::{QueryBus, QueryDispatchRequest, QueryError};
 

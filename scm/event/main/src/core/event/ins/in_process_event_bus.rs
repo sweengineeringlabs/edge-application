@@ -97,7 +97,9 @@ mod tests {
             .expect("tokio rt");
         rt.block_on(async {
             let bus = InProcessEventBus::new(16);
-            let result = bus.publish(publish_req(Arc::new(InProcessEventBusTestEvt))).await;
+            let result = bus
+                .publish(publish_req(Arc::new(InProcessEventBusTestEvt)))
+                .await;
             assert!(result.is_ok());
         });
     }
@@ -118,7 +120,11 @@ mod tests {
             bus.publish(publish_req(Arc::new(InProcessEventBusTestEvt)))
                 .await
                 .expect("publish");
-            let event = rx.recv_next(EventSourceRecvNextRequest).await.expect("recv").event;
+            let event = rx
+                .recv_next(EventSourceRecvNextRequest)
+                .await
+                .expect("recv")
+                .event;
             let event_type = event
                 .event_type(EventTypeRequest)
                 .expect("event_type")

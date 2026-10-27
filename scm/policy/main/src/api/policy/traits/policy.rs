@@ -1,7 +1,7 @@
 //! `Policy` — a named, testable business rule.
 
-use crate::api::policy::errors::PolicyError;
 use crate::api::policy::dto::{PolicyEvaluateRequest, PolicyNameRequest, PolicyNameResponse};
+use crate::api::policy::errors::PolicyError;
 
 /// A named, testable business rule that operates on domain state.
 ///
