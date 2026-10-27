@@ -83,9 +83,11 @@ fn test_state_unchanged_when_no_transition_called_edge() {
 fn test_transition_to_allowed_updates_state_happy() {
     rt().block_on(async {
         let lc = permissive(Phase::Idle);
-        lc.transition_to(LifecycleTransitionRequest { target: Phase::Running })
-            .await
-            .expect("allowed");
+        lc.transition_to(LifecycleTransitionRequest {
+            target: Phase::Running,
+        })
+        .await
+        .expect("allowed");
         assert_eq!(state_of(&lc), Phase::Running);
     });
 }
@@ -95,15 +97,21 @@ fn test_transition_to_allowed_updates_state_happy() {
 fn test_transition_to_chain_updates_each_step_happy() {
     rt().block_on(async {
         let lc = permissive(Phase::Idle);
-        lc.transition_to(LifecycleTransitionRequest { target: Phase::Running })
-            .await
-            .expect("Idle→Running");
-        lc.transition_to(LifecycleTransitionRequest { target: Phase::Paused })
-            .await
-            .expect("Running→Paused");
-        lc.transition_to(LifecycleTransitionRequest { target: Phase::Done })
-            .await
-            .expect("Paused→Done");
+        lc.transition_to(LifecycleTransitionRequest {
+            target: Phase::Running,
+        })
+        .await
+        .expect("Idle→Running");
+        lc.transition_to(LifecycleTransitionRequest {
+            target: Phase::Paused,
+        })
+        .await
+        .expect("Running→Paused");
+        lc.transition_to(LifecycleTransitionRequest {
+            target: Phase::Done,
+        })
+        .await
+        .expect("Paused→Done");
         assert_eq!(state_of(&lc), Phase::Done);
     });
 }
@@ -116,7 +124,9 @@ fn test_transition_to_rejected_returns_invalid_transition_error() {
     rt().block_on(async {
         let lc = strict(Phase::Idle);
         let err = lc
-            .transition_to(LifecycleTransitionRequest { target: Phase::Running })
+            .transition_to(LifecycleTransitionRequest {
+                target: Phase::Running,
+            })
             .await
             .expect_err("must fail");
         assert!(matches!(err, LifecycleError::InvalidTransition { .. }));
@@ -129,7 +139,9 @@ fn test_transition_to_rejected_leaves_state_unchanged_error() {
     rt().block_on(async {
         let lc = strict(Phase::Idle);
         let _ = lc
-            .transition_to(LifecycleTransitionRequest { target: Phase::Running })
+            .transition_to(LifecycleTransitionRequest {
+                target: Phase::Running,
+            })
             .await;
         assert_eq!(state_of(&lc), Phase::Idle);
     });
@@ -142,9 +154,11 @@ fn test_transition_to_rejected_leaves_state_unchanged_error() {
 fn test_transition_to_same_state_with_permissive_policy_succeeds_edge() {
     rt().block_on(async {
         let lc = permissive(Phase::Running);
-        lc.transition_to(LifecycleTransitionRequest { target: Phase::Running })
-            .await
-            .expect("self-transition allowed");
+        lc.transition_to(LifecycleTransitionRequest {
+            target: Phase::Running,
+        })
+        .await
+        .expect("self-transition allowed");
         assert_eq!(state_of(&lc), Phase::Running);
     });
 }
@@ -155,14 +169,24 @@ fn test_transition_to_same_state_with_permissive_policy_succeeds_edge() {
 #[test]
 fn test_is_in_returns_true_for_current_state_happy() {
     let lc = permissive(Phase::Idle);
-    assert!(lc.is_in(LifecycleIsInRequest { state: Phase::Idle }).unwrap().is_in);
+    assert!(
+        lc.is_in(LifecycleIsInRequest { state: Phase::Idle })
+            .unwrap()
+            .is_in
+    );
 }
 
 /// @covers: Lifecycle::is_in
 #[test]
 fn test_is_in_returns_false_for_other_state_error() {
     let lc = permissive(Phase::Idle);
-    assert!(!lc.is_in(LifecycleIsInRequest { state: Phase::Running }).unwrap().is_in);
+    assert!(
+        !lc.is_in(LifecycleIsInRequest {
+            state: Phase::Running
+        })
+        .unwrap()
+        .is_in
+    );
 }
 
 /// @covers: Lifecycle::is_in
@@ -170,10 +194,20 @@ fn test_is_in_returns_false_for_other_state_error() {
 fn test_is_in_reflects_state_after_transition_edge() {
     rt().block_on(async {
         let lc = permissive(Phase::Idle);
-        lc.transition_to(LifecycleTransitionRequest { target: Phase::Done })
-            .await
-            .expect("transition");
-        assert!(lc.is_in(LifecycleIsInRequest { state: Phase::Done }).unwrap().is_in);
-        assert!(!lc.is_in(LifecycleIsInRequest { state: Phase::Idle }).unwrap().is_in);
+        lc.transition_to(LifecycleTransitionRequest {
+            target: Phase::Done,
+        })
+        .await
+        .expect("transition");
+        assert!(
+            lc.is_in(LifecycleIsInRequest { state: Phase::Done })
+                .unwrap()
+                .is_in
+        );
+        assert!(
+            !lc.is_in(LifecycleIsInRequest { state: Phase::Idle })
+                .unwrap()
+                .is_in
+        );
     });
 }

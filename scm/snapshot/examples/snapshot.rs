@@ -23,8 +23,10 @@ impl Snapshot for OrderSnap {
     fn version(
         &self,
         _req: SnapshotVersionRequest,
-    ) -> Result<edge_application_snapshot::SnapshotVersionResponse, edge_application_snapshot::SnapshotError>
-    {
+    ) -> Result<
+        edge_application_snapshot::SnapshotVersionResponse,
+        edge_application_snapshot::SnapshotError,
+    > {
         Ok(edge_application_snapshot::SnapshotVersionResponse {
             version: self.version,
         })

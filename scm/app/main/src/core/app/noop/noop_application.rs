@@ -7,7 +7,10 @@ use crate::api::ApplicationRunResponse;
 use crate::api::NoopApplication;
 
 impl Application for NoopApplication {
-    fn run(&self, _req: ApplicationRunRequest) -> BoxFuture<'_, Result<ApplicationRunResponse, AppError>> {
+    fn run(
+        &self,
+        _req: ApplicationRunRequest,
+    ) -> BoxFuture<'_, Result<ApplicationRunResponse, AppError>> {
         Box::pin(async { Ok(ApplicationRunResponse) })
     }
 }
@@ -22,18 +25,30 @@ mod tests {
     #[test]
     fn test_run_noop_happy() {
         let app = NoopApplication;
-        assert_eq!(block_on(app.run(ApplicationRunRequest)), Ok(ApplicationRunResponse));
+        assert_eq!(
+            block_on(app.run(ApplicationRunRequest)),
+            Ok(ApplicationRunResponse)
+        );
     }
 
     #[test]
     fn test_run_noop_twice_both_ok_error() {
         let app = NoopApplication;
-        assert_eq!(block_on(app.run(ApplicationRunRequest)), Ok(ApplicationRunResponse));
-        assert_eq!(block_on(app.run(ApplicationRunRequest)), Ok(ApplicationRunResponse));
+        assert_eq!(
+            block_on(app.run(ApplicationRunRequest)),
+            Ok(ApplicationRunResponse)
+        );
+        assert_eq!(
+            block_on(app.run(ApplicationRunRequest)),
+            Ok(ApplicationRunResponse)
+        );
     }
 
     #[test]
     fn test_name_default_is_application_edge() {
-        assert_eq!(NoopApplication.name(NameRequest).unwrap().name, "application");
+        assert_eq!(
+            NoopApplication.name(NameRequest).unwrap().name,
+            "application"
+        );
     }
 }

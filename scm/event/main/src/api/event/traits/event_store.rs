@@ -3,12 +3,21 @@
 use std::future::Future;
 use std::pin::Pin;
 
-use crate::api::event::errors::EventStoreError;
-use crate::api::event::traits::DomainEvent;
 use crate::api::event::dto::{
     EventStoreAppendRequest, EventStoreAppendResponse, EventStoreLoadFromRequest,
     EventStoreLoadFromResponse, EventStoreLoadRequest, EventStoreLoadResponse,
 };
+use crate::api::event::errors::EventStoreError;
+use crate::api::event::traits::DomainEvent;
+
+/// Boxed future returned when loading an aggregate's complete event stream.
+pub type EventStoreLoadFuture<'a, E> =
+    Pin<Box<dyn Future<Output = Result<EventStoreLoadResponse<E>, EventStoreError>> + Send + 'a>>;
+
+/// Boxed future returned when loading an aggregate's event stream from a sequence number.
+pub type EventStoreLoadFromFuture<'a, E> = Pin<
+    Box<dyn Future<Output = Result<EventStoreLoadFromResponse<E>, EventStoreError>> + Send + 'a>,
+>;
 
 /// Append-only storage for domain event streams keyed by aggregate ID.
 ///
@@ -29,14 +38,11 @@ pub trait EventStore: Send + Sync {
     ) -> Pin<Box<dyn Future<Output = Result<EventStoreAppendResponse, EventStoreError>> + Send + '_>>;
 
     /// Load all events for an aggregate in sequence order.
-    fn load(
-        &self,
-        req: EventStoreLoadRequest<'_>,
-    ) -> Pin<Box<dyn Future<Output = Result<EventStoreLoadResponse<Self::Event>, EventStoreError>> + Send + '_>>;
+    fn load(&self, req: EventStoreLoadRequest<'_>) -> EventStoreLoadFuture<'_, Self::Event>;
 
     /// Load events for an aggregate starting at a given sequence number (inclusive).
     fn load_from(
         &self,
         req: EventStoreLoadFromRequest<'_>,
-    ) -> Pin<Box<dyn Future<Output = Result<EventStoreLoadFromResponse<Self::Event>, EventStoreError>> + Send + '_>>;
+    ) -> EventStoreLoadFromFuture<'_, Self::Event>;
 }

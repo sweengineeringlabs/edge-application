@@ -1,6 +1,8 @@
 //! Basic `Query` usage example.
 
-use edge_application_query::{DirectQueryBus, Query, QueryError, QueryExecuteRequest, QueryResultResponse};
+use edge_application_query::{
+    DirectQueryBus, Query, QueryError, QueryExecuteRequest, QueryResultResponse,
+};
 use futures::future::BoxFuture;
 
 struct Ping;
@@ -11,7 +13,11 @@ impl Query for Ping {
         &self,
         _req: QueryExecuteRequest,
     ) -> BoxFuture<'_, Result<QueryResultResponse<String>, QueryError>> {
-        Box::pin(async { Ok(QueryResultResponse { result: "pong".into() }) })
+        Box::pin(async {
+            Ok(QueryResultResponse {
+                result: "pong".into(),
+            })
+        })
     }
 }
 

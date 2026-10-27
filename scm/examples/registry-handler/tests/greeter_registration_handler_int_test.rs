@@ -73,7 +73,10 @@ impl Handler for GreeterRegistrationHandler {
             .emit(LogEmitRequest {
                 level: "INFO".to_string(),
                 handler_id: "greeter_registration_handler".to_string(),
-                message: format!("registering {:?} greeter under {:?}", req.req.language, req.req.id),
+                message: format!(
+                    "registering {:?} greeter under {:?}",
+                    req.req.language, req.req.id
+                ),
             })
             .map_err(|e| HandlerError::ExecutionFailed(e.to_string()))?;
 
@@ -91,7 +94,10 @@ impl Handler for GreeterRegistrationHandler {
     }
 }
 
-fn build_handler() -> (GreeterRegistrationHandler, Arc<dyn Registry<Value = dyn Greeter>>) {
+fn build_handler() -> (
+    GreeterRegistrationHandler,
+    Arc<dyn Registry<Value = dyn Greeter>>,
+) {
     let registry: Arc<dyn Registry<Value = dyn Greeter>> =
         Arc::new(MemoryRegistry::<dyn Greeter>::new());
     let handler = GreeterRegistrationHandler {
@@ -156,5 +162,11 @@ fn test_execute_distinct_ids_both_registered_edge() {
     run(&handler, "greeter-en", "en").unwrap();
     run(&handler, "greeter-es", "es").unwrap();
 
-    assert_eq!(registry.len(edge_application_registry::LenRequest).unwrap().count, 2);
+    assert_eq!(
+        registry
+            .len(edge_application_registry::LenRequest)
+            .unwrap()
+            .count,
+        2
+    );
 }

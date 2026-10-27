@@ -2,9 +2,9 @@
 
 use futures::future::BoxFuture;
 
+use crate::api::ClosedEventSource;
 use crate::api::EventError;
 use crate::api::{EventSource, EventSourceRecvNextRequest, EventSourceRecvNextResponse};
-use crate::api::ClosedEventSource;
 
 impl EventSource for ClosedEventSource {
     fn recv_next(

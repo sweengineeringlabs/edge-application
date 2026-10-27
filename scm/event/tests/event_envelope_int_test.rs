@@ -1,19 +1,35 @@
 //! Integration tests for `EventEnvelope`.
 #![allow(clippy::unwrap_used, clippy::expect_used)]
 
+use edge_application_event::{
+    DomainEvent, EventAggregateIdRequest, EventEnvelope, EventTypeRequest,
+};
 use std::time::SystemTime;
-use edge_application_event::{DomainEvent, EventAggregateIdRequest, EventEnvelope, EventTypeRequest};
 
 #[derive(Clone)]
 struct OrderCreated {
     id: String,
 }
 impl DomainEvent for OrderCreated {
-    fn event_type(&self, _req: EventTypeRequest) -> Result<edge_application_event::EventTypeResponse<'_>, edge_application_event::EventError> {
-        Ok(edge_application_event::EventTypeResponse { event_type: "order.created" })
+    fn event_type(
+        &self,
+        _req: EventTypeRequest,
+    ) -> Result<edge_application_event::EventTypeResponse<'_>, edge_application_event::EventError>
+    {
+        Ok(edge_application_event::EventTypeResponse {
+            event_type: "order.created",
+        })
     }
-    fn aggregate_id(&self, _req: EventAggregateIdRequest) -> Result<edge_application_event::EventAggregateIdResponse<'_>, edge_application_event::EventError> {
-        Ok(edge_application_event::EventAggregateIdResponse { aggregate_id: &self.id })
+    fn aggregate_id(
+        &self,
+        _req: EventAggregateIdRequest,
+    ) -> Result<
+        edge_application_event::EventAggregateIdResponse<'_>,
+        edge_application_event::EventError,
+    > {
+        Ok(edge_application_event::EventAggregateIdResponse {
+            aggregate_id: &self.id,
+        })
     }
 }
 

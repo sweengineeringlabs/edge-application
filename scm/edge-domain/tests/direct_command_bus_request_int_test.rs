@@ -7,7 +7,8 @@ use edge_application::DirectCommandBusRequest;
 /// @covers: DirectCommandBusRequest
 #[test]
 fn test_direct_command_bus_request_default_happy() {
-    assert_eq!(DirectCommandBusRequest::default(), DirectCommandBusRequest);
+    let default: DirectCommandBusRequest = Default::default();
+    assert_eq!(default, DirectCommandBusRequest);
 }
 
 /// @covers: DirectCommandBusRequest

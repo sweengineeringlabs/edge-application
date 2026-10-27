@@ -2,8 +2,8 @@
 
 use std::fmt::Debug;
 
-use crate::api::lifecycle::errors::LifecycleError;
 use crate::api::lifecycle::dto::{TransitionAllowedRequest, TransitionAllowedResponse};
+use crate::api::lifecycle::errors::LifecycleError;
 
 /// Decides which state transitions are permitted for a `Lifecycle`.
 ///

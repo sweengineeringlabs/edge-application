@@ -12,8 +12,14 @@ fn test_event_store_error_conflict_display_contains_ids_happy() {
     };
     let msg = err.to_string();
     assert!(msg.contains("order-1"), "expected aggregate_id in: {msg}");
-    assert!(msg.contains('0'.to_string().as_str()), "expected expected version in: {msg}");
-    assert!(msg.contains('5'.to_string().as_str()), "expected actual version in: {msg}");
+    assert!(
+        msg.contains('0'.to_string().as_str()),
+        "expected expected version in: {msg}"
+    );
+    assert!(
+        msg.contains('5'.to_string().as_str()),
+        "expected actual version in: {msg}"
+    );
 }
 
 /// @covers: EventStoreError — Unavailable variant displays reason
@@ -29,5 +35,8 @@ fn test_event_store_error_unavailable_display_contains_reason_error() {
 fn test_event_store_error_internal_display_contains_message_edge() {
     let err = EventStoreError::Internal("unexpected panic".into());
     let msg = err.to_string();
-    assert!(msg.contains("unexpected panic"), "unexpected display: {msg}");
+    assert!(
+        msg.contains("unexpected panic"),
+        "unexpected display: {msg}"
+    );
 }

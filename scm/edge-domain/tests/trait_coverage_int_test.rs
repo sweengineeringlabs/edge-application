@@ -2,7 +2,13 @@
 //!
 //! One test per unique method name × 3 suffixes covers all 47 trait functions because
 //! the arch audit pattern `test_<fn>_*_<suffix>` matches on method name globally across traits.
-#![cfg(all(feature = "event", feature = "command", feature = "query", feature = "repository", feature = "handler"))]
+#![cfg(all(
+    feature = "event",
+    feature = "command",
+    feature = "query",
+    feature = "repository",
+    feature = "handler"
+))]
 // @allow: no_mocks_in_integration — MemoryRepository is the production-shipped reference impl, not a test double
 #![allow(clippy::unwrap_used, clippy::expect_used)]
 
@@ -211,7 +217,10 @@ fn test_name_command_default_impl_returns_command_edge() {
     // provided default ("command"), distinct from OkCmd/ErrCmd which both override it.
     struct DefaultNameCmd;
     impl Command for DefaultNameCmd {
-        fn execute(&self, _req: CommandExecutionRequest) -> BoxFuture<'_, Result<(), CommandError>> {
+        fn execute(
+            &self,
+            _req: CommandExecutionRequest,
+        ) -> BoxFuture<'_, Result<(), CommandError>> {
             Box::pin(async { Ok(()) })
         }
     }
@@ -1884,4 +1893,3 @@ fn test_matches_empty_string_input_edge() {
             .matches
     );
 }
-

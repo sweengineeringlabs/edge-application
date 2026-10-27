@@ -7,10 +7,16 @@ fn test_event_store_svc_factory_constant_value_happy() {
 
 #[test]
 fn test_event_store_svc_factory_constant_not_empty_error() {
-    assert!(!EVENT_STORE_SVC_FACTORY.is_empty(), "EVENT_STORE_SVC_FACTORY must not be empty");
+    assert!(
+        !EVENT_STORE_SVC_FACTORY.is_empty(),
+        "EVENT_STORE_SVC_FACTORY must not be empty"
+    );
 }
 
 #[test]
 fn test_event_store_svc_factory_constant_no_whitespace_edge() {
-    assert!(!EVENT_STORE_SVC_FACTORY.contains(char::is_whitespace), "EVENT_STORE_SVC_FACTORY must not contain whitespace");
+    assert!(
+        !EVENT_STORE_SVC_FACTORY.contains(char::is_whitespace),
+        "EVENT_STORE_SVC_FACTORY must not contain whitespace"
+    );
 }

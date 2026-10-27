@@ -19,9 +19,9 @@ use edge_application_handler::{
 };
 use edge_application_observer::StdObserveFactory;
 use edge_application_saga::{
-    Saga, SagaCommand, SagaCommandDispatchRequest, SagaError, SagaEvent,
-    SagaEventDescribeRequest, SagaEventDescribeResponse, SagaHandleRequest, SagaHandleResponse,
-    SagaIsCompleteRequest, SagaIsCompleteResponse,
+    Saga, SagaCommand, SagaCommandDispatchRequest, SagaError, SagaEvent, SagaEventDescribeRequest,
+    SagaEventDescribeResponse, SagaHandleRequest, SagaHandleResponse, SagaIsCompleteRequest,
+    SagaIsCompleteResponse,
 };
 use edge_security_runtime::SecurityContext;
 use futures::executor::block_on;
@@ -54,7 +54,10 @@ impl SagaCommand for ShipOrderCommand {
         &self,
         _req: SagaCommandDispatchRequest,
     ) -> futures::future::BoxFuture<'_, Result<(), SagaError>> {
-        println!("      [infra] ShipOrderCommand::dispatch — shipping {:?}", self.order_id);
+        println!(
+            "      [infra] ShipOrderCommand::dispatch — shipping {:?}",
+            self.order_id
+        );
         Box::pin(async move { Ok(()) })
     }
 }
@@ -81,7 +84,10 @@ impl Saga for OrderSaga {
         })
     }
 
-    fn is_complete(&self, _req: SagaIsCompleteRequest) -> Result<SagaIsCompleteResponse, SagaError> {
+    fn is_complete(
+        &self,
+        _req: SagaIsCompleteRequest,
+    ) -> Result<SagaIsCompleteResponse, SagaError> {
         Ok(SagaIsCompleteResponse {
             complete: self.shipped,
         })
@@ -155,10 +161,7 @@ fn build_handler() -> (SagaEventHandler, Arc<Mutex<OrderSaga>>) {
     (handler, saga)
 }
 
-fn run(
-    handler: &SagaEventHandler,
-    order_id: &str,
-) -> Result<SagaEventResponse, HandlerError> {
+fn run(handler: &SagaEventHandler, order_id: &str) -> Result<SagaEventResponse, HandlerError> {
     let security = SecurityContext::unauthenticated();
     let bus = DirectCommandBus;
     let observer = StdObserveFactory::noop_observer_context();

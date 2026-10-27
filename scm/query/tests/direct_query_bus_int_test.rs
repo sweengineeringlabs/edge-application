@@ -1,7 +1,10 @@
 //! Integration tests for `DirectQueryBus` — the zero-size in-process query bus marker.
 #![allow(clippy::unwrap_used, clippy::expect_used)]
 
-use edge_application_query::{DirectQueryBus, Query, QueryBus, QueryDispatchRequest, QueryError, QueryExecuteRequest, QueryResultResponse};
+use edge_application_query::{
+    DirectQueryBus, Query, QueryBus, QueryDispatchRequest, QueryError, QueryExecuteRequest,
+    QueryResultResponse,
+};
 use futures::executor::block_on;
 use futures::future::BoxFuture;
 
@@ -40,7 +43,9 @@ fn test_direct_query_bus_is_zero_sized_happy() {
 #[test]
 fn test_direct_query_bus_dispatch_error_query_returns_err_error() {
     let bus = DirectQueryBus::<String>::new();
-    let result = block_on(bus.dispatch(QueryDispatchRequest { query: Box::new(Err_) }));
+    let result = block_on(bus.dispatch(QueryDispatchRequest {
+        query: Box::new(Err_),
+    }));
     assert!(result.is_err());
 }
 
@@ -48,6 +53,8 @@ fn test_direct_query_bus_dispatch_error_query_returns_err_error() {
 #[test]
 fn test_direct_query_bus_dyn_dispatch_returns_ok_edge() {
     let bus: &dyn QueryBus<Result = String> = &DirectQueryBus::<String>::new();
-    let result = block_on(bus.dispatch(QueryDispatchRequest { query: Box::new(Ok_("hi".into())) }));
+    let result = block_on(bus.dispatch(QueryDispatchRequest {
+        query: Box::new(Ok_("hi".into())),
+    }));
     assert_eq!(result.unwrap().result, "hi");
 }

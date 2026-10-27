@@ -6,7 +6,9 @@ use std::sync::Arc;
 
 use async_trait::async_trait;
 use edge_application_event::{EventStore, EventStoreLoadRequest};
-use edge_application_handler::{ExecutionRequest as HandlerExecutionRequest, Handler, HandlerError};
+use edge_application_handler::{
+    ExecutionRequest as HandlerExecutionRequest, Handler, HandlerError,
+};
 
 use crate::api::{OrderCreated, OrderHistoryRequest, OrderHistoryResponse};
 

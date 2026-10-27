@@ -7,7 +7,10 @@ fn test_bootstrap_svc_factory_constant_value_happy() {
 
 #[test]
 fn test_bootstrap_svc_factory_constant_not_empty_error() {
-    assert!(!APP_BOOTSTRAP_SVC_FACTORY.is_empty(), "APP_BOOTSTRAP_SVC_FACTORY must not be empty");
+    assert!(
+        !APP_BOOTSTRAP_SVC_FACTORY.is_empty(),
+        "APP_BOOTSTRAP_SVC_FACTORY must not be empty"
+    );
 }
 
 #[test]

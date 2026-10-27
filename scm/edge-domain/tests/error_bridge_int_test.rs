@@ -4,7 +4,13 @@
 //! `edge-dispatch` (orphan rules prevent cross-crate From impls).
 //! The supported pattern is `.map_err(|e| HandlerError::ExecutionFailed(e.to_string()))`
 //! or `.map_err(|e| HandlerError::InvalidRequest(e.to_string()))`.
-#![cfg(all(feature = "repository", feature = "query", feature = "handler", feature = "event", feature = "command"))]
+#![cfg(all(
+    feature = "repository",
+    feature = "query",
+    feature = "handler",
+    feature = "event",
+    feature = "command"
+))]
 
 use edge_application::{CommandError, EventError, HandlerError, QueryError, RepositoryError};
 

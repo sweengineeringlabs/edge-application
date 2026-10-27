@@ -5,9 +5,9 @@
 #![allow(clippy::unwrap_used, clippy::expect_used)]
 
 use edge_application_app::{
-    ApplicationBuildRequest, ApplicationBuildResponse, ApplicationRunRequest, ApplicationRunResponse,
-    NameRequest, NameResponse, NoopApplication, ProviderBuildRequest, ProviderBuildResponse,
-    RuntimeBootRequest, RuntimeBootResponse,
+    ApplicationBuildRequest, ApplicationBuildResponse, ApplicationRunRequest,
+    ApplicationRunResponse, NameRequest, NameResponse, NoopApplication, ProviderBuildRequest,
+    ProviderBuildResponse, RuntimeBootRequest, RuntimeBootResponse,
 };
 
 /// @covers: ApplicationBuildRequest
@@ -82,7 +82,11 @@ fn test_runtime_boot_request_holds_bootstrap_happy() {
     use edge_application_app::NoopAppBootstrap;
     let b = NoopAppBootstrap;
     let r = RuntimeBootRequest { bootstrap: &b };
-    let app = r.bootstrap.build(ApplicationBuildRequest).unwrap().application;
+    let app = r
+        .bootstrap
+        .build(ApplicationBuildRequest)
+        .unwrap()
+        .application;
     assert_eq!(app.name(NameRequest).unwrap().name, "application");
 }
 

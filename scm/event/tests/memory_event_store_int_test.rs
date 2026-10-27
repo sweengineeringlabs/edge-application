@@ -11,11 +11,25 @@ use edge_application_event::{
 #[derive(Clone)]
 struct ItemEvt(String);
 impl DomainEvent for ItemEvt {
-    fn event_type(&self, _req: EventTypeRequest) -> Result<edge_application_event::EventTypeResponse<'_>, edge_application_event::EventError> {
-        Ok(edge_application_event::EventTypeResponse { event_type: "item.evt" })
+    fn event_type(
+        &self,
+        _req: EventTypeRequest,
+    ) -> Result<edge_application_event::EventTypeResponse<'_>, edge_application_event::EventError>
+    {
+        Ok(edge_application_event::EventTypeResponse {
+            event_type: "item.evt",
+        })
     }
-    fn aggregate_id(&self, _req: EventAggregateIdRequest) -> Result<edge_application_event::EventAggregateIdResponse<'_>, edge_application_event::EventError> {
-        Ok(edge_application_event::EventAggregateIdResponse { aggregate_id: &self.0 })
+    fn aggregate_id(
+        &self,
+        _req: EventAggregateIdRequest,
+    ) -> Result<
+        edge_application_event::EventAggregateIdResponse<'_>,
+        edge_application_event::EventError,
+    > {
+        Ok(edge_application_event::EventAggregateIdResponse {
+            aggregate_id: &self.0,
+        })
     }
 }
 
@@ -23,9 +37,9 @@ impl DomainEvent for ItemEvt {
 #[test]
 fn test_memory_event_store_new_creates_empty_store_happy() {
     let store = MemoryEventStore::<ItemEvt>::new();
-    let events = futures::executor::block_on(
-        store.load(EventStoreLoadRequest { aggregate_id: "any" }),
-    )
+    let events = futures::executor::block_on(store.load(EventStoreLoadRequest {
+        aggregate_id: "any",
+    }))
     .expect("load")
     .events;
     assert!(events.is_empty());
@@ -60,14 +74,14 @@ fn test_memory_event_store_multiple_aggregates_independent_edge() {
         expected: ExpectedVersion::Any,
     }))
     .expect("append b");
-    let events_a = futures::executor::block_on(
-        store.load(EventStoreLoadRequest { aggregate_id: "agg-a" }),
-    )
+    let events_a = futures::executor::block_on(store.load(EventStoreLoadRequest {
+        aggregate_id: "agg-a",
+    }))
     .expect("load a")
     .events;
-    let events_b = futures::executor::block_on(
-        store.load(EventStoreLoadRequest { aggregate_id: "agg-b" }),
-    )
+    let events_b = futures::executor::block_on(store.load(EventStoreLoadRequest {
+        aggregate_id: "agg-b",
+    }))
     .expect("load b")
     .events;
     assert_eq!(events_a.len(), 1);
@@ -92,7 +106,12 @@ fn test_memory_event_store_conflict_error_fields_correct_happy() {
         expected: ExpectedVersion::NoStream,
     }))
     .unwrap_err();
-    if let EventStoreError::Conflict { aggregate_id, expected, actual } = err {
+    if let EventStoreError::Conflict {
+        aggregate_id,
+        expected,
+        actual,
+    } = err
+    {
         assert_eq!(aggregate_id, "x");
         assert_eq!(expected, 0);
         assert_eq!(actual, 1);
@@ -111,9 +130,10 @@ fn test_memory_event_store_load_from_future_seq_returns_empty_error() {
         expected: ExpectedVersion::Any,
     }))
     .expect("append");
-    let events = futures::executor::block_on(
-        store.load_from(EventStoreLoadFromRequest { aggregate_id: "x", from_sequence: 999 }),
-    )
+    let events = futures::executor::block_on(store.load_from(EventStoreLoadFromRequest {
+        aggregate_id: "x",
+        from_sequence: 999,
+    }))
     .expect("load_from")
     .events;
     assert!(events.is_empty());
@@ -125,13 +145,18 @@ fn test_memory_event_store_load_from_exact_boundary_edge() {
     let store = MemoryEventStore::<ItemEvt>::new();
     futures::executor::block_on(store.append(EventStoreAppendRequest {
         aggregate_id: "x",
-        events: vec![ItemEvt("x".into()), ItemEvt("x".into()), ItemEvt("x".into())],
+        events: vec![
+            ItemEvt("x".into()),
+            ItemEvt("x".into()),
+            ItemEvt("x".into()),
+        ],
         expected: ExpectedVersion::Any,
     }))
     .expect("append");
-    let events = futures::executor::block_on(
-        store.load_from(EventStoreLoadFromRequest { aggregate_id: "x", from_sequence: 3 }),
-    )
+    let events = futures::executor::block_on(store.load_from(EventStoreLoadFromRequest {
+        aggregate_id: "x",
+        from_sequence: 3,
+    }))
     .expect("load_from")
     .events;
     assert_eq!(events.len(), 1);

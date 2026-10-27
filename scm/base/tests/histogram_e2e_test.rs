@@ -3,7 +3,9 @@
 
 use std::sync::Mutex;
 
-use edge_application_base::{Histogram, HistogramRecordRequest, HistogramRecordResponse, ObserveError};
+use edge_application_base::{
+    Histogram, HistogramRecordRequest, HistogramRecordResponse, ObserveError,
+};
 
 #[derive(Default)]
 struct RecordingHistogram {
@@ -40,7 +42,11 @@ fn test_record_zero_value_observation_stored_error() {
 #[test]
 fn test_record_multiple_observations_accumulate_in_order_edge() {
     let histogram = RecordingHistogram::default();
-    histogram.record(HistogramRecordRequest { value: 1.0 }).unwrap();
-    histogram.record(HistogramRecordRequest { value: 2.0 }).unwrap();
+    histogram
+        .record(HistogramRecordRequest { value: 1.0 })
+        .unwrap();
+    histogram
+        .record(HistogramRecordRequest { value: 2.0 })
+        .unwrap();
     assert_eq!(*histogram.observations.lock().unwrap(), vec![1.0, 2.0]);
 }

@@ -1,9 +1,9 @@
 //! `Span` — a single unit of traced work.
 
-use crate::api::context::observe::errors::ObserveError;
 use crate::api::context::observe::dto::{
     SpanAnnotationRequest, SpanAnnotationResponse, SpanFinishRequest, SpanFinishResponse,
 };
+use crate::api::context::observe::errors::ObserveError;
 
 /// A tracing span produced by [`HandlerTracer`].
 ///

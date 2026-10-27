@@ -28,8 +28,7 @@ fn test_dispatch_ok_command_returns_ok_happy() {
     let result = block_on(bus.dispatch(CommandDispatchRequest {
         command: Box::new(Ok_),
     }));
-    let unit = result.expect("dispatch should succeed");
-    assert_eq!(unit, (), "dispatch result should be unit");
+    assert!(result.is_ok(), "dispatch should succeed");
 }
 
 /// @covers: CommandBus::dispatch — failure propagates

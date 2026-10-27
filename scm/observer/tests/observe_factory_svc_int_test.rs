@@ -12,7 +12,11 @@ use edge_application_observer::{
 fn test_create_factory_svc_validate_passes_happy() {
     let factory = StdObserveFactory::create_factory();
     let result = factory.validate(ValidationRequest);
-    assert_eq!(result, Ok(ValidationResponse), "created factory should validate successfully");
+    assert_eq!(
+        result,
+        Ok(ValidationResponse),
+        "created factory should validate successfully"
+    );
 }
 
 // @covers StdObserveFactory::create_factory
@@ -51,7 +55,11 @@ fn test_create_factory_svc_builds_noop_triplet_error() {
         .counter
         .increment(IncrementRequest { delta: 1 })
         .unwrap();
-    assert_eq!(std::mem::size_of_val(&*span), 0, "factory builds ZST triplet");
+    assert_eq!(
+        std::mem::size_of_val(&*span),
+        0,
+        "factory builds ZST triplet"
+    );
 }
 
 // @covers StdObserveFactory::create_factory
@@ -65,7 +73,11 @@ fn test_create_factory_svc_called_repeatedly_edge() {
         .build_handler_tracer(HandlerTracerBuildRequest)
         .unwrap()
         .tracer;
-    assert_eq!(std::mem::size_of_val(&*tracer), 0, "factories work when called repeatedly");
+    assert_eq!(
+        std::mem::size_of_val(&*tracer),
+        0,
+        "factories work when called repeatedly"
+    );
 }
 
 #[test]
